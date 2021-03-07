@@ -16,10 +16,7 @@ Widget SplashScreen() {
           Container(
               child: Column(
             children: [
-              SizedBox(
-                  height: 200,
-                  width: 200,
-                  child: Image.asset("assets/images/logo.png")),
+              SizedBox(height: 200, width: 200, child: Container()),
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CupertinoActivityIndicator(
