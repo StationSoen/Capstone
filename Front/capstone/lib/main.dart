@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:capstone/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -23,9 +24,12 @@ void main() async {
   for (int i = 0; i < hiveSetting.length; i++) {
     if (settingHive.get(hiveSetting[i]) == null) {
       settingHive.put(hiveSetting[i], "0");
-      settingHive.put('start', '2');
+      settingHive.put('start', '0');
     }
   }
+
+  // Hive initializing for TEST
+  settingHive.put('start', '0');
 
   runApp(MyApp());
 }
@@ -33,7 +37,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   Future splashScreen() async {
     // wait for Splash Screen..
-    await Future.delayed(const Duration(seconds: 1));
+    //await Future.delayed(const Duration(seconds: 1));
 
     // do somthing here ..  ex) loading something
     // splash screen loading.
@@ -87,7 +91,7 @@ class MyHome extends StatelessWidget {
   final List<BottomNavigationBarItem> bottomItems = [
     // BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), label: "홈"),
     BottomNavigationBarItem(
-        icon: Icon(CupertinoIcons.doc_plaintext), label: "식단"),
+        icon: Icon(CupertinoIcons.doc_plaintext), label: "문제"),
     BottomNavigationBarItem(icon: Icon(CupertinoIcons.qrcode), label: "출입"),
     BottomNavigationBarItem(icon: Icon(CupertinoIcons.settings), label: "설정"),
   ];
@@ -103,11 +107,11 @@ class MyHome extends StatelessWidget {
       tabBuilder: (context, index) {
         switch (index) {
           case 0:
-            return Container();
+            return Home();
           case 1:
             return Container();
           default:
-            return Container();
+            return SettingPage();
         }
       },
     );

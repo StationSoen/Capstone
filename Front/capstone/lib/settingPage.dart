@@ -47,13 +47,6 @@ class _SettingPageState extends State<SettingPage> {
                 Navigator.pop(context);
               },
             ),
-            // CupertinoActionSheetAction(
-            //   child: const Text('청주관'),
-            //   onPressed: () {
-            //     result = 3;
-            //     Navigator.pop(context);
-            //   },
-            // )
           ],
           cancelButton: CupertinoActionSheetAction(
             child: const Text('취소'),
@@ -129,7 +122,7 @@ class _SettingPageState extends State<SettingPage> {
   void launchEmailSubmission() async {
     final Uri params = Uri(
         scheme: 'mailto',
-        path: 'optid77@gmail.com,kyw2271@naver.com',
+        path: 'optid77@gmail.com',
         queryParameters: {'subject': '버그리포트:', 'body': ''});
     String url = params.toString();
     if (await canLaunch(url)) {
