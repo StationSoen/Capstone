@@ -32,6 +32,7 @@ class _SelectPageState extends State<SelectPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SelectionCard(),
+                SelectionCard(),
                 CircleButton(
                   text: "문제 생성",
                   marginVertical: 5,
@@ -59,13 +60,19 @@ class SelectionCard extends StatefulWidget {
 }
 
 class _SelectionCardState extends State<SelectionCard> {
-  double difficulty = 0;
   bool cardOnOff = true;
+
+  int difficulty = 0;
+  List<String> difficultyList = ["쉬움", "보통", "어려움"];
+
+  double time = 0.5;
+  double problemNumber = 0;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+        margin: EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(26.0),
@@ -86,7 +93,7 @@ class _SelectionCardState extends State<SelectionCard> {
               children: [
                 Text(
                   "2D 전개도 유형",
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                 ),
                 CupertinoSwitch(
                     value: cardOnOff,
@@ -97,17 +104,123 @@ class _SelectionCardState extends State<SelectionCard> {
                     })
               ],
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text(
-                "시간 제한",
-                style: TextStyle(fontSize: 17),
-              ),
-              Text(
-                "20분",
-                style: TextStyle(fontSize: 17, color: Colors.grey),
-              )
-            ])
+            Divider(),
+            Container(
+              padding: EdgeInsets.only(top: 10),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "시간 제한",
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    Text(
+                      "${(time * 30).toInt()}초",
+                      style: TextStyle(fontSize: 17, color: Colors.grey),
+                    )
+                  ]),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 3),
+              child: CupertinoSlider(
+                  value: time,
+                  max: 10,
+                  min: 0,
+                  divisions: 4,
+                  onChanged: (value) {
+                    setState(() {
+                      time = value;
+                    });
+                  }),
+            ),
+            Divider(),
+            Container(
+              padding: EdgeInsets.only(top: 10),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "문제 수",
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    Text(
+                      "${problemNumber.toInt()}개",
+                      style: TextStyle(fontSize: 17, color: Colors.grey),
+                    )
+                  ]),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 3),
+              child: CupertinoSlider(
+                  value: problemNumber,
+                  max: 10,
+                  min: 0,
+                  divisions: 10,
+                  onChanged: (value) {
+                    setState(() {
+                      problemNumber = value;
+                    });
+                  }),
+            ),
+            Divider(),
+            CupertinoButton(
+                padding: EdgeInsets.all(0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "난이도",
+                        style: TextStyle(fontSize: 17, color: Colors.black),
+                      ),
+                      Text(
+                        difficultyList[difficulty],
+                        style: TextStyle(fontSize: 17, color: Colors.grey),
+                      )
+                    ]),
+                onPressed: () {
+                  difficultyActionsheet(context);
+                })
           ],
         ));
+  }
+
+  void difficultyActionsheet(BuildContext context) async {
+    await showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              child: const Text('쉬움'),
+              onPressed: () {
+                difficulty = 0;
+                setState(() {});
+                Navigator.pop(context);
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('보통'),
+              onPressed: () {
+                difficulty = 1;
+                setState(() {});
+                Navigator.pop(context);
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('어려움'),
+              onPressed: () {
+                difficulty = 2;
+                setState(() {});
+                Navigator.pop(context);
+              },
+            )
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('취소'),
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )),
+    );
   }
 }
