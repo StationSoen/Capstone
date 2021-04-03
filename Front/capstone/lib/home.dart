@@ -1,5 +1,8 @@
+import 'package:capstone/selectPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'component.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -89,7 +92,13 @@ class Home extends StatelessWidget {
                           color: Color(0xFF4386F9),
                           onPressed: () {
                             // button tapped!
-                            debugPrint("Button Tapped!");
+                            debugPrint("SelectPage Open Button Tapped!");
+                            // open selectPage();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        SelectPage()));
                           },
                           child: Text(
                             "유형 선택",
@@ -164,59 +173,17 @@ class Home extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(26.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.17),
-                        offset: Offset(0.0, 3.0), //(x,y)
-                        blurRadius: 6.0,
-                      ),
-                    ],
-                  ),
-                  height: 50,
-                  width: 310,
-                  child: CupertinoButton(
-                    onPressed: () {
-                      debugPrint("Button Tapped!");
-                    },
-                    child: Text(
-                      "이전 문제 계속",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: Color(0xFF4386F9)),
-                    ),
-                  ),
+                CircleButton(
+                  text: "이전 문제 계속",
+                  onPressed: () {
+                    debugPrint("Button Tapped!");
+                  },
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(26.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.17),
-                        offset: Offset(0.0, 3.0), //(x,y)
-                        blurRadius: 6.0,
-                      ),
-                    ],
-                  ),
-                  height: 50,
-                  width: 310,
-                  child: CupertinoButton(
-                    onPressed: () {
-                      debugPrint("Button Tapped!");
-                    },
-                    child: Text(
-                      "새 문제 세트",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: Color(0xFF4386F9)),
-                    ),
-                  ),
+                CircleButton(
+                  text: "새 문제 세트",
+                  onPressed: () {
+                    debugPrint("Button Tapped!");
+                  },
                 ),
               ],
             ),

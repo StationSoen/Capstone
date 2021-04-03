@@ -7,13 +7,7 @@ class RecordPage extends StatefulWidget {
 }
 
 class _RecordPageState extends State<RecordPage> {
-  Widget makeTabs(String text) {
-    return Container(
-      width: 100,
-      child: Center(child: Text(text)),
-    );
-  }
-
+  // SegmentControl Tab Collection
   Map<int, Widget> segmentControlTabs = {
     0: SegmentTabs(
       text: "쉬움",
@@ -26,7 +20,7 @@ class _RecordPageState extends State<RecordPage> {
     ),
   };
 
-  List<Widget> recordPageBodyList = new List();
+  // index for SegmentControl - difficulty
   int difficulty = 0;
 
   @override
