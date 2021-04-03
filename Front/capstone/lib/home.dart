@@ -22,11 +22,13 @@ class Home extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "Point, Line, Plane",
+                  "점 선 면",
                   style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
+                    fontSize: 40,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    // fontFamily: "Binggrae"
+                  ),
                 ),
                 SizedBox(
                   height: 14,

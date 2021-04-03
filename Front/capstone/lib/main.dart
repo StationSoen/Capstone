@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:capstone/home.dart';
+import 'package:capstone/recordPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -90,9 +91,8 @@ class MyHome extends StatelessWidget {
   // bottom tab bar list ..
   final List<BottomNavigationBarItem> bottomItems = [
     // BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), label: "홈"),
-    BottomNavigationBarItem(
-        icon: Icon(CupertinoIcons.doc_plaintext), label: "문제"),
-    BottomNavigationBarItem(icon: Icon(CupertinoIcons.qrcode), label: "출입"),
+    BottomNavigationBarItem(icon: Icon(CupertinoIcons.house), label: "홈"),
+    BottomNavigationBarItem(icon: Icon(CupertinoIcons.doc_chart), label: "기록"),
     BottomNavigationBarItem(icon: Icon(CupertinoIcons.settings), label: "설정"),
   ];
 
@@ -100,6 +100,7 @@ class MyHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
+        border: Border(top: BorderSide(color: Colors.grey, width: 1.0)),
         currentIndex: int.parse(setting.get('start')),
         items: bottomItems,
         iconSize: 20,
@@ -109,7 +110,7 @@ class MyHome extends StatelessWidget {
           case 0:
             return Home();
           case 1:
-            return Container();
+            return RecordPage();
           default:
             return SettingPage();
         }

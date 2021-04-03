@@ -12,8 +12,8 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   var setting = Hive.box('setting');
-  List<String> location = ["선택없음", "서서울관", "동서울관", "청주관"];
-  List<String> startSubtitle = ["식단", "출입", "설정"];
+  List<String> location = ["25%", "50%", "75%", "125%"];
+  List<String> startSubtitle = ["60초", "5분", "10분"];
   int id = 0000;
 
   int result;
@@ -27,11 +27,11 @@ class _SettingPageState extends State<SettingPage> {
           title: Container(
             padding: EdgeInsets.only(top: 10),
             child: const Text(
-              '학사 선택',
+              '문제 크기 조정',
               style: TextStyle(fontSize: 22, color: Colors.black),
             ),
           ),
-          message: const Text('불러올 학사의 식단을 선택해주세요.'),
+          message: const Text('문제 크기를 '),
           actions: <Widget>[
             CupertinoActionSheetAction(
               child: const Text('서서울관'),
@@ -166,25 +166,25 @@ class _SettingPageState extends State<SettingPage> {
                   titleTextStyle: TextStyle(fontSize: 16),
                   tiles: [
                     SettingsTile(
-                      title: '학사 선택',
+                      title: '문제 배율 선택',
                       subtitle: location[int.parse(setting.get('location'))],
-                      leading: Icon(CupertinoIcons.house),
+                      leading: Icon(CupertinoIcons.search),
                       onPressed: (BuildContext context) {
                         actionsheet(context);
                       },
                     ),
                     SettingsTile(
-                      title: 'QR 출입 로그인 (서서울관)',
+                      title: '랜덤 시드 선택',
                       subtitle: setting.get('id').toString(),
-                      leading: Icon(CupertinoIcons.qrcode),
+                      leading: Icon(CupertinoIcons.scribble),
                       onPressed: (BuildContext context) {
                         // do something here.
                       },
                     ),
                     SettingsTile(
-                      title: '시작화면 선택',
+                      title: '남은 시간 알람',
                       subtitle: startSubtitle[int.parse(setting.get('start'))],
-                      leading: Icon(CupertinoIcons.pin),
+                      leading: Icon(CupertinoIcons.alarm),
                       onPressed: (BuildContext context) {
                         startActionsheet(context);
                       },
