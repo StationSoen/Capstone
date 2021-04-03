@@ -68,120 +68,139 @@ class _SelectionCardState extends State<SelectionCard> {
   double time = 0.5;
   double problemNumber = 0;
 
+  double height = 322;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-        margin: EdgeInsets.symmetric(vertical: 5),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(26.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.17),
-              offset: Offset(0.0, 3.0), //(x,y)
-              blurRadius: 6.0,
+    return AnimatedContainer(
+      height: height,
+      duration: Duration(milliseconds: 250),
+      child: Container(
+          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+          margin: EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(26.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.17),
+                offset: Offset(0.0, 3.0), //(x,y)
+                blurRadius: 6.0,
+              ),
+            ],
+          ),
+          width: 345,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "2D 전개도 유형",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                  ),
+                  CupertinoSwitch(
+                      value: cardOnOff,
+                      onChanged: (value) {
+                        setState(() {
+                          cardOnOff = value;
+                          if (value) {
+                            height = 322;
+                          } else {
+                            height = 80;
+                          }
+                        });
+                      }),
+                ],
+              ),
+              cardBody(cardOnOff)
+            ],
+          )),
+    );
+  }
+
+  Widget cardBody(bool isOn) {
+    if (isOn) {
+      return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Divider(),
+        Container(
+          padding: EdgeInsets.only(top: 10),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              "시간 제한",
+              style: TextStyle(fontSize: 17),
             ),
-          ],
+            Text(
+              "${(time * 30).toInt()}초",
+              style: TextStyle(fontSize: 17, color: Colors.grey),
+            )
+          ]),
         ),
-        width: 345,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "2D 전개도 유형",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-                ),
-                CupertinoSwitch(
-                    value: cardOnOff,
-                    onChanged: (value) {
-                      setState(() {
-                        cardOnOff = value;
-                      });
-                    })
-              ],
+        Container(
+          padding: EdgeInsets.only(top: 3),
+          child: CupertinoSlider(
+              value: time,
+              max: 10,
+              min: 0,
+              divisions: 4,
+              onChanged: (value) {
+                setState(() {
+                  time = value;
+                });
+              }),
+        ),
+        Divider(),
+        Container(
+          padding: EdgeInsets.only(top: 10),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              "문제 수",
+              style: TextStyle(fontSize: 17),
             ),
-            Divider(),
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "시간 제한",
-                      style: TextStyle(fontSize: 17),
-                    ),
-                    Text(
-                      "${(time * 30).toInt()}초",
-                      style: TextStyle(fontSize: 17, color: Colors.grey),
-                    )
-                  ]),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 3),
-              child: CupertinoSlider(
-                  value: time,
-                  max: 10,
-                  min: 0,
-                  divisions: 4,
-                  onChanged: (value) {
-                    setState(() {
-                      time = value;
-                    });
-                  }),
-            ),
-            Divider(),
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "문제 수",
-                      style: TextStyle(fontSize: 17),
-                    ),
-                    Text(
-                      "${problemNumber.toInt()}개",
-                      style: TextStyle(fontSize: 17, color: Colors.grey),
-                    )
-                  ]),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 3),
-              child: CupertinoSlider(
-                  value: problemNumber,
-                  max: 10,
-                  min: 0,
-                  divisions: 10,
-                  onChanged: (value) {
-                    setState(() {
-                      problemNumber = value;
-                    });
-                  }),
-            ),
-            Divider(),
-            CupertinoButton(
-                padding: EdgeInsets.all(0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "난이도",
-                        style: TextStyle(fontSize: 17, color: Colors.black),
-                      ),
-                      Text(
-                        difficultyList[difficulty],
-                        style: TextStyle(fontSize: 17, color: Colors.grey),
-                      )
-                    ]),
-                onPressed: () {
-                  difficultyActionsheet(context);
-                })
-          ],
-        ));
+            Text(
+              "${problemNumber.toInt()}개",
+              style: TextStyle(fontSize: 17, color: Colors.grey),
+            )
+          ]),
+        ),
+        Container(
+          padding: EdgeInsets.only(top: 3),
+          child: CupertinoSlider(
+              value: problemNumber,
+              max: 10,
+              min: 0,
+              divisions: 10,
+              onChanged: (value) {
+                setState(() {
+                  problemNumber = value;
+                });
+              }),
+        ),
+        Divider(),
+        CupertinoButton(
+            padding: EdgeInsets.all(0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "난이도",
+                    style: TextStyle(fontSize: 17, color: Colors.black),
+                  ),
+                  Text(
+                    difficultyList[difficulty],
+                    style: TextStyle(fontSize: 17, color: Colors.grey),
+                  )
+                ]),
+            onPressed: () {
+              difficultyActionsheet(context);
+            })
+      ]);
+    } else {
+      return Container();
+    }
   }
 
   void difficultyActionsheet(BuildContext context) async {
