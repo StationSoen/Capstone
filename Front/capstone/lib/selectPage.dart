@@ -84,7 +84,10 @@ class _SelectionCardState extends State<SelectionCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("2D 전개도 유형"),
+                Text(
+                  "2D 전개도 유형",
+                  style: TextStyle(fontSize: 24),
+                ),
                 CupertinoSwitch(
                     value: cardOnOff,
                     onChanged: (value) {
@@ -93,7 +96,17 @@ class _SelectionCardState extends State<SelectionCard> {
                       });
                     })
               ],
-            )
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(
+                "시간 제한",
+                style: TextStyle(fontSize: 17),
+              ),
+              Text(
+                "20분",
+                style: TextStyle(fontSize: 17, color: Colors.grey),
+              )
+            ])
           ],
         ));
   }
