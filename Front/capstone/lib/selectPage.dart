@@ -68,7 +68,9 @@ class _SelectionCardState extends State<SelectionCard> {
   double time = 0.5;
   double problemNumber = 0;
 
-  double height = 322;
+  double height = 340;
+
+  final String problemType = "";
 
   @override
   Widget build(BuildContext context) {
