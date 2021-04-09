@@ -1,3 +1,4 @@
+import 'package:capstone/problemPage.dart';
 import 'package:capstone/selectPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -152,6 +153,11 @@ class Home extends StatelessWidget {
                           onPressed: () {
                             // button tapped!
                             debugPrint("Button Tapped!");
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ProblemPage()));
                           },
                           child: Text(
                             "다시 보기",
