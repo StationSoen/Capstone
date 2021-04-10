@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:collection/collection.dart';
 
-class Cube {
+class DevCube {
   /// 문제 유형
   ///
   /// - 0 전개도를 보여주고 맞는 도형을 고르기
@@ -9,7 +9,14 @@ class Cube {
   /// - 2 도형을 보여주고 맞는 전개도 고르기
   /// - 3 도형을 보여주고 틀린 전개도 고르기
   /// - 4 전개도 중 다른 하나 고르기
-  int type;
+  int type = -1;
+
+  /// 난이도
+  ///
+  /// - 0 단순 색깔
+  /// - 1 구별하기 쉬운 숫자 및 도형
+  /// - 2 구별이 어려운 문양
+  int level = -1;
 
   var example;
   var suggestion;
@@ -117,7 +124,10 @@ class Cube {
   /// 등각투영도와 방향 : 각각 0,1,2 순서대로 표기. 화살표방향이 0, 시계 반대방향 회전
   static List newIso(List order) {
     var turn = rand(1, 3)[0];
-    var iso = isometrics[rand(1, 8)[0]];
+    var index = rand(1, 8)[0];
+    var iso = [];
+    iso.add(List.from(isometrics[index][0]));
+    iso.add(List.from(isometrics[index][1]));
     for (var i = 0; i < turn; i++) {
       var a = iso[0][0], b = iso[1][0];
       iso[0][0] = iso[0][1];
@@ -127,8 +137,8 @@ class Cube {
       iso[1][1] = iso[1][2];
       iso[1][2] = b;
     }
-    for (var i = 0; i < 3; i++) {
-      iso[0][i] = order[iso[0][i]];
+    for (var j = 0; j < 3; j++) {
+      iso[0][j] = order[iso[0][j]];
     }
     return iso;
   }
@@ -150,14 +160,33 @@ class Cube {
     return dev;
   }
 
-  /// 등각투영도가 예시로, 여러 전개도가 보기로 주어진다.
+  /// 난이도별로 index와 순서를 정해서 반환.
   ///
-  /// mode가 true이면 정답 하나를 찾기.
-  /// mode가 false이면 다른 하나를 찾기.
-  void isoQuestion(int count, bool mode) {
-    var orders = []; //면의 순서
-    var max = (mode) ? count : 2;
-    for (var i = 0; i < max; i++) {
+  /// - 쉬움(0)은 0~11 범위의 색상
+  /// - 보통(1)은 0~8 범위의 숫자
+  /// - 어려움(2)은 9~20 범위의 문양
+  static List newOrder(int level, int number) {
+    var range;
+    switch (level) {
+      case 0:
+        range = 12;
+        break;
+      case 1:
+        range = 8;
+        break;
+      case 2:
+        range = 12;
+        break;
+    }
+    var init = rand(6, range);
+    if (level == 2) {
+      for (var i = 0; i < 6; i++) {
+        init[i] += 9;
+      }
+    }
+
+    var orders = [];
+    for (var i = 0; i < number; i++) {
       var order;
       do {
         order = rand(6, 6);
@@ -165,11 +194,29 @@ class Cube {
       orders.add(order);
     }
 
+    var fitted = [];
+    for (var i = 0; i < number; i++) {
+      var fit = [];
+      for (var j = 0; j < orders[i].length; j++) {
+        fit.add(init[orders[i][j]]);
+      }
+      fitted.add(fit);
+    }
+    return fitted;
+  }
+
+  /// 등각투영도가 예시로, 여러 전개도가 보기로 주어진다.
+  ///
+  /// mode가 true이면 정답 하나를 찾기.
+  /// mode가 false이면 다른 하나를 찾기.
+  void isoQuestion(int count, bool mode) {
+    var orders = (mode) ? newOrder(level, count) : newOrder(level, 2); //면의 순서
+
     answer = []; // 정답 정보
     answer.add(rand(1, count)[0]); // 정답 번호
     answer.add(newDev(0, orders[(mode) ? answer[0] : 0]));
 
-    example = newIso(answer[1][2]); // 예시
+    example = newIso(orders[(mode) ? answer[0] : 1]); // 예시
 
     suggestion = []; // 보기
     var list = rand(count, types.length); //전개도 유형 번호
@@ -184,21 +231,14 @@ class Cube {
   /// mode가 true이면 정답 하나를 찾기.
   /// mode가 false이면 다른 하나를 찾기.
   void devQuestion(int count, bool mode) {
-    var orders = []; //면의 순서
-    var max = (mode) ? count : 2;
-    for (var i = 0; i < max; i++) {
-      var order;
-      do {
-        order = rand(6, 6);
-      } while (isIn(orders, order));
-      orders.add(order);
-    }
+    var orders = (mode) ? newOrder(level, count) : newOrder(level, 2); //면의 순서
 
     answer = []; // 정답 정보
     answer.add(rand(1, count)[0]); // 정답 번호
     answer.add(newDev(0, orders[(mode) ? answer[0] : 0]));
 
-    example = newDev(rand(1, types.length)[0], answer[1][2]); // 예시
+    example =
+        newDev(rand(1, types.length)[0], orders[(mode) ? answer[0] : 1]); // 예시
 
     suggestion = []; // 보기
     var list = rand(count, types.length); //전개도 유형 번호
@@ -213,8 +253,10 @@ class Cube {
   /// - example:예시 이미지
   /// - suggestion:보기 데이터
   /// - answer: 정답 데이터
-  Cube() {
-    type = rand(1, 5)[0];
+  DevCube(this.level, [this.type]) {
+    if (type == -1) {
+      type = rand(1, 5)[0];
+    }
     switch (type) {
       case 0:
         devQuestion(4, true);
@@ -236,7 +278,7 @@ class Cube {
 
   @override
   String toString() {
-    var ty = '유형 : $type\n';
+    var ty = '유형 : $type, 난이도 : $level\n';
     var ex = '예시 : $example \n';
     var su = '보기 :  \n';
     for (var i = 0; i < suggestion.length; i++) {
