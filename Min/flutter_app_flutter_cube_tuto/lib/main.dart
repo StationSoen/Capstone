@@ -5,39 +5,52 @@ import 'dart:ui';
 
 import 'png.dart';
 import 'load.dart';
+import 'dev_cube.dart';
+import 'problem.dart';
 
 
 
 String dir = "";
-List<UI.Image> imglist =[];
-
+List<int> answerlist=[];
+List<Color?> colorlist=[Colors.red[700], Colors.orange, Colors.pink, Colors.yellow, Colors.black, Colors.lime, Colors.green[600],Colors.blue,Colors.cyan,Colors.indigo,Colors.brown,Colors.purple];//색깔 리스트 길이:12
+List<UI.Image> imglist =[]; //숫자 이미지 리스트 길이:9    0~8 숫자, 9~20까지는 문양
 
 
 
 
 
 void main() async{
+
+
+  Stopwatch stopwatch = new Stopwatch()..start();
   WidgetsFlutterBinding.ensureInitialized();
 
-  imglist.add(await loadImage('assets/cube/one.jpg'));
-  imglist.add(await loadImage('assets/cube/two.jpg'));
-  imglist.add(await loadImage('assets/cube/three.jpg'));
-  imglist.add(await loadImage('assets/cube/four.jpg'));
-  imglist.add(await loadImage('assets/cube/five.jpg'));
-  imglist.add(await loadImage('assets/cube/six.jpg'));
+  print('1 executed in ${stopwatch.elapsed}');
 
-  await loaddirectory();
-  await drawisopng(1,0,2,0,3,0);
-  await drawtemplatepng(0,0,0,0, 1,0,1,90, 2,1,1,180, 3,2,1,270, 4,3,1,180, 5,1,2,0);
-  await drawmtlpng(0,90 ,1,0, 2,0, 3,180, 4,270, 5,0);
+  await numimgload();
+  await shapeimgload();
 
 
-  //await loadpng();
+  print('2 executed in ${stopwatch.elapsed}');
+
+  await loaddirectory('test1');
+
+  print('3 executed in ${stopwatch.elapsed}');
+
+
+
   await loadfile('dice.obj');
-  await loadfile('dice.mtl');
+  await loadmtlfile('dice.mtl',1);
 
 
-  runApp(MyApp());
+
+  print('4 executed in ${stopwatch.elapsed}');
+
+
+  await makecubeproblem(10,0);
+
+  print('5 executed in ${stopwatch.elapsed}');
+
 }
 
 
@@ -94,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
 
       ..addListener(() {
         if (_cube != null) {
-          _cube!.rotation.y = _controller.value * 360;
+          //_cube!.rotation.y = _controller.value * 360;
           _cube!.updateTransform();
           _scene.updateTexture();
 

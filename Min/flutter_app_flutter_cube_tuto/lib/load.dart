@@ -8,11 +8,59 @@ import 'dart:ui' as UI;
 import 'package:image/image.dart' as IMG;
 import 'dart:async';
 
+
+Future<void> numimgload() async{
+  imglist.add(await loadImage('assets/numbers/0.jpg'));
+  imglist.add(await loadImage('assets/numbers/1.jpg'));
+  imglist.add(await loadImage('assets/numbers/2.jpg'));
+  imglist.add(await loadImage('assets/numbers/3.jpg'));
+  imglist.add(await loadImage('assets/numbers/4.jpg'));
+  imglist.add(await loadImage('assets/numbers/5.jpg'));
+  imglist.add(await loadImage('assets/numbers/6.jpg'));
+  imglist.add(await loadImage('assets/numbers/7.jpg'));
+  imglist.add(await loadImage('assets/numbers/8.jpg'));
+
+}
+
+Future<void> shapeimgload() async{
+  imglist.add(await loadImage('assets/shapes/shape00.png'));
+  imglist.add(await loadImage('assets/shapes/shape01.png'));
+  imglist.add(await loadImage('assets/shapes/shape02.png'));
+  imglist.add(await loadImage('assets/shapes/shape03.png'));
+  imglist.add(await loadImage('assets/shapes/shape04.png'));
+  imglist.add(await loadImage('assets/shapes/shape05.png'));
+  imglist.add(await loadImage('assets/shapes/shape06.png'));
+  imglist.add(await loadImage('assets/shapes/shape07.png'));
+  imglist.add(await loadImage('assets/shapes/shape08.png'));
+  imglist.add(await loadImage('assets/shapes/shape09.png'));
+  imglist.add(await loadImage('assets/shapes/shape10.png'));
+  imglist.add(await loadImage('assets/shapes/shape11.png'));
+  imglist.add(await loadImage('assets/shapes/shape12.png'));
+  imglist.add(await loadImage('assets/shapes/shape13.png'));
+  imglist.add(await loadImage('assets/shapes/shape14.png'));
+  imglist.add(await loadImage('assets/shapes/shape15.png'));
+  imglist.add(await loadImage('assets/shapes/shape16.png'));
+  imglist.add(await loadImage('assets/shapes/shape17.png'));
+  imglist.add(await loadImage('assets/shapes/shape18.png'));
+
+
+
+}
+///앱 내부 폴더의 경로를 불러와 cubedir에 저장하는 함수
+
 ///앱 내부 폴더의 경로를 불러와 dir에 저장하는 함수
-Future<void> loaddirectory() async
+Future<void> loaddirectory(String testName) async
 {
+
+// code of read or write file in external storage (SD card)
   final directory = await getApplicationDocumentsDirectory();
   dir = directory.path;
+  dir=dir+'/'+testName;
+  new Directory(dir).create()
+  // The created directory is returned as a Future.
+      .then((Directory directory) {
+    print(directory.path);
+  });
   debugPrint(dir);
 }
 
@@ -20,12 +68,22 @@ Future<void> loaddirectory() async
 Future<void> loadfile(String fileName) async {
   ByteData data = await rootBundle.load("assets/cube/"+fileName);
   List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-  File('${dir}/'+fileName).writeAsBytes(bytes);
+// code of read or write file in external storage (SD card)
+
+    File('${dir}/'+fileName).writeAsBytes(bytes);
 
   debugPrint("파일 저장됨");
 }
 
 
+Future<void> loadmtlfile(String fileName,int num) async {
+  String data = await rootBundle.loadString("assets/cube/dice.mtl");
+  debugPrint("${data.length}");
+  String newdata= data.substring(0,362)+num.toString()+data.substring(363);
+  File('${dir}/'+fileName).writeAsStringSync(newdata);
+
+  debugPrint("파일 저장됨");
+}
 
 
 
