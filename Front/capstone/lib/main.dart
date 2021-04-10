@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:capstone/historyPage.dart';
 import 'package:capstone/home.dart';
+import 'package:capstone/problem.dart';
 import 'package:capstone/problemPage.dart';
 import 'package:capstone/recordPage.dart';
 import 'package:capstone/scorePage.dart';
@@ -10,10 +11,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:ui' as UI;
 
 import 'package:capstone/settingPage.dart';
 
 import 'SplashScreen.dart';
+import 'load.dart';
+
+String dir = "";
+List<int> answerlist = [];
+List<Color> colorlist = [
+  Colors.red[700],
+  Colors.orange,
+  Colors.pink,
+  Colors.yellow,
+  Colors.black,
+  Colors.lime,
+  Colors.green[600],
+  Colors.blue,
+  Colors.cyan,
+  Colors.indigo,
+  Colors.brown,
+  Colors.purple
+]; //색깔 리스트 길이:12
+List<UI.Image> imglist = []; //숫자 이미지 리스트 길이:9    0~8 숫자, 9~20까지는 문양
 
 void main() async {
   // initialize Hive and opening Hive boxes..
@@ -40,7 +61,16 @@ void main() async {
 class MyApp extends StatelessWidget {
   Future splashScreen() async {
     // wait for Splash Screen..
-    //await Future.delayed(const Duration(seconds: 1));
+
+    await numimgload();
+    await shapeimgload();
+    await loaddirectory('test1');
+
+    // 오답노트용임
+    await loadfile('dice.obj');
+    await loadmtlfile('dice.mtl', 1);
+
+    await makecubeproblem(10, 0);
 
     // do somthing here ..  ex) loading something
     // splash screen loading.

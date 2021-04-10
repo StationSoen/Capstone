@@ -31,6 +31,14 @@ dependencies:
   url_launcher: ^5.7.10
   cupertino_progress_bar: ^0.2.0
   flutter_swiper: ^1.1.6
+  
+  collection: ^1.15.0
+  #flutter_cube: ^0.1.1
+  flutter_cube:
+   git:
+      url: https://github.com/miney727/flutter_cube.git
+      ref: master
+  image: ^3.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -51,6 +59,18 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/cube/cube.obj
+    - assets/cube/dice.obj
+    - assets/cube/dice.mtl
+    - assets/cube/cube.mtl
+    - assets/cube/flutter.png
+    - assets/cube/3dcube.png
+    - assets/cube/dice2.png
+    - assets/cube/temp.png
+    - assets/numbers/
+    - assets/shapes/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

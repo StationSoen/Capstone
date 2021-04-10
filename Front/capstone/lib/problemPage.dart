@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:capstone/main.dart';
 import 'package:capstone/problemPaused.dart';
 import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
@@ -187,7 +189,13 @@ class _ProblemCardState extends State<ProblemCard> {
           Container(
             height: 200,
             width: 200,
-            color: Colors.red,
+            child: Image.file(
+              File(dir +
+                  "/problem" +
+                  (this.widget.index + 1).toString() +
+                  ".png"),
+              fit: BoxFit.contain,
+            ),
           ),
           Divider(),
 
@@ -211,10 +219,19 @@ class _ProblemCardState extends State<ProblemCard> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          color: Colors.white),
+                        border: Border.all(color: Colors.grey),
+                      ),
                       height: this.widget.answerSize,
                       width: this.widget.answerSize,
+                      child: Image.file(
+                        File(dir +
+                            "/example" +
+                            (this.widget.index + 1).toString() +
+                            "_" +
+                            "0" +
+                            ".png"),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                   CupertinoButton(
@@ -228,10 +245,19 @@ class _ProblemCardState extends State<ProblemCard> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          color: Colors.white),
+                        border: Border.all(color: Colors.grey),
+                      ),
                       height: this.widget.answerSize,
                       width: this.widget.answerSize,
+                      child: Image.file(
+                        File(dir +
+                            "/example" +
+                            (this.widget.index + 1).toString() +
+                            "_" +
+                            "1" +
+                            ".png"),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   )
                 ],
@@ -249,10 +275,19 @@ class _ProblemCardState extends State<ProblemCard> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        color: Colors.white),
+                      border: Border.all(color: Colors.grey),
+                    ),
                     height: this.widget.answerSize,
                     width: this.widget.answerSize,
+                    child: Image.file(
+                      File(dir +
+                          "/example" +
+                          (this.widget.index + 1).toString() +
+                          "_" +
+                          "1" +
+                          ".png"),
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
                 CupertinoButton(
@@ -266,10 +301,19 @@ class _ProblemCardState extends State<ProblemCard> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        color: Colors.white),
+                      border: Border.all(color: Colors.grey),
+                    ),
                     height: this.widget.answerSize,
                     width: this.widget.answerSize,
+                    child: Image.file(
+                      File(dir +
+                          "/example" +
+                          (this.widget.index + 1).toString() +
+                          "_" +
+                          "1" +
+                          ".png"),
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 )
               ])
