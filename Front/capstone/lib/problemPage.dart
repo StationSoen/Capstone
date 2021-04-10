@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
+List<int> userChoice = List(10);
+
 class ProblemPage extends StatefulWidget {
   @override
   _ProblemPageState createState() => _ProblemPageState();
@@ -29,7 +31,7 @@ class _ProblemPageState extends State<ProblemPage> {
                 CupertinoButton(
                   child: Text('제출'),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.pushNamed(context, '/scorePage');
                   },
                 )
               ],
@@ -64,7 +66,7 @@ class _ProblemPageState extends State<ProblemPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: null,
+      onWillPop: () async => false,
       child: CupertinoPageScaffold(
           backgroundColor: Colors.white,
           resizeToAvoidBottomInset: false,
@@ -128,6 +130,8 @@ class _ProblemPageState extends State<ProblemPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return ProblemCard(
                     index: index,
+                    swiperController: swiperController,
+                    maxIndex: 9,
                   );
                 },
                 onIndexChanged: (int i) {
@@ -154,8 +158,13 @@ class _ProblemPageState extends State<ProblemPage> {
 class ProblemCard extends StatefulWidget {
   double answerSize = 125;
   int index;
+  SwiperController swiperController;
+  int maxIndex;
 
-  ProblemCard({@required this.index});
+  ProblemCard(
+      {@required this.index,
+      @required this.swiperController,
+      @required this.maxIndex});
 
   @override
   _ProblemCardState createState() => _ProblemCardState();
@@ -189,29 +198,79 @@ class _ProblemCardState extends State<ProblemCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    color: Colors.blue,
-                    height: this.widget.answerSize,
-                    width: this.widget.answerSize,
+                  CupertinoButton(
+                    padding: EdgeInsets.all(0),
+                    onPressed: () {
+                      debugPrint("01 select!");
+                      userChoice[this.widget.index] = 1;
+                      debugPrint(
+                          "${this.widget.index} : ${this.widget.maxIndex}");
+                      if (!(this.widget.index == this.widget.maxIndex)) {
+                        this.widget.swiperController.next();
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          color: Colors.white),
+                      height: this.widget.answerSize,
+                      width: this.widget.answerSize,
+                    ),
                   ),
-                  Container(
-                    color: Colors.blue,
-                    height: this.widget.answerSize,
-                    width: this.widget.answerSize,
+                  CupertinoButton(
+                    padding: EdgeInsets.all(0),
+                    onPressed: () {
+                      debugPrint("02 select!");
+                      userChoice[this.widget.index] = 2;
+                      if (!(this.widget.index == this.widget.maxIndex)) {
+                        this.widget.swiperController.next();
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          color: Colors.white),
+                      height: this.widget.answerSize,
+                      width: this.widget.answerSize,
+                    ),
                   )
                 ],
               ),
-              SizedBox(height: 5),
+              SizedBox(height: 20),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                Container(
-                  color: Colors.blue,
-                  height: this.widget.answerSize,
-                  width: this.widget.answerSize,
+                CupertinoButton(
+                  padding: EdgeInsets.all(0),
+                  onPressed: () {
+                    debugPrint("03 select!");
+                    userChoice[this.widget.index] = 3;
+                    if (!(this.widget.index == this.widget.maxIndex)) {
+                      this.widget.swiperController.next();
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        color: Colors.white),
+                    height: this.widget.answerSize,
+                    width: this.widget.answerSize,
+                  ),
                 ),
-                Container(
-                  color: Colors.blue,
-                  height: this.widget.answerSize,
-                  width: this.widget.answerSize,
+                CupertinoButton(
+                  padding: EdgeInsets.all(0),
+                  onPressed: () {
+                    debugPrint("04 select!");
+                    userChoice[this.widget.index] = 4;
+                    if (!(this.widget.index == this.widget.maxIndex)) {
+                      this.widget.swiperController.next();
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        color: Colors.white),
+                    height: this.widget.answerSize,
+                    width: this.widget.answerSize,
+                  ),
                 )
               ])
             ],

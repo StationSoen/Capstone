@@ -1,7 +1,11 @@
 import 'dart:convert';
 
+import 'package:capstone/historyPage.dart';
 import 'package:capstone/home.dart';
+import 'package:capstone/problemPage.dart';
 import 'package:capstone/recordPage.dart';
+import 'package:capstone/scorePage.dart';
+import 'package:capstone/selectPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -61,6 +65,14 @@ class MyApp extends StatelessWidget {
               DefaultCupertinoLocalizations.delegate,
               DefaultWidgetsLocalizations.delegate,
             ],
+            initialRoute: '/',
+            routes: <String, WidgetBuilder>{
+              '/home': (BuildContext context) => new Home(),
+              '/problemPage': (BuildContext context) => new ProblemPage(),
+              '/scorePage': (BuildContext context) => new ScorePage(),
+              '/selectPage': (BuildContext context) => new SelectPage(),
+              '/historyPage': (BuildContext context) => new HistoryPage()
+            },
 
             home: MyHome(),
           );

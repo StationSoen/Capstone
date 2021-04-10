@@ -94,13 +94,8 @@ class Home extends StatelessWidget {
                           color: Color(0xFF4386F9),
                           onPressed: () {
                             // button tapped!
-                            debugPrint("SelectPage Open Button Tapped!");
+                            debugPrint("Tapped!");
                             // open selectPage();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        SelectPage()));
                           },
                           child: Text(
                             "유형 선택",
@@ -154,11 +149,6 @@ class Home extends StatelessWidget {
                           onPressed: () {
                             // button tapped!
                             debugPrint("Button Tapped!");
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        ProblemPage()));
                           },
                           child: Text(
                             "다시 보기",
@@ -184,16 +174,14 @@ class Home extends StatelessWidget {
                   text: "이전 문제 계속",
                   onPressed: () {
                     debugPrint("Button Tapped!");
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => ScorePage()));
+                    Navigator.pushNamed(context, '/historyPage');
                   },
                 ),
                 CircleButton(
                   text: "새 문제 세트",
                   onPressed: () {
                     debugPrint("Button Tapped!");
+                    Navigator.pushNamed(context, '/selectPage');
                   },
                 ),
               ],

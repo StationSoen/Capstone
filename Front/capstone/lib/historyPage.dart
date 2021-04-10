@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class ProblemPausedPage extends StatefulWidget {
+class HistoryPage extends StatefulWidget {
   @override
-  _ProblemPausedPageState createState() => _ProblemPausedPageState();
+  _HistoryPageState createState() => _HistoryPageState();
 }
 
-class _ProblemPausedPageState extends State<ProblemPausedPage> {
+class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         resizeToAvoidBottomInset: false,
         navigationBar: CupertinoNavigationBar(
           // Strange...
-          heroTag: "pausedPage",
+          heroTag: "historyPage",
           transitionBetweenRoutes: false,
           // Strange...
           middle: Text(
-            "일시정지",
+            "기록",
             style: TextStyle(fontSize: 18),
           ),
         ),
@@ -27,7 +27,12 @@ class _ProblemPausedPageState extends State<ProblemPausedPage> {
             child: SettingsList(
               sections: [
                 SettingsSection(
-                  title: '문제 이동',
+                  title: '제출 내역',
+                  titleTextStyle: TextStyle(fontSize: 16),
+                  tiles: builderForGoto(10),
+                ),
+                SettingsSection(
+                  title: '미제출한 문제',
                   titleTextStyle: TextStyle(fontSize: 16),
                   tiles: builderForGoto(10),
                 ),
@@ -36,13 +41,7 @@ class _ProblemPausedPageState extends State<ProblemPausedPage> {
                   titleTextStyle: TextStyle(fontSize: 16),
                   tiles: [
                     SettingsTile(
-                      title: "제출하기",
-                      onPressed: (BuildContext context) {
-                        Navigator.pushNamed(context, '/scorePage');
-                      },
-                    ),
-                    SettingsTile(
-                      title: "그만두기",
+                      title: "취소",
                       onPressed: (BuildContext context) {
                         Navigator.popUntil(context, ModalRoute.withName('/'));
                       },

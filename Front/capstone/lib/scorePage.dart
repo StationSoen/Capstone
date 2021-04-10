@@ -71,11 +71,15 @@ class _ScorePageState extends State<ScorePage> {
                             problemList(5),
                           ])),
                   CircleButton(
-                      text: "확인",
-                      color: Colors.blue,
-                      textColor: Colors.white,
-                      width: 345,
-                      marginVertical: 5)
+                    text: "확인",
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                    width: 345,
+                    marginVertical: 5,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/');
+                    },
+                  )
                 ],
               ),
             )));

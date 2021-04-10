@@ -100,6 +100,9 @@ class _SelectPageState extends State<SelectPage> {
                   width: 345,
                   color: Colors.blue,
                   textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/problemPage');
+                  },
                 ),
                 CircleButton(
                   text: "생성 취소",
@@ -108,7 +111,7 @@ class _SelectPageState extends State<SelectPage> {
                   color: Colors.red,
                   textColor: Colors.white,
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.popUntil(context, ModalRoute.withName('/'));
                   },
                 ),
               ],
