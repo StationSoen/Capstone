@@ -48,3 +48,16 @@ class CircleButton extends StatelessWidget {
     );
   }
 }
+
+/// 원형, 그림자 있는 컨테이너 데코레이션
+BoxDecoration basicBox = new BoxDecoration(
+  color: Colors.white,
+  borderRadius: BorderRadius.circular(26.0),
+  boxShadow: [
+    BoxShadow(
+      color: Colors.black.withOpacity(0.17),
+      offset: Offset(0.0, 3.0), //(x,y)
+      blurRadius: 6.0,
+    ),
+  ],
+);
