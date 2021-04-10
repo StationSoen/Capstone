@@ -174,7 +174,7 @@ class Home extends StatelessWidget {
                   text: "이전 문제 계속",
                   onPressed: () {
                     debugPrint("Button Tapped!");
-                    Navigator.pushNamed(context, '/historyPage');
+                    Navigator.pushNamed(context, '/mtlTestPage');
                   },
                 ),
                 CircleButton(

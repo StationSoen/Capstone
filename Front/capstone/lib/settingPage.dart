@@ -16,8 +16,8 @@ class _SettingPageState extends State<SettingPage> {
   List<String> startSubtitle = ["60초", "5분", "10분"];
   int id = 0000;
 
-  int result;
-  int start;
+  late int result;
+  late int start;
   bool fingerPrint = false;
 
   void actionsheet(BuildContext context) async {

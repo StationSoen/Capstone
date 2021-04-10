@@ -6,9 +6,10 @@ import 'package:capstone/problemPaused.dart';
 import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
-List<int> userChoice = List(10);
+// ignore: deprecated_member_use
+List<int> userChoice = List.empty();
 
 class ProblemPage extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class _ProblemPageState extends State<ProblemPage> {
   int indexPlus = 1;
   int second = 0;
 
-  int maxSecond = 30;
+  int maxSecond = 1500;
   bool isPaused = true;
 
   _showCupertinoDialog() {
@@ -40,7 +41,7 @@ class _ProblemPageState extends State<ProblemPage> {
             ));
   }
 
-  Timer timer;
+  late Timer timer;
 
   @override
   void initState() {
@@ -158,15 +159,15 @@ class _ProblemPageState extends State<ProblemPage> {
 }
 
 class ProblemCard extends StatefulWidget {
-  double answerSize = 125;
-  int index;
-  SwiperController swiperController;
-  int maxIndex;
+  late double answerSize = 125;
+  late int index;
+  late SwiperController swiperController;
+  late int maxIndex;
 
   ProblemCard(
-      {@required this.index,
-      @required this.swiperController,
-      @required this.maxIndex});
+      {required this.index,
+      required this.swiperController,
+      required this.maxIndex});
 
   @override
   _ProblemCardState createState() => _ProblemCardState();
@@ -210,7 +211,6 @@ class _ProblemCardState extends State<ProblemCard> {
                     padding: EdgeInsets.all(0),
                     onPressed: () {
                       debugPrint("01 select!");
-                      userChoice[this.widget.index] = 1;
                       debugPrint(
                           "${this.widget.index} : ${this.widget.maxIndex}");
                       if (!(this.widget.index == this.widget.maxIndex)) {
@@ -238,7 +238,6 @@ class _ProblemCardState extends State<ProblemCard> {
                     padding: EdgeInsets.all(0),
                     onPressed: () {
                       debugPrint("02 select!");
-                      userChoice[this.widget.index] = 2;
                       if (!(this.widget.index == this.widget.maxIndex)) {
                         this.widget.swiperController.next();
                       }
@@ -268,7 +267,6 @@ class _ProblemCardState extends State<ProblemCard> {
                   padding: EdgeInsets.all(0),
                   onPressed: () {
                     debugPrint("03 select!");
-                    userChoice[this.widget.index] = 3;
                     if (!(this.widget.index == this.widget.maxIndex)) {
                       this.widget.swiperController.next();
                     }
@@ -284,7 +282,7 @@ class _ProblemCardState extends State<ProblemCard> {
                           "/example" +
                           (this.widget.index + 1).toString() +
                           "_" +
-                          "1" +
+                          "2" +
                           ".png"),
                       fit: BoxFit.contain,
                     ),
@@ -294,7 +292,6 @@ class _ProblemCardState extends State<ProblemCard> {
                   padding: EdgeInsets.all(0),
                   onPressed: () {
                     debugPrint("04 select!");
-                    userChoice[this.widget.index] = 4;
                     if (!(this.widget.index == this.widget.maxIndex)) {
                       this.widget.swiperController.next();
                     }
@@ -310,7 +307,7 @@ class _ProblemCardState extends State<ProblemCard> {
                           "/example" +
                           (this.widget.index + 1).toString() +
                           "_" +
-                          "1" +
+                          "3" +
                           ".png"),
                       fit: BoxFit.contain,
                     ),

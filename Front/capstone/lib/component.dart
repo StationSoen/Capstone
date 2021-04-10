@@ -12,10 +12,10 @@ class CircleButton extends StatelessWidget {
   double marginVertical = 0;
 
   CircleButton(
-      {@required this.text,
+      {required this.text,
       this.height = 50,
       this.width = 310,
-      this.onPressed,
+      required this.onPressed,
       this.marginVertical = 0,
       this.color = Colors.white,
       this.textColor = Colors.blue});

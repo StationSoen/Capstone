@@ -18,19 +18,22 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   http: ^0.12.2
-  settings_ui: ^0.6.0
-  hive: ^1.4.4+1
-  path_provider: ^1.6.27
-  hive_flutter: ^0.3.1
-  url_launcher: ^5.7.10
+  settings_ui: ^1.0.0-nullsafety.2
+  hive: ^2.0.2
+  path_provider: ^2.0.1
+  hive_flutter: ^1.0.0
+  url_launcher: ^6.0.3
   cupertino_progress_bar: ^0.2.0
-  flutter_swiper: ^1.1.6
+  flutter_swiper_null_safety: 
+    git:
+      url: https://github.com/lianyagang/flutter_swiper_null_safety.git
+      ref: master
   
   collection: ^1.15.0
   #flutter_cube: ^0.1.1

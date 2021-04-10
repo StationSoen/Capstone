@@ -124,7 +124,7 @@ class _SelectPageState extends State<SelectPage> {
 class SelectionCard extends StatefulWidget {
   String title;
 
-  SelectionCard({@required this.title});
+  SelectionCard({required this.title});
 
   @override
   _SelectionCardState createState() => _SelectionCardState();

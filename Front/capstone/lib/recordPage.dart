@@ -47,7 +47,7 @@ class _RecordPageState extends State<RecordPage> {
                 children: segmentControlTabs,
                 groupValue: difficulty,
                 padding: EdgeInsets.symmetric(vertical: 12),
-                onValueChanged: (value) {
+                onValueChanged: (int value) {
                   setState(() {
                     difficulty = value;
                   });
@@ -65,7 +65,7 @@ class _RecordPageState extends State<RecordPage> {
 class RecordPageBody extends StatelessWidget {
   int difficulty;
 
-  RecordPageBody({@required this.difficulty});
+  RecordPageBody({required this.difficulty});
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +145,7 @@ class RecordCard extends StatelessWidget {
   final String name;
   final String value;
 
-  RecordCard({@required this.icon, @required this.name, @required this.value});
+  RecordCard({required this.icon, required this.name, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +183,7 @@ class RecordCard extends StatelessWidget {
 
 class SegmentTabs extends StatelessWidget {
   String text;
-  SegmentTabs({@required this.text});
+  SegmentTabs({required this.text});
 
   @override
   Widget build(BuildContext context) {

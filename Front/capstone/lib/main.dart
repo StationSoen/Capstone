@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:capstone/historyPage.dart';
 import 'package:capstone/home.dart';
+import 'package:capstone/mtlTestPage.dart';
 import 'package:capstone/problem.dart';
 import 'package:capstone/problemPage.dart';
 import 'package:capstone/recordPage.dart';
@@ -20,7 +21,7 @@ import 'load.dart';
 
 String dir = "";
 List<int> answerlist = [];
-List<Color> colorlist = [
+List<Color?> colorlist = [
   Colors.red[700],
   Colors.orange,
   Colors.pink,
@@ -68,9 +69,9 @@ class MyApp extends StatelessWidget {
 
     // 오답노트용임
     await loadfile('dice.obj');
-    await loadmtlfile('dice.mtl', 1);
+    await loadmtlfile('dice.mtl', 5);
 
-    await makecubeproblem(10, 0);
+    await makecubeproblem(10, 1);
 
     // do somthing here ..  ex) loading something
     // splash screen loading.
@@ -101,7 +102,8 @@ class MyApp extends StatelessWidget {
               '/problemPage': (BuildContext context) => new ProblemPage(),
               '/scorePage': (BuildContext context) => new ScorePage(),
               '/selectPage': (BuildContext context) => new SelectPage(),
-              '/historyPage': (BuildContext context) => new HistoryPage()
+              '/historyPage': (BuildContext context) => new HistoryPage(),
+              '/mtlTestPage': (BuildContext context) => new MtlTestPage()
             },
 
             home: MyHome(),

@@ -10,11 +10,11 @@ class AboutPage extends StatelessWidget {
   String githubLink;
 
   AboutPage(
-      {@required this.appName,
-      @required this.appVersion,
-      @required this.developers,
-      @required this.logoDesigner,
-      @required this.githubLink});
+      {required this.appName,
+      required this.appVersion,
+      required this.developers,
+      required this.logoDesigner,
+      required this.githubLink});
 
   @override
   Widget build(BuildContext context) {
