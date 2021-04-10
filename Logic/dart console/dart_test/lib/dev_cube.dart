@@ -3,12 +3,13 @@ import 'package:collection/collection.dart';
 
 class Cube {
   /// 문제 유형
-  /// 0. 전개도를 보여주고 맞는 도형을 고르기
-  /// 1. 전개도를 보여주고 틀린 도형을 고르기
-  /// 2. 도형을 보여주고 맞는 전개도 고르기
-  /// 3. 도형을 보여주고 틀린 전개도 고르기
-  /// 4. 전개도 중 다른 하나 고르기
-  static int type;
+  ///
+  /// - 0 전개도를 보여주고 맞는 도형을 고르기
+  /// - 1 전개도를 보여주고 틀린 도형을 고르기
+  /// - 2 도형을 보여주고 맞는 전개도 고르기
+  /// - 3 도형을 보여주고 틀린 전개도 고르기
+  /// - 4 전개도 중 다른 하나 고르기
+  int type;
 
   var example;
   var suggestion;
@@ -208,10 +209,10 @@ class Cube {
     }
   }
 
-  /// type:문제 유형
-  /// example:예시 이미지
-  /// suggestion:보기 데이터
-  /// answer: 정답 데이터
+  /// - type:문제 유형
+  /// - example:예시 이미지
+  /// - suggestion:보기 데이터
+  /// - answer: 정답 데이터
   Cube() {
     type = rand(1, 5)[0];
     switch (type) {
