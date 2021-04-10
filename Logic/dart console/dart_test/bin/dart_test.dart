@@ -4,8 +4,10 @@ import 'package:collection/collection.dart';
 import 'package:dart_test/dev_cube.dart';
 
 void main(List<String> arguments) {
-  print('Hello world: ${true}!\n');
-  var a = Cube();
-  print(' ${Cube.devList(4, true)}');
-  print(' ${Cube.devList(4, false)}');
+  for (var i = 0; i < 5; i++) {
+    for (var j = 0; j < 3; j++) {
+      var cube = DevCube(j, i);
+      print('$cube');
+    }
+  }
 }
