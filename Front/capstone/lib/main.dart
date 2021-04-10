@@ -9,8 +9,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:capstone/settingPage.dart';
 
-import 'package:http/http.dart' as http;
-
 import 'SplashScreen.dart';
 
 void main() async {

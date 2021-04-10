@@ -1,9 +1,10 @@
+import 'dart:async';
+
+import 'package:capstone/problemPaused.dart';
 import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-
-import 'component.dart';
 
 class ProblemPage extends StatefulWidget {
   @override
@@ -11,70 +12,142 @@ class ProblemPage extends StatefulWidget {
 }
 
 class _ProblemPageState extends State<ProblemPage> {
+  SwiperController swiperController = new SwiperController();
+  int indexPlus = 1;
+  int second = 0;
+
+  int maxSecond = 30;
+  bool isPaused = true;
+
+  _showCupertinoDialog() {
+    showDialog(
+        context: context,
+        builder: (_) => new CupertinoAlertDialog(
+              title: new Text("시간 초과"),
+              content: new Text("설정된 시간이 완료되었습니다."),
+              actions: <Widget>[
+                CupertinoButton(
+                  child: Text('제출'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
+  }
+
+  Timer timer;
+
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (isPaused) {
+          second++;
+        }
+      });
+      if (second >= maxSecond) {
+        timer.cancel();
+        _showCupertinoDialog();
+      }
+      // debugPrint("$second");
+    });
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        navigationBar: CupertinoNavigationBar(
-          // Strange...
-          heroTag: "problemPage",
-          transitionBetweenRoutes: false,
-          // Strange...
+    return WillPopScope(
+      onWillPop: null,
+      child: CupertinoPageScaffold(
+          backgroundColor: Colors.white,
+          resizeToAvoidBottomInset: false,
+          navigationBar: CupertinoNavigationBar(
+            // Strange...
+            heroTag: "problemPage",
+            transitionBetweenRoutes: false,
+            // Strange...
 
-          middle: Stack(
-            overflow: Overflow.visible,
-            children: [
-              Center(
-                  child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("10 / 20"),
-                    Row(children: [
-                      Text("11:59 / 15:00"),
-                      CupertinoButton(
-                          padding: EdgeInsets.only(
-                            left: 10,
-                          ),
-                          onPressed: () {
-                            debugPrint("Tapped!");
-                          },
-                          child: Icon(
-                            CupertinoIcons.pause_fill,
-                            color: Colors.red,
-                          ))
-                    ])
-                  ],
+            middle: Stack(
+              overflow: Overflow.visible,
+              children: [
+                Center(
+                    child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("$indexPlus / 20"),
+                      Row(children: [
+                        Text(
+                            "${(second / 60).toInt().toString().padLeft(2, "0")}:${(second % 60).toInt().toString().padLeft(2, "0")} / ${(maxSecond / 60).toInt().toString().padLeft(2, "0")}:${(maxSecond % 60).toInt().toString().padLeft(2, "0")}"),
+                        CupertinoButton(
+                            padding: EdgeInsets.only(
+                              left: 10,
+                            ),
+                            onPressed: () {
+                              debugPrint("Tapped!");
+                              isPaused = false;
+                              _gotoIndex(context);
+                            },
+                            child: Icon(
+                              CupertinoIcons.pause_fill,
+                              color: Colors.red,
+                            ))
+                      ])
+                    ],
+                  ),
+                )),
+                Positioned(
+                  left: -8,
+                  right: -8,
+                  bottom: 0,
+                  child: CupertinoProgressBar(
+                    value: second / maxSecond,
+                    valueColor: Colors.red,
+                    trackColor: null,
+                  ),
                 ),
-              )),
-              Positioned(
-                left: -8,
-                right: -8,
-                bottom: 0,
-                child: CupertinoProgressBar(
-                  value: 0.5,
-                  valueColor: Colors.red,
-                  trackColor: null,
-                ),
-              ),
-            ],
+              ],
+            ),
+            automaticallyImplyLeading: false,
           ),
-          automaticallyImplyLeading: false,
-        ),
-        child: Container(
-            padding: EdgeInsets.only(top: 70),
-            width: double.infinity,
-            child: Swiper(
-              itemCount: 10,
-              loop: false,
-              itemBuilder: (BuildContext context, int index) {
-                return ProblemCard(
-                  index: index,
-                );
-              },
-            )));
+          child: Container(
+              padding: EdgeInsets.only(top: 70),
+              width: double.infinity,
+              child: Swiper(
+                controller: swiperController,
+                itemCount: 10,
+                loop: false,
+                itemBuilder: (BuildContext context, int index) {
+                  return ProblemCard(
+                    index: index,
+                  );
+                },
+                onIndexChanged: (int i) {
+                  setState(() {
+                    indexPlus = i + 1;
+                  });
+                },
+              ))),
+    );
+  }
+
+  _gotoIndex(BuildContext buildContext) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => ProblemPausedPage()));
+    if (result != null) {
+      swiperController.move(result);
+    }
+    isPaused = true;
   }
 }
 

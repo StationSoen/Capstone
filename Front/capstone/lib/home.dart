@@ -1,4 +1,5 @@
 import 'package:capstone/problemPage.dart';
+import 'package:capstone/scorePage.dart';
 import 'package:capstone/selectPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -183,6 +184,10 @@ class Home extends StatelessWidget {
                   text: "이전 문제 계속",
                   onPressed: () {
                     debugPrint("Button Tapped!");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => ScorePage()));
                   },
                 ),
                 CircleButton(

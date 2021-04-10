@@ -9,6 +9,8 @@ class SelectPage extends StatefulWidget {
 }
 
 class _SelectPageState extends State<SelectPage> {
+  double time = 0;
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -31,8 +33,67 @@ class _SelectPageState extends State<SelectPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SelectionCard(),
-                SelectionCard(),
+                Container(
+                    padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    decoration: basicBox,
+                    width: 345,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "전체 설정",
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Divider(),
+                              Container(
+                                padding: EdgeInsets.only(top: 10),
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "시간 제한",
+                                        style: TextStyle(fontSize: 17),
+                                      ),
+                                      Text(
+                                        "${(time / 60).toInt().toString().padLeft(2, "0")}:${(time % 60).toInt().toString().padLeft(2, "0")}",
+                                        style: TextStyle(
+                                            fontSize: 17, color: Colors.grey),
+                                      )
+                                    ]),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(top: 3),
+                                child: CupertinoSlider(
+                                    value: time,
+                                    max: 900,
+                                    min: 0,
+                                    divisions: 90,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        time = value;
+                                      });
+                                    }),
+                              ),
+                            ],
+                          )
+                        ])),
+                SelectionCard(
+                  title: "전개도 - 3D 유형",
+                ),
+                SelectionCard(
+                  title: "3D - 전개도 유형",
+                ),
                 CircleButton(
                   text: "문제 생성",
                   marginVertical: 5,
@@ -46,6 +107,9 @@ class _SelectPageState extends State<SelectPage> {
                   width: 345,
                   color: Colors.red,
                   textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ],
             ),
@@ -55,20 +119,24 @@ class _SelectPageState extends State<SelectPage> {
 }
 
 class SelectionCard extends StatefulWidget {
+  String title;
+
+  SelectionCard({@required this.title});
+
   @override
   _SelectionCardState createState() => _SelectionCardState();
 }
 
 class _SelectionCardState extends State<SelectionCard> {
-  bool cardOnOff = true;
+  bool cardOnOff = false;
 
   int difficulty = 0;
   List<String> difficultyList = ["쉬움", "보통", "어려움"];
 
-  double time = 0.5;
   double problemNumber = 0;
 
-  double height = 340;
+  double height = 80;
+  double extendedHeight = 230;
 
   final String problemType = "";
 
@@ -99,7 +167,7 @@ class _SelectionCardState extends State<SelectionCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "2D 전개도 유형",
+                    this.widget.title,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                   ),
                   CupertinoSwitch(
@@ -108,7 +176,7 @@ class _SelectionCardState extends State<SelectionCard> {
                         setState(() {
                           cardOnOff = value;
                           if (value) {
-                            height = 322;
+                            height = extendedHeight;
                           } else {
                             height = 80;
                           }
@@ -125,34 +193,6 @@ class _SelectionCardState extends State<SelectionCard> {
   Widget cardBody(bool isOn) {
     if (isOn) {
       return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Divider(),
-        Container(
-          padding: EdgeInsets.only(top: 10),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(
-              "시간 제한",
-              style: TextStyle(fontSize: 17),
-            ),
-            Text(
-              "${(time * 30).toInt()}초",
-              style: TextStyle(fontSize: 17, color: Colors.grey),
-            )
-          ]),
-        ),
-        Container(
-          padding: EdgeInsets.only(top: 3),
-          child: CupertinoSlider(
-              value: time,
-              max: 10,
-              min: 0,
-              divisions: 4,
-              onChanged: (value) {
-                setState(() {
-                  time = value;
-                });
-              }),
-        ),
         Divider(),
         Container(
           padding: EdgeInsets.only(top: 10),
