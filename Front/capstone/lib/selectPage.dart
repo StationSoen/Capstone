@@ -242,7 +242,8 @@ class _SelectPageState extends State<SelectPage> {
 
                     String directory = await loaddirectory(tempDate);
 
-                    debugPrint("problemNumber : $problemNumber");
+                    debugPrint("problemNumber : $directory");
+                    debugPrint("problemNumber : $tempDate");
 
                     Exam newExam = new Exam(
                         date: tempDate,

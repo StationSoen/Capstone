@@ -3,6 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class ProblemPausedPage extends StatefulWidget {
+  late int numberOfProblems;
+
+  ProblemPausedPage({required this.numberOfProblems});
+
   @override
   _ProblemPausedPageState createState() => _ProblemPausedPageState();
 }
@@ -27,10 +31,9 @@ class _ProblemPausedPageState extends State<ProblemPausedPage> {
             child: SettingsList(
               sections: [
                 SettingsSection(
-                  title: '문제 이동',
-                  titleTextStyle: TextStyle(fontSize: 16),
-                  tiles: builderForGoto(10),
-                ),
+                    title: '문제 이동',
+                    titleTextStyle: TextStyle(fontSize: 16),
+                    tiles: builderForGoto(this.widget.numberOfProblems)),
                 SettingsSection(
                   title: '제출',
                   titleTextStyle: TextStyle(fontSize: 16),
