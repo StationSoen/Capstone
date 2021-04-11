@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:collection/collection.dart';
 
@@ -107,6 +108,31 @@ class DevCube {
   static bool isIn(List list, var element) {
     for (var e in list) {
       if (ListEquality().equals(e, element)) return true;
+    }
+    return false;
+  }
+
+  static bool checkEquality(var iso, var order) {
+    var convIso = json.decode(json.encode(isometrics));
+    for (var i = 0; i < convIso.length; i++) {
+      for (var j = 0; j < convIso[i][0].length; j++) {
+        convIso[i][0][j] = order[convIso[i][0][j]];
+      }
+    }
+    for (var i = 0; i < convIso.length; i++) {
+      if (convIso[i][0][0] == iso[0][0] &&
+          convIso[i][0][1] == iso[0][1] &&
+          convIso[i][0][2] == iso[0][2]) {
+        return true;
+      } else if (convIso[i][0][0] == iso[0][1] &&
+          convIso[i][0][1] == iso[0][2] &&
+          convIso[i][0][2] == iso[0][0]) {
+        return true;
+      } else if (convIso[i][0][0] == iso[0][2] &&
+          convIso[i][0][1] == iso[0][0] &&
+          convIso[i][0][2] == iso[0][1]) {
+        return true;
+      }
     }
     return false;
   }
@@ -223,7 +249,13 @@ class DevCube {
 
     for (var i = 0; i < count; i++) {
       var n = list[i]; // 유형
-      suggestion.add(newDev(n, orders[(mode) ? i : (answer[0] == i) ? 0 : 1]));
+      suggestion.add(newDev(
+          n,
+          orders[(mode)
+              ? i
+              : (answer[0] == i)
+                  ? 0
+                  : 1]));
     }
   }
 
@@ -245,7 +277,11 @@ class DevCube {
 
     for (var i = 0; i < count; i++) {
       var n = list[i]; // 유형
-      suggestion.add(newIso(orders[(mode) ? i : (answer[0] == i) ? 0 : 1]));
+      suggestion.add(newIso(orders[(mode)
+          ? i
+          : (answer[0] == i)
+              ? 0
+              : 1]));
     }
   }
 
@@ -255,24 +291,74 @@ class DevCube {
   /// - answer: 정답 데이터
   DevCube(this.level, [this.type]) {
     if (type == -1) {
-      type = rand(1, 5)[0];
+      type = rand(1, 4)[0];
     }
-    switch (type) {
-      case 0:
-        devQuestion(4, true);
-        break;
-      case 1:
-        devQuestion(4, false);
-        break;
-      case 2:
-        isoQuestion(4, true);
-        break;
-      case 3:
-        isoQuestion(4, false);
-        break;
-      case 4:
-        isoQuestion(4, true);
-        break;
+    if (level == 0) {
+      var correct;
+      switch (type) {
+        case 0:
+          do {
+            correct = 0;
+            devQuestion(4, true);
+            for (var i = 0; i < 4; i++) {
+              if (checkEquality(suggestion[i], example[2])) {
+                correct++;
+              }
+            }
+          } while (correct != 1);
+          break;
+        case 1:
+          do {
+            correct = 0;
+            devQuestion(4, false);
+            for (var i = 0; i < 4; i++) {
+              if (checkEquality(suggestion[i], example[2])) {
+                correct++;
+              }
+            }
+          } while (correct != 3);
+          break;
+        case 2:
+          do {
+            correct = 0;
+            isoQuestion(4, true);
+            for (var i = 0; i < 4; i++) {
+              if (checkEquality(example, suggestion[i][2])) {
+                correct++;
+              }
+            }
+          } while (correct != 1);
+          break;
+        case 3:
+          do {
+            correct = 0;
+            isoQuestion(4, false);
+            for (var i = 0; i < 4; i++) {
+              if (checkEquality(example, suggestion[i][2])) {
+                correct++;
+              }
+            }
+          } while (correct != 3);
+          break;
+      }
+    } else {
+      switch (type) {
+        case 0:
+          devQuestion(4, true);
+          break;
+        case 1:
+          devQuestion(4, false);
+          break;
+        case 2:
+          isoQuestion(4, true);
+          break;
+        case 3:
+          isoQuestion(4, false);
+          break;
+        case 4:
+          isoQuestion(4, true);
+          break;
+      }
     }
   }
 
