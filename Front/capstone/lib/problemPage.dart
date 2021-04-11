@@ -212,7 +212,7 @@ class _ProblemCardState extends State<ProblemCard> {
       required int index,
       required select}) {
     if (userAnswerList[index] == select) {
-      return Colors.blue;
+      return Colors.red;
     } else {
       return Colors.grey;
     }
