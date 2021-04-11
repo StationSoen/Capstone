@@ -14,7 +14,56 @@ class SelectPage extends StatefulWidget {
 }
 
 class _SelectPageState extends State<SelectPage> {
-  double time = 0;
+  int difficulty = 0;
+  List<String> difficultyList = ["쉬움", "보통", "어려움"];
+
+  double problemNumber = 1;
+
+  double height = 80;
+  double extendedHeight = 230;
+
+  double time = 10;
+
+  /// 난이도 선택하는 액션시트
+  void difficultyActionsheet(BuildContext context) async {
+    await showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              child: const Text('쉬움'),
+              onPressed: () {
+                difficulty = 0;
+                setState(() {});
+                Navigator.pop(context);
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('보통'),
+              onPressed: () {
+                difficulty = 1;
+                setState(() {});
+                Navigator.pop(context);
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('어려움'),
+              onPressed: () {
+                difficulty = 2;
+                setState(() {});
+                Navigator.pop(context);
+              },
+            )
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('취소'),
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +120,8 @@ class _SelectPageState extends State<SelectPage> {
                                         style: TextStyle(fontSize: 17),
                                       ),
                                       Text(
-                                        "${(time / 60).toInt().toString().padLeft(2, "0")}:${(time % 60).toInt().toString().padLeft(2, "0")}",
+                                        "${(time / 60).toInt().toString().padLeft(2, "0")}" +
+                                            ":${(time % 60).toInt().toString().padLeft(2, "0")}",
                                         style: TextStyle(
                                             fontSize: 17, color: Colors.grey),
                                       )
@@ -82,8 +132,8 @@ class _SelectPageState extends State<SelectPage> {
                                 child: CupertinoSlider(
                                     value: time,
                                     max: 900,
-                                    min: 0,
-                                    divisions: 90,
+                                    min: 10,
+                                    divisions: 89,
                                     onChanged: (value) {
                                       setState(() {
                                         time = value;
@@ -93,8 +143,93 @@ class _SelectPageState extends State<SelectPage> {
                             ],
                           )
                         ])),
-                SelectionCard(
-                  title: "전개도 - 3D 유형",
+                AnimatedContainer(
+                  height: 230,
+                  duration: Duration(milliseconds: 250),
+                  child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(26.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.17),
+                            offset: Offset(0.0, 3.0), //(x,y)
+                            blurRadius: 6.0,
+                          ),
+                        ],
+                      ),
+                      width: 345,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "3D 전개도 유형",
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.w600),
+                              ),
+                              CupertinoSwitch(value: true, onChanged: null),
+                            ],
+                          ),
+                          Divider(),
+                          Container(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "문제 수",
+                                    style: TextStyle(fontSize: 17),
+                                  ),
+                                  Text(
+                                    "${problemNumber.toInt()}개",
+                                    style: TextStyle(
+                                        fontSize: 17, color: Colors.grey),
+                                  )
+                                ]),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 3),
+                            child: CupertinoSlider(
+                                value: problemNumber,
+                                max: 10,
+                                min: 1,
+                                divisions: 9,
+                                onChanged: (value) {
+                                  setState(() {
+                                    problemNumber = value;
+                                  });
+                                }),
+                          ),
+                          Divider(),
+                          CupertinoButton(
+                              padding: EdgeInsets.all(0),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "난이도",
+                                      style: TextStyle(
+                                          fontSize: 17, color: Colors.black),
+                                    ),
+                                    Text(
+                                      difficultyList[difficulty],
+                                      style: TextStyle(
+                                          fontSize: 17, color: Colors.grey),
+                                    )
+                                  ]),
+                              onPressed: () {
+                                difficultyActionsheet(context);
+                              })
+                        ],
+                      )),
                 ),
                 CircleButton(
                   text: "문제 생성",
@@ -107,12 +242,14 @@ class _SelectPageState extends State<SelectPage> {
 
                     String directory = await loaddirectory(tempDate);
 
+                    debugPrint("problemNumber : $problemNumber");
+
                     Exam newExam = new Exam(
                         date: tempDate,
                         directory: directory,
-                        numberOfProblems: 8,
-                        remainSeconds: 300,
-                        difficulty: 1,
+                        numberOfProblems: problemNumber.toInt(),
+                        remainSeconds: time.toInt(),
+                        difficulty: difficulty,
                         type: 0,
                         problemAnswers: List.empty());
 
@@ -127,7 +264,7 @@ class _SelectPageState extends State<SelectPage> {
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) => ProblemPage(
-                          examlist: examList,
+                          exam: newExam,
                         ),
                       ),
                     );
@@ -150,170 +287,170 @@ class _SelectPageState extends State<SelectPage> {
   }
 }
 
-class SelectionCard extends StatefulWidget {
-  String title;
+// class SelectionCard extends StatefulWidget {
+//   String title;
 
-  SelectionCard({required this.title});
+//   SelectionCard({required this.title});
 
-  @override
-  _SelectionCardState createState() => _SelectionCardState();
-}
+//   @override
+//   _SelectionCardState createState() => _SelectionCardState();
+// }
 
-class _SelectionCardState extends State<SelectionCard> {
-  bool cardOnOff = false;
+// class _SelectionCardState extends State<SelectionCard> {
+//   bool cardOnOff = false;
 
-  int difficulty = 0;
-  List<String> difficultyList = ["쉬움", "보통", "어려움"];
+//   int difficulty = 0;
+//   List<String> difficultyList = ["쉬움", "보통", "어려움"];
 
-  double problemNumber = 0;
+//   double problemNumber = 0;
 
-  double height = 80;
-  double extendedHeight = 230;
+//   double height = 80;
+//   double extendedHeight = 230;
 
-  final String problemType = "";
+//   final String problemType = "";
 
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      height: 230,
-      duration: Duration(milliseconds: 250),
-      child: Container(
-          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-          margin: EdgeInsets.symmetric(vertical: 5),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(26.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.17),
-                offset: Offset(0.0, 3.0), //(x,y)
-                blurRadius: 6.0,
-              ),
-            ],
-          ),
-          width: 345,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    this.widget.title,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-                  ),
-                  CupertinoSwitch(
-                      value: cardOnOff,
-                      onChanged: (value) {
-                        setState(() {
-                          cardOnOff = value;
-                          if (value) {
-                            height = extendedHeight;
-                          } else {
-                            height = 80;
-                          }
-                        });
-                      }),
-                ],
-              ),
-              cardBody(cardOnOff)
-            ],
-          )),
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return AnimatedContainer(
+//       height: 230,
+//       duration: Duration(milliseconds: 250),
+//       child: Container(
+//           padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+//           margin: EdgeInsets.symmetric(vertical: 5),
+//           decoration: BoxDecoration(
+//             color: Colors.white,
+//             borderRadius: BorderRadius.circular(26.0),
+//             boxShadow: [
+//               BoxShadow(
+//                 color: Colors.black.withOpacity(0.17),
+//                 offset: Offset(0.0, 3.0), //(x,y)
+//                 blurRadius: 6.0,
+//               ),
+//             ],
+//           ),
+//           width: 345,
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.stretch,
+//             children: [
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Text(
+//                     this.widget.title,
+//                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+//                   ),
+//                   CupertinoSwitch(
+//                       value: cardOnOff,
+//                       onChanged: (value) {
+//                         setState(() {
+//                           cardOnOff = value;
+//                           if (value) {
+//                             height = extendedHeight;
+//                           } else {
+//                             height = 80;
+//                           }
+//                         });
+//                       }),
+//                 ],
+//               ),
+//               cardBody(cardOnOff)
+//             ],
+//           )),
+//     );
+//   }
 
-  Widget cardBody(bool isOn) {
-    if (isOn) {
-      return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Divider(),
-        Container(
-          padding: EdgeInsets.only(top: 10),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(
-              "문제 수",
-              style: TextStyle(fontSize: 17),
-            ),
-            Text(
-              "${problemNumber.toInt()}개",
-              style: TextStyle(fontSize: 17, color: Colors.grey),
-            )
-          ]),
-        ),
-        Container(
-          padding: EdgeInsets.only(top: 3),
-          child: CupertinoSlider(
-              value: problemNumber,
-              max: 10,
-              min: 0,
-              divisions: 10,
-              onChanged: (value) {
-                setState(() {
-                  problemNumber = value;
-                });
-              }),
-        ),
-        Divider(),
-        CupertinoButton(
-            padding: EdgeInsets.all(0),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "난이도",
-                    style: TextStyle(fontSize: 17, color: Colors.black),
-                  ),
-                  Text(
-                    difficultyList[difficulty],
-                    style: TextStyle(fontSize: 17, color: Colors.grey),
-                  )
-                ]),
-            onPressed: () {
-              difficultyActionsheet(context);
-            })
-      ]);
-    } else {
-      return Container();
-    }
-  }
+//   Widget cardBody(bool isOn) {
+//     if (isOn) {
+//       return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+//         Divider(),
+//         Container(
+//           padding: EdgeInsets.only(top: 10),
+//           child:
+//               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+//             Text(
+//               "문제 수",
+//               style: TextStyle(fontSize: 17),
+//             ),
+//             Text(
+//               "${problemNumber.toInt()}개",
+//               style: TextStyle(fontSize: 17, color: Colors.grey),
+//             )
+//           ]),
+//         ),
+//         Container(
+//           padding: EdgeInsets.only(top: 3),
+//           child: CupertinoSlider(
+//               value: problemNumber,
+//               max: 10,
+//               min: 0,
+//               divisions: 10,
+//               onChanged: (value) {
+//                 setState(() {
+//                   problemNumber = value;
+//                 });
+//               }),
+//         ),
+//         Divider(),
+//         CupertinoButton(
+//             padding: EdgeInsets.all(0),
+//             child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Text(
+//                     "난이도",
+//                     style: TextStyle(fontSize: 17, color: Colors.black),
+//                   ),
+//                   Text(
+//                     difficultyList[difficulty],
+//                     style: TextStyle(fontSize: 17, color: Colors.grey),
+//                   )
+//                 ]),
+//             onPressed: () {
+//               difficultyActionsheet(context);
+//             })
+//       ]);
+//     } else {
+//       return Container();
+//     }
+//   }
 
-  void difficultyActionsheet(BuildContext context) async {
-    await showCupertinoModalPopup(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-          actions: <Widget>[
-            CupertinoActionSheetAction(
-              child: const Text('쉬움'),
-              onPressed: () {
-                difficulty = 0;
-                setState(() {});
-                Navigator.pop(context);
-              },
-            ),
-            CupertinoActionSheetAction(
-              child: const Text('보통'),
-              onPressed: () {
-                difficulty = 1;
-                setState(() {});
-                Navigator.pop(context);
-              },
-            ),
-            CupertinoActionSheetAction(
-              child: const Text('어려움'),
-              onPressed: () {
-                difficulty = 2;
-                setState(() {});
-                Navigator.pop(context);
-              },
-            )
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            child: const Text('취소'),
-            isDefaultAction: true,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          )),
-    );
-  }
-}
+//   void difficultyActionsheet(BuildContext context) async {
+//     await showCupertinoModalPopup(
+//       context: context,
+//       builder: (BuildContext context) => CupertinoActionSheet(
+//           actions: <Widget>[
+//             CupertinoActionSheetAction(
+//               child: const Text('쉬움'),
+//               onPressed: () {
+//                 difficulty = 0;
+//                 setState(() {});
+//                 Navigator.pop(context);
+//               },
+//             ),
+//             CupertinoActionSheetAction(
+//               child: const Text('보통'),
+//               onPressed: () {
+//                 difficulty = 1;
+//                 setState(() {});
+//                 Navigator.pop(context);
+//               },
+//             ),
+//             CupertinoActionSheetAction(
+//               child: const Text('어려움'),
+//               onPressed: () {
+//                 difficulty = 2;
+//                 setState(() {});
+//                 Navigator.pop(context);
+//               },
+//             )
+//           ],
+//           cancelButton: CupertinoActionSheetAction(
+//             child: const Text('취소'),
+//             isDefaultAction: true,
+//             onPressed: () {
+//               Navigator.pop(context);
+//             },
+//           )),
+//     );
+//   }
+// }
