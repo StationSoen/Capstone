@@ -52,7 +52,7 @@ class _MtlTestPageState extends State<MtlTestPage>
   @override
   void initState() {
     super.initState();
-    loadMinCode().then((value) => null);
+    loadMinCode().then((value) => {debugPrint("Hello")});
 
     _controller = AnimationController(
         duration: Duration(milliseconds: 30000), vsync: this)
@@ -78,6 +78,7 @@ class _MtlTestPageState extends State<MtlTestPage>
         'dice.mtl', this.widget.index + 1, this.widget.exam.directory);
     debugPrint(
         'mtl num은 ${this.widget.index + 1}, mtl 경로는 ${this.widget.exam.directory}');
+    await Future.delayed(Duration(seconds: 2));
   }
 
   List<String> problemText = [
@@ -113,6 +114,7 @@ class _MtlTestPageState extends State<MtlTestPage>
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("World!");
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: Text(
