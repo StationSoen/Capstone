@@ -252,10 +252,9 @@ class _SelectPageState extends State<SelectPage> {
                         remainSeconds: time.toInt(),
                         difficulty: difficulty,
                         type: 0,
-                        problemAnswers: List.empty());
-
-                    await makecubeproblem(newExam.numberOfProblems,
-                        newExam.difficulty, directory);
+                        problemAnswers: List.empty(),
+                        cubeList: await makecubeproblem(
+                            problemNumber.toInt(), difficulty, directory));
 
                     // add newExan to (global) examList
                     examList.add(newExam);

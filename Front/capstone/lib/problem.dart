@@ -7,13 +7,15 @@ import 'png.dart';
 import 'load.dart';
 import 'dev_cube.dart';
 
-Future<void> makecubeproblem(
+Future<List<DevCube>> makecubeproblem(
   int num,
   int level,
   String directory,
 ) async {
+  List<DevCube> cubeList = [];
   for (int i = 1; i <= num; i++) {
     var temp = DevCube(level);
+    cubeList.add(temp);
     debugPrint("문제번호는$i");
     debugPrint("${temp.toString()}");
     // debugPrint("${  int.parse(temp.example[0][1][0])}");
@@ -26,8 +28,6 @@ Future<void> makecubeproblem(
       switch (temp.type) {
         case 0:
         case 1:
-          answerlist.add(temp.answer[0]); //정답 추가
-
           await drawtemplatepng(
               'problem' + i.toString(),
               temp.example[2][0],
@@ -88,7 +88,6 @@ Future<void> makecubeproblem(
         case 2:
         case 3:
         case 4:
-          answerlist.add(temp.answer[0]);
           if (temp.type != 4) {
             await drawisopng(
                 'problem' + i.toString(),
@@ -153,8 +152,6 @@ Future<void> makecubeproblem(
       switch (temp.type) {
         case 0:
         case 1:
-          answerlist.add(temp.answer[0]); //정답 추가
-
           await drawcolortemplatepng(
               'problem' + i.toString(),
               colorlist[temp.example[2][0]],
@@ -199,7 +196,6 @@ Future<void> makecubeproblem(
         case 2:
         case 3:
         case 4:
-          answerlist.add(temp.answer[0]);
           if (temp.type != 4) {
             await drawcolorisopng(
                 'problem' + i.toString(),
@@ -249,4 +245,5 @@ Future<void> makecubeproblem(
   }
 
   debugPrint("로딩끝남");
+  return cubeList;
 }

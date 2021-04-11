@@ -21,7 +21,6 @@ import 'exam.dart';
 import 'load.dart';
 
 // String dir = "";
-List<int> answerlist = [];
 List<Color?> colorlist = [
   Colors.red[700],
   Colors.orange,
