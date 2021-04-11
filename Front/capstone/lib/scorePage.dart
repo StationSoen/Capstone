@@ -141,7 +141,7 @@ class _ScorePageState extends State<ScorePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "#${i.toString().padLeft(2, '0')} - 전개도 유형",
+                    "#${(i + 1).toString().padLeft(2, '0')} - 전개도 유형",
                     style: TextStyle(fontSize: 17, color: Colors.red),
                   ),
                   Text(

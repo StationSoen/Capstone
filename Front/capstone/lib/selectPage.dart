@@ -3,6 +3,7 @@ import 'package:capstone/problem.dart';
 import 'package:capstone/problemPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
 import 'component.dart';
 import 'load.dart';
@@ -239,7 +240,9 @@ class _SelectPageState extends State<SelectPage> {
                   textColor: Colors.white,
                   onPressed: () async {
                     // String tempDate = DateTime.now().toString();
-                    String tempDate = "fuckingspace";
+                    //
+                    DateFormat formatter = DateFormat('M_d_H_m_s');
+                    String tempDate = formatter.format(DateTime.now());
 
                     String directory = await loaddirectory(tempDate);
 

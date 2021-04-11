@@ -211,7 +211,6 @@ class _ProblemCardState extends State<ProblemCard> {
       {required List<int> userAnswerList,
       required int index,
       required select}) {
-    debugPrint("checkSelect : ${userAnswerList[index]}");
     if (userAnswerList[index] == select) {
       return Colors.blue;
     } else {
@@ -228,7 +227,6 @@ class _ProblemCardState extends State<ProblemCard> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("${this.widget.maxIndex}");
     return Container(
       height: 500,
       padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),

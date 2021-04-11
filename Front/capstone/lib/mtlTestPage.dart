@@ -85,12 +85,12 @@ class _MtlTestPageState extends State<MtlTestPage>
       builder: (context, snapshot) {
         // Once complete, show applications.
         if (snapshot.connectionState == ConnectionState.done) {
-          return CupertinoPageScaffold(
-            navigationBar: CupertinoNavigationBar(
+          return Scaffold(
+            appBar: CupertinoNavigationBar(
               middle: Text(
-                  "오답노트 : ${this.widget.index.toString().padLeft(2, '0')}번 문제"),
+                  "오답노트 : ${(this.widget.index + 1).toString().padLeft(2, '0')}번 문제"),
             ),
-            child: Container(
+            body: Container(
               color: Colors.grey,
               child: Cube(
                 onSceneCreated: _onSceneCreated,
