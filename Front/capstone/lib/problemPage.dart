@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:capstone/main.dart';
 import 'package:capstone/problemPaused.dart';
+import 'package:capstone/recordPage.dart';
+import 'package:capstone/scorePage.dart';
 import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +45,14 @@ class _ProblemPageState extends State<ProblemPage> {
                 CupertinoButton(
                   child: Text('제출'),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/scorePage');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => ScorePage(
+                          exam: this.widget.exam,
+                        ),
+                      ),
+                    );
                   },
                 )
               ],
@@ -56,7 +65,6 @@ class _ProblemPageState extends State<ProblemPage> {
   void initState() {
     super.initState();
 
-    debugPrint("asdasdsadasdasd : ${this.widget.exam.directory}");
     // data initialize for this.widget.exam
     maxSecond = this.widget.exam.remainSeconds;
     numberProblem = this.widget.exam.numberOfProblems;
@@ -152,7 +160,7 @@ class _ProblemPageState extends State<ProblemPage> {
                     index: index,
                     swiperController: swiperController,
                     maxIndex: this.widget.exam.numberOfProblems - 1,
-                    directory: this.widget.exam.directory,
+                    exam: this.widget.exam,
                   );
                 },
                 onIndexChanged: (int i) {
@@ -169,8 +177,8 @@ class _ProblemPageState extends State<ProblemPage> {
         context,
         MaterialPageRoute(
             builder: (BuildContext context) => ProblemPausedPage(
-                  numberOfProblems: this.widget.exam.numberOfProblems,
-                )));
+                numberOfProblems: this.widget.exam.numberOfProblems,
+                exam: this.widget.exam)));
     if (result != null) {
       swiperController.move(result);
     }
@@ -179,17 +187,19 @@ class _ProblemPageState extends State<ProblemPage> {
 }
 
 class ProblemCard extends StatefulWidget {
-  String directory;
   late double answerSize = 125;
   late int index;
   late SwiperController swiperController;
   late int maxIndex;
 
-  ProblemCard(
-      {required this.index,
-      required this.swiperController,
-      required this.maxIndex,
-      required this.directory});
+  late Exam exam;
+
+  ProblemCard({
+    required this.index,
+    required this.exam,
+    required this.swiperController,
+    required this.maxIndex,
+  });
 
   @override
   _ProblemCardState createState() => _ProblemCardState();
@@ -197,13 +207,24 @@ class ProblemCard extends StatefulWidget {
 
 class _ProblemCardState extends State<ProblemCard> {
   /// checkSelect - Change Color to Blue
-  Color checkSelect({required List<int> userAnswerList, required int index}) {
-    if (userAnswerList[index] == '04') {
+  Color checkSelect(
+      {required List<int> userAnswerList,
+      required int index,
+      required select}) {
+    debugPrint("checkSelect : ${userAnswerList[index]}");
+    if (userAnswerList[index] == select) {
       return Colors.blue;
     } else {
       return Colors.grey;
     }
   }
+
+  List<String> problemText = [
+    "주어진 전개도를 보고, 일치하는 입체도형을 고르시오.",
+    "주어진 전개도를 보고, 일치하지 않는 입체도형을 고르시오.",
+    "주어진 도형을 보고, 알맞은 전개도를 고르시오.",
+    "주어진 도형을 보고, 알맞지 않은 전개도를 고르시오."
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -216,14 +237,14 @@ class _ProblemCardState extends State<ProblemCard> {
           // Problem Question Section
           Container(
               width: double.infinity,
-              child:
-                  Text("#${this.widget.index + 1}\n전개도를 보고 해당하는 입체도형을 고르시오.")),
+              child: Text(
+                  "#${this.widget.index + 1}\n${problemText[this.widget.exam.typeList[this.widget.index]]}")),
           Divider(),
           Container(
             height: 200,
             width: 200,
             child: Image.file(
-              File(this.widget.directory +
+              File(this.widget.exam.directory +
                   "/problem" +
                   (this.widget.index + 1).toString() +
                   ".png"),
@@ -243,20 +264,29 @@ class _ProblemCardState extends State<ProblemCard> {
                     padding: EdgeInsets.all(0),
                     onPressed: () {
                       debugPrint("01 select!");
+                      setState(() {
+                        this.widget.exam.userAnswers[this.widget.index] = 0;
+                      });
+
                       debugPrint(
-                          "${this.widget.index} : ${this.widget.maxIndex}");
+                          "${this.widget.exam.userAnswers[this.widget.index]} : userAnswers");
                       if (!(this.widget.index == this.widget.maxIndex)) {
                         this.widget.swiperController.next();
                       }
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
+                        border: Border.all(
+                            width: 2,
+                            color: checkSelect(
+                                userAnswerList: this.widget.exam.userAnswers,
+                                index: this.widget.index,
+                                select: 0)),
                       ),
                       height: this.widget.answerSize,
                       width: this.widget.answerSize,
                       child: Image.file(
-                        File(this.widget.directory +
+                        File(this.widget.exam.directory +
                             "/example" +
                             (this.widget.index + 1).toString() +
                             "_" +
@@ -270,18 +300,26 @@ class _ProblemCardState extends State<ProblemCard> {
                     padding: EdgeInsets.all(0),
                     onPressed: () {
                       debugPrint("02 select!");
+                      setState(() {
+                        this.widget.exam.userAnswers[this.widget.index] = 1;
+                      });
                       if (!(this.widget.index == this.widget.maxIndex)) {
                         this.widget.swiperController.next();
                       }
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
+                        border: Border.all(
+                            width: 2,
+                            color: checkSelect(
+                                userAnswerList: this.widget.exam.userAnswers,
+                                index: this.widget.index,
+                                select: 1)),
                       ),
                       height: this.widget.answerSize,
                       width: this.widget.answerSize,
                       child: Image.file(
-                        File(this.widget.directory +
+                        File(this.widget.exam.directory +
                             "/example" +
                             (this.widget.index + 1).toString() +
                             "_" +
@@ -299,18 +337,26 @@ class _ProblemCardState extends State<ProblemCard> {
                   padding: EdgeInsets.all(0),
                   onPressed: () {
                     debugPrint("03 select!");
+                    setState(() {
+                      this.widget.exam.userAnswers[this.widget.index] = 2;
+                    });
                     if (!(this.widget.index == this.widget.maxIndex)) {
                       this.widget.swiperController.next();
                     }
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(
+                          width: 2,
+                          color: checkSelect(
+                              userAnswerList: this.widget.exam.userAnswers,
+                              index: this.widget.index,
+                              select: 2)),
                     ),
                     height: this.widget.answerSize,
                     width: this.widget.answerSize,
                     child: Image.file(
-                      File(this.widget.directory +
+                      File(this.widget.exam.directory +
                           "/example" +
                           (this.widget.index + 1).toString() +
                           "_" +
@@ -324,18 +370,26 @@ class _ProblemCardState extends State<ProblemCard> {
                   padding: EdgeInsets.all(0),
                   onPressed: () {
                     debugPrint("04 select!");
+                    setState(() {
+                      this.widget.exam.userAnswers[this.widget.index] = 3;
+                    });
                     if (!(this.widget.index == this.widget.maxIndex)) {
                       this.widget.swiperController.next();
                     }
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(
+                          width: 2,
+                          color: checkSelect(
+                              userAnswerList: this.widget.exam.userAnswers,
+                              index: this.widget.index,
+                              select: 3)),
                     ),
                     height: this.widget.answerSize,
                     width: this.widget.answerSize,
                     child: Image.file(
-                      File(this.widget.directory +
+                      File(this.widget.exam.directory +
                           "/example" +
                           (this.widget.index + 1).toString() +
                           "_" +

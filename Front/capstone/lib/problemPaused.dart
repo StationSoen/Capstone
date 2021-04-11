@@ -1,11 +1,15 @@
+import 'package:capstone/scorePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:settings_ui/settings_ui.dart';
 
+import 'exam.dart';
+
 class ProblemPausedPage extends StatefulWidget {
   late int numberOfProblems;
+  late Exam exam;
 
-  ProblemPausedPage({required this.numberOfProblems});
+  ProblemPausedPage({required this.numberOfProblems, required this.exam});
 
   @override
   _ProblemPausedPageState createState() => _ProblemPausedPageState();
@@ -41,7 +45,14 @@ class _ProblemPausedPageState extends State<ProblemPausedPage> {
                     SettingsTile(
                       title: "제출하기",
                       onPressed: (BuildContext context) {
-                        Navigator.pushNamed(context, '/scorePage');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => ScorePage(
+                              exam: this.widget.exam,
+                            ),
+                          ),
+                        );
                       },
                     ),
                     SettingsTile(

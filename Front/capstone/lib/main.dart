@@ -70,10 +70,6 @@ class MyApp extends StatelessWidget {
     await shapeimgload();
     // await loaddirectory('test1');
 
-    // // 오답노트용임
-    // await loadfile('dice.obj');
-    // await loadmtlfile('dice.mtl', 5, );
-
     // await makecubeproblem(10, 1);
 
     // do somthing here ..  ex) loading something
@@ -103,10 +99,8 @@ class MyApp extends StatelessWidget {
             routes: <String, WidgetBuilder>{
               '/home': (BuildContext context) => new Home(),
               // '/problemPage': (BuildContext context) => new ProblemPage(),
-              '/scorePage': (BuildContext context) => new ScorePage(),
               '/selectPage': (BuildContext context) => new SelectPage(),
               '/historyPage': (BuildContext context) => new HistoryPage(),
-              '/mtlTestPage': (BuildContext context) => new MtlTestPage()
             },
 
             home: MyHome(),

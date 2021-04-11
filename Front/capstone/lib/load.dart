@@ -64,10 +64,7 @@ Future<String> loaddirectory(String testName) async {
 }
 
 ///assets에 있는 파일을 불러와 앱 내부 폴더에 저장하는 함수
-Future<void> loadfile(String fileName) async {
-  //testcode
-  String dir = "";
-  //testcode
+Future<void> loadfile(String fileName, String dir) async {
   ByteData data = await rootBundle.load("assets/cube/" + fileName);
   List<int> bytes =
       data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);

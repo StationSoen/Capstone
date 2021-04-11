@@ -238,7 +238,8 @@ class _SelectPageState extends State<SelectPage> {
                   color: Colors.blue,
                   textColor: Colors.white,
                   onPressed: () async {
-                    String tempDate = DateTime.now().toString();
+                    // String tempDate = DateTime.now().toString();
+                    String tempDate = "fuckingspace";
 
                     String directory = await loaddirectory(tempDate);
 
@@ -251,8 +252,6 @@ class _SelectPageState extends State<SelectPage> {
                         numberOfProblems: problemNumber.toInt(),
                         remainSeconds: time.toInt(),
                         difficulty: difficulty,
-                        type: 0,
-                        problemAnswers: List.empty(),
                         cubeList: await makecubeproblem(
                             problemNumber.toInt(), difficulty, directory));
 
