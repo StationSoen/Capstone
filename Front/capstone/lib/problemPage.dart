@@ -14,9 +14,9 @@ import 'exam.dart';
 List<int> userChoice = List.empty();
 
 class ProblemPage extends StatefulWidget {
-  List<Exam> examlist;
+  Exam exam;
 
-  ProblemPage({required this.examlist});
+  ProblemPage({required this.exam});
 
   @override
   _ProblemPageState createState() => _ProblemPageState();
@@ -25,9 +25,12 @@ class ProblemPage extends StatefulWidget {
 class _ProblemPageState extends State<ProblemPage> {
   SwiperController swiperController = new SwiperController();
   int indexPlus = 1;
+
+  /// counter second - add 1 in 1 second.
   int second = 0;
 
-  int maxSecond = 1500;
+  late int numberProblem;
+  late int maxSecond;
   bool isPaused = true;
 
   _showCupertinoDialog() {
@@ -52,6 +55,12 @@ class _ProblemPageState extends State<ProblemPage> {
   @override
   void initState() {
     super.initState();
+
+    // data initialize for this.widget.exam
+    maxSecond = this.widget.exam.remainSeconds;
+    numberProblem = this.widget.exam.numberOfProblems;
+
+    // timer .. add 1 per 1 second & stop when second >= maxSecond.
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         if (isPaused) {
@@ -68,6 +77,7 @@ class _ProblemPageState extends State<ProblemPage> {
 
   @override
   void dispose() {
+    // cancel timer
     timer.cancel();
     super.dispose();
   }
@@ -94,10 +104,10 @@ class _ProblemPageState extends State<ProblemPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("$indexPlus / 20"),
+                      Text("$indexPlus / $numberProblem"),
                       Row(children: [
-                        Text(
-                            "${(second / 60).toInt().toString().padLeft(2, "0")}:${(second % 60).toInt().toString().padLeft(2, "0")} / ${(maxSecond / 60).toInt().toString().padLeft(2, "0")}:${(maxSecond % 60).toInt().toString().padLeft(2, "0")}"),
+                        Text("${(second / 60).toInt().toString().padLeft(2, "0")}:${(second % 60).toInt().toString().padLeft(2, "0")} " +
+                            "/ ${(maxSecond / 60).toInt().toString().padLeft(2, "0")}:${(maxSecond % 60).toInt().toString().padLeft(2, "0")}"),
                         CupertinoButton(
                             padding: EdgeInsets.only(
                               left: 10,
