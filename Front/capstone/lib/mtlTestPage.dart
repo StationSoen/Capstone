@@ -74,6 +74,8 @@ class _MtlTestPageState extends State<MtlTestPage>
     await loadfile('dice.obj', this.widget.exam.directory);
     await loadmtlfile(
         'dice.mtl', this.widget.index + 1, this.widget.exam.directory);
+    debugPrint(
+        'mtl num은 ${this.widget.index + 1}, mtl 경로는 ${this.widget.exam.directory}');
   }
 
   @override
