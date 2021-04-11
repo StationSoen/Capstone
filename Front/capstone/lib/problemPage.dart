@@ -8,10 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
+import 'exam.dart';
+
 // ignore: deprecated_member_use
 List<int> userChoice = List.empty();
 
 class ProblemPage extends StatefulWidget {
+  List<Exam> examlist;
+
+  ProblemPage({required this.examlist});
+
   @override
   _ProblemPageState createState() => _ProblemPageState();
 }
@@ -128,13 +134,14 @@ class _ProblemPageState extends State<ProblemPage> {
               width: double.infinity,
               child: Swiper(
                 controller: swiperController,
-                itemCount: 10,
+                itemCount: examList[0].numberOfProblems,
                 loop: false,
                 itemBuilder: (BuildContext context, int index) {
                   return ProblemCard(
                     index: index,
                     swiperController: swiperController,
-                    maxIndex: 9,
+                    maxIndex: examList[0].numberOfProblems - 1,
+                    directory: examList[0].directory,
                   );
                 },
                 onIndexChanged: (int i) {
@@ -159,6 +166,7 @@ class _ProblemPageState extends State<ProblemPage> {
 }
 
 class ProblemCard extends StatefulWidget {
+  String directory;
   late double answerSize = 125;
   late int index;
   late SwiperController swiperController;
@@ -167,7 +175,8 @@ class ProblemCard extends StatefulWidget {
   ProblemCard(
       {required this.index,
       required this.swiperController,
-      required this.maxIndex});
+      required this.maxIndex,
+      required this.directory});
 
   @override
   _ProblemCardState createState() => _ProblemCardState();
@@ -191,7 +200,7 @@ class _ProblemCardState extends State<ProblemCard> {
             height: 200,
             width: 200,
             child: Image.file(
-              File(dir +
+              File(this.widget.directory +
                   "/problem" +
                   (this.widget.index + 1).toString() +
                   ".png"),
@@ -224,7 +233,7 @@ class _ProblemCardState extends State<ProblemCard> {
                       height: this.widget.answerSize,
                       width: this.widget.answerSize,
                       child: Image.file(
-                        File(dir +
+                        File(this.widget.directory +
                             "/example" +
                             (this.widget.index + 1).toString() +
                             "_" +
@@ -249,7 +258,7 @@ class _ProblemCardState extends State<ProblemCard> {
                       height: this.widget.answerSize,
                       width: this.widget.answerSize,
                       child: Image.file(
-                        File(dir +
+                        File(this.widget.directory +
                             "/example" +
                             (this.widget.index + 1).toString() +
                             "_" +
@@ -278,7 +287,7 @@ class _ProblemCardState extends State<ProblemCard> {
                     height: this.widget.answerSize,
                     width: this.widget.answerSize,
                     child: Image.file(
-                      File(dir +
+                      File(this.widget.directory +
                           "/example" +
                           (this.widget.index + 1).toString() +
                           "_" +
@@ -303,7 +312,7 @@ class _ProblemCardState extends State<ProblemCard> {
                     height: this.widget.answerSize,
                     width: this.widget.answerSize,
                     child: Image.file(
-                      File(dir +
+                      File(this.widget.directory +
                           "/example" +
                           (this.widget.index + 1).toString() +
                           "_" +

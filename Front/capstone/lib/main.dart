@@ -17,9 +17,10 @@ import 'dart:ui' as UI;
 import 'package:capstone/settingPage.dart';
 
 import 'SplashScreen.dart';
+import 'exam.dart';
 import 'load.dart';
 
-String dir = "";
+// String dir = "";
 List<int> answerlist = [];
 List<Color?> colorlist = [
   Colors.red[700],
@@ -36,6 +37,9 @@ List<Color?> colorlist = [
   Colors.purple
 ]; //색깔 리스트 길이:12
 List<UI.Image> imglist = []; //숫자 이미지 리스트 길이:9    0~8 숫자, 9~20까지는 문양
+
+/// 문제 풀이한 내역 및 관련 데이터 저장.
+List<Exam> examList = [];
 
 void main() async {
   // initialize Hive and opening Hive boxes..
@@ -65,13 +69,13 @@ class MyApp extends StatelessWidget {
 
     await numimgload();
     await shapeimgload();
-    await loaddirectory('test1');
+    // await loaddirectory('test1');
 
-    // 오답노트용임
-    await loadfile('dice.obj');
-    await loadmtlfile('dice.mtl', 5);
+    // // 오답노트용임
+    // await loadfile('dice.obj');
+    // await loadmtlfile('dice.mtl', 5, );
 
-    await makecubeproblem(10, 1);
+    // await makecubeproblem(10, 1);
 
     // do somthing here ..  ex) loading something
     // splash screen loading.
@@ -99,7 +103,7 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             routes: <String, WidgetBuilder>{
               '/home': (BuildContext context) => new Home(),
-              '/problemPage': (BuildContext context) => new ProblemPage(),
+              // '/problemPage': (BuildContext context) => new ProblemPage(),
               '/scorePage': (BuildContext context) => new ScorePage(),
               '/selectPage': (BuildContext context) => new SelectPage(),
               '/historyPage': (BuildContext context) => new HistoryPage(),

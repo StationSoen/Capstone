@@ -1,3 +1,4 @@
+import 'package:capstone/main.dart';
 import 'package:capstone/problemPage.dart';
 import 'package:capstone/scorePage.dart';
 import 'package:capstone/selectPage.dart';
@@ -173,8 +174,8 @@ class Home extends StatelessWidget {
                 CircleButton(
                   text: "이전 문제 계속",
                   onPressed: () {
-                    debugPrint("Button Tapped!");
-                    Navigator.pushNamed(context, '/mtlTestPage');
+                    debugPrint(examList[0].date.toString());
+                    // Navigator.pushNamed(context, '/mtlTestPage');
                   },
                 ),
                 CircleButton(

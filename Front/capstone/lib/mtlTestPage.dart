@@ -18,6 +18,10 @@ class MtlTestPage extends StatefulWidget {
 
 class _MtlTestPageState extends State<MtlTestPage>
     with SingleTickerProviderStateMixin {
+  // Test
+  String dir = "";
+// Test
+
   late Scene _scene;
   Object? _cube;
   late AnimationController _controller;

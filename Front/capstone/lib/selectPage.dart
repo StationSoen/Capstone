@@ -1,7 +1,12 @@
+import 'package:capstone/exam.dart';
+import 'package:capstone/problem.dart';
+import 'package:capstone/problemPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'component.dart';
+import 'load.dart';
+import 'main.dart';
 
 class SelectPage extends StatefulWidget {
   @override
@@ -91,17 +96,41 @@ class _SelectPageState extends State<SelectPage> {
                 SelectionCard(
                   title: "전개도 - 3D 유형",
                 ),
-                SelectionCard(
-                  title: "3D - 전개도 유형",
-                ),
                 CircleButton(
                   text: "문제 생성",
                   marginVertical: 5,
                   width: 345,
                   color: Colors.blue,
                   textColor: Colors.white,
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/problemPage');
+                  onPressed: () async {
+                    String tempDate = DateTime.now().toString();
+
+                    String directory = await loaddirectory(tempDate);
+
+                    Exam newExam = new Exam(
+                        date: tempDate,
+                        directory: directory,
+                        numberOfProblems: 8,
+                        remainSeconds: 300,
+                        difficulty: 1,
+                        type: 0,
+                        problemAnswers: List.empty());
+
+                    await makecubeproblem(newExam.numberOfProblems,
+                        newExam.difficulty, directory);
+
+                    // add newExan to (global) examList
+                    examList.add(newExam);
+
+                    // Navigator.pushNamed(context, '/problemPage');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => ProblemPage(
+                          examlist: examList,
+                        ),
+                      ),
+                    );
                   },
                 ),
                 CircleButton(
@@ -146,7 +175,7 @@ class _SelectionCardState extends State<SelectionCard> {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      height: height,
+      height: 230,
       duration: Duration(milliseconds: 250),
       child: Container(
           padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),

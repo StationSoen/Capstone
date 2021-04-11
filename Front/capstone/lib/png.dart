@@ -11,13 +11,18 @@ void rotate(Canvas canvas, double cx, double cy, double angle) {
   canvas.translate(-cx, -cy);
 }
 
-Future<void> saveImage(String fileName, ByteData image) async {
-  await File('${dir}/${fileName}.png').writeAsBytes(image.buffer.asInt8List());
+Future<void> saveImage(
+    String fileName, ByteData image, String directory) async {
+  await File('${directory}/${fileName}.png')
+      .writeAsBytes(image.buffer.asInt8List());
+  debugPrint('${directory}/${fileName}.png');
+
+  // await File('${dir}/${fileName}.png').writeAsBytes(image.buffer.asInt8List());
 }
 
 ///등각투영도를 그리는 함수
 Future<void> drawisopng(String name, int topimage, int toprotate, int leftimage,
-    int leftrotate, int rightimage, int rightrotate) async {
+    int leftrotate, int rightimage, int rightrotate, String directory) async {
   var recorder = new UI.PictureRecorder();
   final canvas = new Canvas(recorder,
       new Rect.fromPoints(new Offset(50, 190), new Offset(260.0, 310.0)));
@@ -113,14 +118,14 @@ Future<void> drawisopng(String name, int topimage, int toprotate, int leftimage,
   final abc = await img.toByteData(format: UI.ImageByteFormat.png);
   if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
   {
-    await saveImage(name, abc);
+    await saveImage(name, abc, directory);
     debugPrint("저장됨");
   }
 }
 
 ///컬러 등각투영도를 png로 만드는 함수
-Future<void> drawcolorisopng(
-    String name, final topcolor, final leftcolor, final rightcolor) async {
+Future<void> drawcolorisopng(String name, final topcolor, final leftcolor,
+    final rightcolor, String directory) async {
   var recorder = new UI.PictureRecorder();
   final canvas = new Canvas(recorder,
       new Rect.fromPoints(new Offset(50, 190), new Offset(260.0, 310.0)));
@@ -213,7 +218,7 @@ Future<void> drawcolorisopng(
   final abc = await img.toByteData(format: UI.ImageByteFormat.png);
   if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
   {
-    await saveImage(name, abc);
+    await saveImage(name, abc, directory);
     debugPrint("저장됨");
   }
 }
@@ -232,7 +237,8 @@ Future<void> drawmtlpng(
     int image5,
     int rotate5,
     int image6,
-    int rotate6) async {
+    int rotate6,
+    String directory) async {
   var recorder = new UI.PictureRecorder();
   final canvas = new Canvas(recorder,
       new Rect.fromPoints(new Offset(0.0, 0.0), new Offset(390.0, 260.0)));
@@ -283,13 +289,21 @@ Future<void> drawmtlpng(
   final abc = await img.toByteData(format: UI.ImageByteFormat.png);
   if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
   {
-    await saveImage(name, abc);
+    await saveImage(name, abc, directory);
   }
 }
 
 ///flutter cube를 위한 컬러 png를 그려주는 함수
-Future<void> drawcolormtlpng(String name, final color1, final color2,
-    final color3, final color4, final color5, final color6) async {
+Future<void> drawcolormtlpng(
+  String name,
+  final color1,
+  final color2,
+  final color3,
+  final color4,
+  final color5,
+  final color6,
+  String directory,
+) async {
   var recorder = new UI.PictureRecorder();
   final canvas = new Canvas(recorder,
       new Rect.fromPoints(new Offset(0.0, 0.0), new Offset(390.0, 260.0)));
@@ -322,37 +336,39 @@ Future<void> drawcolormtlpng(String name, final color1, final color2,
   final abc = await img.toByteData(format: UI.ImageByteFormat.png);
   if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
   {
-    await saveImage(name, abc);
+    await saveImage(name, abc, directory);
   }
 }
 
 ///전개도이미지를 그려주는 함수
 Future<void> drawtemplatepng(
-    String name,
-    int image1,
-    int x1,
-    int y1,
-    int rotate1,
-    int image2,
-    int x2,
-    int y2,
-    int rotate2,
-    int image3,
-    int x3,
-    int y3,
-    int rotate3,
-    int image4,
-    int x4,
-    int y4,
-    int rotate4,
-    int image5,
-    int x5,
-    int y5,
-    int rotate5,
-    int image6,
-    int x6,
-    int y6,
-    int rotate6) async {
+  String name,
+  int image1,
+  int x1,
+  int y1,
+  int rotate1,
+  int image2,
+  int x2,
+  int y2,
+  int rotate2,
+  int image3,
+  int x3,
+  int y3,
+  int rotate3,
+  int image4,
+  int x4,
+  int y4,
+  int rotate4,
+  int image5,
+  int x5,
+  int y5,
+  int rotate5,
+  int image6,
+  int x6,
+  int y6,
+  int rotate6,
+  String directory,
+) async {
   var recorder = new UI.PictureRecorder();
   final canvas = new Canvas(recorder,
       new Rect.fromPoints(new Offset(0.0, 0.0), new Offset(652, 392.0)));
@@ -428,7 +444,7 @@ Future<void> drawtemplatepng(
   final abc = await img.toByteData(format: UI.ImageByteFormat.png);
   if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
   {
-    await saveImage(name, abc);
+    await saveImage(name, abc, directory);
     debugPrint("저장됨");
   }
 }
@@ -453,7 +469,8 @@ Future<void> drawcolortemplatepng(
     int y5,
     final color6,
     int x6,
-    int y6) async {
+    int y6,
+    String directory) async {
   var recorder = new UI.PictureRecorder();
   final canvas = new Canvas(recorder,
       new Rect.fromPoints(new Offset(0.0, 0.0), new Offset(652, 392.0)));
@@ -499,7 +516,7 @@ Future<void> drawcolortemplatepng(
   final abc = await img.toByteData(format: UI.ImageByteFormat.png);
   if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
   {
-    await saveImage(name, abc);
+    await saveImage(name, abc, directory);
     debugPrint("저장됨");
   }
 }
