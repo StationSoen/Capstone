@@ -196,8 +196,18 @@ class ProblemCard extends StatefulWidget {
 }
 
 class _ProblemCardState extends State<ProblemCard> {
+  /// checkSelect - Change Color to Blue
+  Color checkSelect({required List<int> userAnswerList, required int index}) {
+    if (userAnswerList[index] == '04') {
+      return Colors.blue;
+    } else {
+      return Colors.grey;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    debugPrint("${this.widget.maxIndex}");
     return Container(
       height: 500,
       padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
