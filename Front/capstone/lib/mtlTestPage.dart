@@ -52,6 +52,7 @@ class _MtlTestPageState extends State<MtlTestPage>
   @override
   void initState() {
     super.initState();
+    loadMinCode().then((value) => null);
 
     _controller = AnimationController(
         duration: Duration(milliseconds: 30000), vsync: this)
@@ -101,6 +102,7 @@ class _MtlTestPageState extends State<MtlTestPage>
   }
 
   bool isScrollLock = false;
+  String locked = "잠금 해제됨";
   ScrollPhysics scrollLock() {
     if (isScrollLock) {
       return NeverScrollableScrollPhysics();
@@ -111,223 +113,210 @@ class _MtlTestPageState extends State<MtlTestPage>
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: loadMinCode(),
-      builder: (context, snapshot) {
-        // Once complete, show applications.
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Scaffold(
-            appBar: CupertinoNavigationBar(
-              middle: Text(
-                  "오답노트 : ${(this.widget.index + 1).toString().padLeft(2, '0')}번 문제"),
+    return Scaffold(
+      appBar: CupertinoNavigationBar(
+        middle: Text(
+            "오답노트 : ${(this.widget.index + 1).toString().padLeft(2, '0')}번 문제"),
+      ),
+      body: SingleChildScrollView(
+        physics: scrollLock(),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (isScrollLock) {
+                    isScrollLock = false;
+                    locked = "잠금 해제됨";
+                  } else {
+                    isScrollLock = true;
+                    locked = "잠금 설정됨";
+                  }
+                });
+
+                debugPrint(isScrollLock.toString());
+              },
+              child: Container(
+                color: Colors.grey,
+                child: Container(
+                  width: double.infinity,
+                  height: 300,
+                  child: Cube(
+                    onSceneCreated: _onSceneCreated,
+                  ),
+                ),
+              ),
             ),
-            body: SingleChildScrollView(
-              physics: scrollLock(),
+
+            // problem Card
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
               child: Column(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (isScrollLock) {
-                          isScrollLock = false;
-                        } else {
-                          isScrollLock = true;
-                        }
-                      });
-
-                      debugPrint(isScrollLock.toString());
-                    },
-                    child: Container(
-                      color: Colors.grey,
-                      child: Container(
-                        width: double.infinity,
-                        height: 300,
-                        child: Cube(
-                          onSceneCreated: _onSceneCreated,
-                        ),
-                      ),
+                  // Problem Question Section
+                  Center(
+                      child: Text(
+                          "스크롤 잠금을 위해서 객체를 탭하세요. - " +
+                              locked +
+                              "\n오답은 적색, 정답은 청색입니다.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16))),
+                  Divider(),
+                  Container(
+                      width: double.infinity,
+                      child: Text(
+                        "#${this.widget.index + 1}\n${problemText[this.widget.exam.typeList[this.widget.index]]}",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
+                      )),
+                  Divider(),
+                  Container(
+                    height: 200,
+                    width: 200,
+                    child: Image.file(
+                      File(this.widget.exam.directory +
+                          "/problem" +
+                          (this.widget.index + 1).toString() +
+                          ".png"),
+                      fit: BoxFit.contain,
                     ),
                   ),
+                  Divider(),
 
-                  // problem Card
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                    child: Column(
-                      children: [
-                        // Problem Question Section
-                        Container(
-                            width: double.infinity,
-                            child: Text(
-                              "#${this.widget.index + 1} - 오답 적색, 정답 청색\n${problemText[this.widget.exam.typeList[this.widget.index]]}",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
-                            )),
-                        Divider(),
-                        Container(
-                          height: 200,
-                          width: 200,
-                          child: Image.file(
-                            File(this.widget.exam.directory +
-                                "/problem" +
-                                (this.widget.index + 1).toString() +
-                                ".png"),
-                            fit: BoxFit.contain,
+                  // Problem Answers Section
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CupertinoButton(
+                            padding: EdgeInsets.all(0),
+                            onPressed: () {},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 2,
+                                  color: checkWrongSelect(
+                                      answerList: this.widget.exam.answerList,
+                                      userAnswerList:
+                                          this.widget.exam.userAnswers,
+                                      index: this.widget.index,
+                                      select: 0),
+                                ),
+                              ),
+                              height: this.widget.answerSize,
+                              width: this.widget.answerSize,
+                              child: Image.file(
+                                File(this.widget.exam.directory +
+                                    "/example" +
+                                    (this.widget.index + 1).toString() +
+                                    "_" +
+                                    "0" +
+                                    ".png"),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
                           ),
-                        ),
-                        Divider(),
-
-                        // Problem Answers Section
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          CupertinoButton(
+                            padding: EdgeInsets.all(0),
+                            onPressed: () {},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 2,
+                                  color: checkWrongSelect(
+                                      answerList: this.widget.exam.answerList,
+                                      userAnswerList:
+                                          this.widget.exam.userAnswers,
+                                      index: this.widget.index,
+                                      select: 1),
+                                ),
+                              ),
+                              height: this.widget.answerSize,
+                              width: this.widget.answerSize,
+                              child: Image.file(
+                                File(this.widget.exam.directory +
+                                    "/example" +
+                                    (this.widget.index + 1).toString() +
+                                    "_" +
+                                    "1" +
+                                    ".png"),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                CupertinoButton(
-                                  padding: EdgeInsets.all(0),
-                                  onPressed: () {},
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 2,
-                                        color: checkWrongSelect(
-                                            answerList:
-                                                this.widget.exam.answerList,
-                                            userAnswerList:
-                                                this.widget.exam.userAnswers,
-                                            index: this.widget.index,
-                                            select: 0),
-                                      ),
-                                    ),
-                                    height: this.widget.answerSize,
-                                    width: this.widget.answerSize,
-                                    child: Image.file(
-                                      File(this.widget.exam.directory +
-                                          "/example" +
-                                          (this.widget.index + 1).toString() +
-                                          "_" +
-                                          "0" +
-                                          ".png"),
-                                      fit: BoxFit.contain,
-                                    ),
+                            CupertinoButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () {},
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 2,
+                                    color: checkWrongSelect(
+                                        answerList: this.widget.exam.answerList,
+                                        userAnswerList:
+                                            this.widget.exam.userAnswers,
+                                        index: this.widget.index,
+                                        select: 2),
                                   ),
                                 ),
-                                CupertinoButton(
-                                  padding: EdgeInsets.all(0),
-                                  onPressed: () {},
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 2,
-                                        color: checkWrongSelect(
-                                            answerList:
-                                                this.widget.exam.answerList,
-                                            userAnswerList:
-                                                this.widget.exam.userAnswers,
-                                            index: this.widget.index,
-                                            select: 1),
-                                      ),
-                                    ),
-                                    height: this.widget.answerSize,
-                                    width: this.widget.answerSize,
-                                    child: Image.file(
-                                      File(this.widget.exam.directory +
-                                          "/example" +
-                                          (this.widget.index + 1).toString() +
-                                          "_" +
-                                          "1" +
-                                          ".png"),
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                )
-                              ],
+                                height: this.widget.answerSize,
+                                width: this.widget.answerSize,
+                                child: Image.file(
+                                  File(this.widget.exam.directory +
+                                      "/example" +
+                                      (this.widget.index + 1).toString() +
+                                      "_" +
+                                      "2" +
+                                      ".png"),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
                             ),
-                            SizedBox(height: 20),
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  CupertinoButton(
-                                    padding: EdgeInsets.all(0),
-                                    onPressed: () {},
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          width: 2,
-                                          color: checkWrongSelect(
-                                              answerList:
-                                                  this.widget.exam.answerList,
-                                              userAnswerList:
-                                                  this.widget.exam.userAnswers,
-                                              index: this.widget.index,
-                                              select: 2),
-                                        ),
-                                      ),
-                                      height: this.widget.answerSize,
-                                      width: this.widget.answerSize,
-                                      child: Image.file(
-                                        File(this.widget.exam.directory +
-                                            "/example" +
-                                            (this.widget.index + 1).toString() +
-                                            "_" +
-                                            "2" +
-                                            ".png"),
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
+                            CupertinoButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () {},
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 2,
+                                    color: checkWrongSelect(
+                                        answerList: this.widget.exam.answerList,
+                                        userAnswerList:
+                                            this.widget.exam.userAnswers,
+                                        index: this.widget.index,
+                                        select: 3),
                                   ),
-                                  CupertinoButton(
-                                    padding: EdgeInsets.all(0),
-                                    onPressed: () {},
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          width: 2,
-                                          color: checkWrongSelect(
-                                              answerList:
-                                                  this.widget.exam.answerList,
-                                              userAnswerList:
-                                                  this.widget.exam.userAnswers,
-                                              index: this.widget.index,
-                                              select: 3),
-                                        ),
-                                      ),
-                                      height: this.widget.answerSize,
-                                      width: this.widget.answerSize,
-                                      child: Image.file(
-                                        File(this.widget.exam.directory +
-                                            "/example" +
-                                            (this.widget.index + 1).toString() +
-                                            "_" +
-                                            "3" +
-                                            ".png"),
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  )
-                                ])
-                          ],
-                        )
-                      ],
-                    ),
+                                ),
+                                height: this.widget.answerSize,
+                                width: this.widget.answerSize,
+                                child: Image.file(
+                                  File(this.widget.exam.directory +
+                                      "/example" +
+                                      (this.widget.index + 1).toString() +
+                                      "_" +
+                                      "3" +
+                                      ".png"),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            )
+                          ])
+                    ],
                   )
                 ],
               ),
-            ),
-          );
-        }
-
-        // if future has error, show error page.
-        if (snapshot.hasError) {
-          return CupertinoPageScaffold(
-            child: Center(child: Text("ERROR!")),
-          );
-        }
-
-        // else, view splash screen.
-        return SplashScreen();
-      },
+            )
+          ],
+        ),
+      ),
     );
   }
 }
