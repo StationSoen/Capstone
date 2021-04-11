@@ -242,7 +242,8 @@ class _SelectPageState extends State<SelectPage> {
 
                     String directory = await loaddirectory(tempDate);
 
-                    debugPrint("problemNumber : $problemNumber");
+                    debugPrint("problemNumber : $directory");
+                    debugPrint("problemNumber : $tempDate");
 
                     Exam newExam = new Exam(
                         date: tempDate,
@@ -251,10 +252,9 @@ class _SelectPageState extends State<SelectPage> {
                         remainSeconds: time.toInt(),
                         difficulty: difficulty,
                         type: 0,
-                        problemAnswers: List.empty());
-
-                    await makecubeproblem(newExam.numberOfProblems,
-                        newExam.difficulty, directory);
+                        problemAnswers: List.empty(),
+                        cubeList: await makecubeproblem(
+                            problemNumber.toInt(), difficulty, directory));
 
                     // add newExan to (global) examList
                     examList.add(newExam);

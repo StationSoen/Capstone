@@ -56,6 +56,7 @@ class _ProblemPageState extends State<ProblemPage> {
   void initState() {
     super.initState();
 
+    debugPrint("asdasdsadasdasd : ${this.widget.exam.directory}");
     // data initialize for this.widget.exam
     maxSecond = this.widget.exam.remainSeconds;
     numberProblem = this.widget.exam.numberOfProblems;
@@ -144,14 +145,14 @@ class _ProblemPageState extends State<ProblemPage> {
               width: double.infinity,
               child: Swiper(
                 controller: swiperController,
-                itemCount: examList[0].numberOfProblems,
+                itemCount: this.widget.exam.numberOfProblems,
                 loop: false,
                 itemBuilder: (BuildContext context, int index) {
                   return ProblemCard(
                     index: index,
                     swiperController: swiperController,
-                    maxIndex: examList[0].numberOfProblems - 1,
-                    directory: examList[0].directory,
+                    maxIndex: this.widget.exam.numberOfProblems - 1,
+                    directory: this.widget.exam.directory,
                   );
                 },
                 onIndexChanged: (int i) {
@@ -167,7 +168,9 @@ class _ProblemPageState extends State<ProblemPage> {
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => ProblemPausedPage()));
+            builder: (BuildContext context) => ProblemPausedPage(
+                  numberOfProblems: this.widget.exam.numberOfProblems,
+                )));
     if (result != null) {
       swiperController.move(result);
     }
@@ -193,8 +196,18 @@ class ProblemCard extends StatefulWidget {
 }
 
 class _ProblemCardState extends State<ProblemCard> {
+  /// checkSelect - Change Color to Blue
+  Color checkSelect({required List<int> userAnswerList, required int index}) {
+    if (userAnswerList[index] == '04') {
+      return Colors.blue;
+    } else {
+      return Colors.grey;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    debugPrint("${this.widget.maxIndex}");
     return Container(
       height: 500,
       padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),

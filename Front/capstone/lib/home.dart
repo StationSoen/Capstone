@@ -174,7 +174,9 @@ class Home extends StatelessWidget {
                 CircleButton(
                   text: "이전 문제 계속",
                   onPressed: () {
-                    debugPrint(examList[0].date.toString());
+                    for (int i = 0; i < examList.length; i++) {
+                      debugPrint(examList[i].date);
+                    }
                     // Navigator.pushNamed(context, '/mtlTestPage');
                   },
                 ),

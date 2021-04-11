@@ -1,3 +1,4 @@
+import 'package:capstone/dev_cube.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -26,6 +27,8 @@ class Exam {
   /// 난이도 선택
   int difficulty;
 
+  List<DevCube> cubeList;
+
   /// 생성자, userAnswers 같은 경우 9로 만들어진 배열을 자동으로 생성.
   Exam(
       {required this.date,
@@ -34,7 +37,8 @@ class Exam {
       required this.remainSeconds,
       required this.problemAnswers,
       required this.type,
-      required this.difficulty}) {
+      required this.difficulty,
+      required this.cubeList}) {
     List<int> userAnswers = List.filled(this.numberOfProblems, 9);
   }
 }
