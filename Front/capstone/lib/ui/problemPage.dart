@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:capstone/main.dart';
-import 'package:capstone/problemPaused.dart';
+import 'package:capstone/ui/problemPaused.dart';
 import 'package:capstone/ui/recordPage.dart';
 import 'package:capstone/ui/scorePage.dart';
 import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
@@ -66,8 +66,8 @@ class _ProblemPageState extends State<ProblemPage> {
     super.initState();
 
     // data initialize for this.widget.exam
-    maxSecond = this.widget.exam.remainSeconds;
-    numberProblem = this.widget.exam.numberOfProblems;
+    maxSecond = this.widget.exam.remainTime;
+    numberProblem = this.widget.exam.problemList.length;
 
     // timer .. add 1 per 1 second & stop when second >= maxSecond.
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -153,13 +153,13 @@ class _ProblemPageState extends State<ProblemPage> {
               width: double.infinity,
               child: Swiper(
                 controller: swiperController,
-                itemCount: this.widget.exam.numberOfProblems,
+                itemCount: this.widget.exam.problemList.length,
                 loop: false,
                 itemBuilder: (BuildContext context, int index) {
                   return ProblemCard(
                     index: index,
                     swiperController: swiperController,
-                    maxIndex: this.widget.exam.numberOfProblems - 1,
+                    maxIndex: this.widget.exam.problemList.length - 1,
                     exam: this.widget.exam,
                   );
                 },
@@ -177,7 +177,7 @@ class _ProblemPageState extends State<ProblemPage> {
         context,
         MaterialPageRoute(
             builder: (BuildContext context) => ProblemPausedPage(
-                numberOfProblems: this.widget.exam.numberOfProblems,
+                numberOfProblems: this.widget.exam.problemList.length,
                 exam: this.widget.exam)));
     if (result != null) {
       swiperController.move(result);
@@ -236,7 +236,7 @@ class _ProblemCardState extends State<ProblemCard> {
           Container(
               width: double.infinity,
               child: Text(
-                  "#${this.widget.index + 1}\n${problemText[this.widget.exam.typeList[this.widget.index]]}")),
+                  "#${this.widget.index + 1}\n${problemText[this.widget.exam.problemList[this.widget.index].textType]}")),
           Divider(),
           Container(
             height: 200,
@@ -263,11 +263,11 @@ class _ProblemCardState extends State<ProblemCard> {
                     onPressed: () {
                       debugPrint("01 select!");
                       setState(() {
-                        this.widget.exam.userAnswers[this.widget.index] = 0;
+                        this.widget.exam.userAnswer[this.widget.index] = 0;
                       });
 
                       debugPrint(
-                          "${this.widget.exam.userAnswers[this.widget.index]} : userAnswers");
+                          "${this.widget.exam.userAnswer[this.widget.index]} : userAnswers");
                       if (!(this.widget.index == this.widget.maxIndex)) {
                         this.widget.swiperController.next();
                       }
@@ -277,7 +277,7 @@ class _ProblemCardState extends State<ProblemCard> {
                         border: Border.all(
                             width: 2,
                             color: checkSelect(
-                                userAnswerList: this.widget.exam.userAnswers,
+                                userAnswerList: this.widget.exam.userAnswer,
                                 index: this.widget.index,
                                 select: 0)),
                       ),
@@ -299,7 +299,7 @@ class _ProblemCardState extends State<ProblemCard> {
                     onPressed: () {
                       debugPrint("02 select!");
                       setState(() {
-                        this.widget.exam.userAnswers[this.widget.index] = 1;
+                        this.widget.exam.userAnswer[this.widget.index] = 1;
                       });
                       if (!(this.widget.index == this.widget.maxIndex)) {
                         this.widget.swiperController.next();
@@ -310,7 +310,7 @@ class _ProblemCardState extends State<ProblemCard> {
                         border: Border.all(
                             width: 2,
                             color: checkSelect(
-                                userAnswerList: this.widget.exam.userAnswers,
+                                userAnswerList: this.widget.exam.userAnswer,
                                 index: this.widget.index,
                                 select: 1)),
                       ),
@@ -336,7 +336,7 @@ class _ProblemCardState extends State<ProblemCard> {
                   onPressed: () {
                     debugPrint("03 select!");
                     setState(() {
-                      this.widget.exam.userAnswers[this.widget.index] = 2;
+                      this.widget.exam.userAnswer[this.widget.index] = 2;
                     });
                     if (!(this.widget.index == this.widget.maxIndex)) {
                       this.widget.swiperController.next();
@@ -347,7 +347,7 @@ class _ProblemCardState extends State<ProblemCard> {
                       border: Border.all(
                           width: 2,
                           color: checkSelect(
-                              userAnswerList: this.widget.exam.userAnswers,
+                              userAnswerList: this.widget.exam.userAnswer,
                               index: this.widget.index,
                               select: 2)),
                     ),
@@ -369,7 +369,7 @@ class _ProblemCardState extends State<ProblemCard> {
                   onPressed: () {
                     debugPrint("04 select!");
                     setState(() {
-                      this.widget.exam.userAnswers[this.widget.index] = 3;
+                      this.widget.exam.userAnswer[this.widget.index] = 3;
                     });
                     if (!(this.widget.index == this.widget.maxIndex)) {
                       this.widget.swiperController.next();
@@ -380,7 +380,7 @@ class _ProblemCardState extends State<ProblemCard> {
                       border: Border.all(
                           width: 2,
                           color: checkSelect(
-                              userAnswerList: this.widget.exam.userAnswers,
+                              userAnswerList: this.widget.exam.userAnswer,
                               index: this.widget.index,
                               select: 3)),
                     ),

@@ -22,8 +22,9 @@ class _ScorePageState extends State<ScorePage> {
 
   @override
   void initState() {
-    for (int i = 0; i < this.widget.exam.numberOfProblems; i++) {
-      if (this.widget.exam.userAnswers[i] == this.widget.exam.answerList[i]) {
+    for (int i = 0; i < this.widget.exam.problemList.length; i++) {
+      if (this.widget.exam.userAnswer[i] ==
+          this.widget.exam.problemList[i].answer) {
         correctList.add(true);
         correct++;
       } else {
@@ -77,7 +78,7 @@ class _ScorePageState extends State<ScorePage> {
                               ),
                               Divider(),
                               Text(
-                                "${correct.toString().padLeft(2, '0')} / ${this.widget.exam.numberOfProblems.toString().padLeft(2, '0')}",
+                                "${correct.toString().padLeft(2, '0')} / ${this.widget.exam.problemList.length.toString().padLeft(2, '0')}",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 48),
                               )

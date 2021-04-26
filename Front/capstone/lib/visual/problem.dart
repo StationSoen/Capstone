@@ -2,28 +2,23 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as UI;
 import 'dart:ui';
 
+import '../exam.dart';
 import '../main.dart';
 import 'png.dart';
 import 'load.dart';
 import '../logic/dev_cube.dart';
 
-Future<List<DevCube>> makecubeproblem(
+Future<List<CubeProblem>> makecubeproblem(
   int num,
   int level,
   String directory,
 ) async {
-  List<DevCube> cubeList = [];
+  List<CubeProblem> cubeList = [];
   for (int i = 1; i <= num; i++) {
     var temp = DevCube(level);
-    cubeList.add(temp);
+    cubeList.add(CubeProblem(primitiveData: temp));
     debugPrint("문제번호는$i");
     debugPrint("${temp.toString()}");
-    // debugPrint("${  int.parse(temp.example[0][1][0])}");
-    // debugPrint("${  int.parse(temp.example[0][1][1])}");
-    // debugPrint("${  temp.example[0]}");
-    //  debugPrint("${  temp.example[1][5] }");
-    //debugPrint("${  temp.example[2][5] }");
-    // debugPrint("${  temp.example[0][0][2] }");
     if (temp.level > 0) {
       switch (temp.type) {
         case 0:

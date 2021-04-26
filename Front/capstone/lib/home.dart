@@ -175,7 +175,7 @@ class Home extends StatelessWidget {
                   text: "이전 문제 계속",
                   onPressed: () {
                     for (int i = 0; i < examList.length; i++) {
-                      debugPrint(examList[i].date);
+                      debugPrint(examList[i].dateCode);
                     }
                     // Navigator.pushNamed(context, '/mtlTestPage');
                   },

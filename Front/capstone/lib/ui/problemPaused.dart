@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import 'exam.dart';
+import '../exam.dart';
 
 class ProblemPausedPage extends StatefulWidget {
   late int numberOfProblems;

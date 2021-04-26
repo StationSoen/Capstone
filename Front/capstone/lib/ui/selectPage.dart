@@ -1,10 +1,10 @@
-import 'package:capstone/exam.dart';
 import 'package:capstone/visual/problem.dart';
 import 'package:capstone/ui/problemPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
+import '../exam.dart';
 import 'component.dart';
 import '../visual/load.dart';
 import '../main.dart';
@@ -249,14 +249,16 @@ class _SelectPageState extends State<SelectPage> {
                     debugPrint("problemNumber : $directory");
                     debugPrint("problemNumber : $tempDate");
 
-                    Exam newExam = new Exam(
-                        date: tempDate,
+                    List<dynamic> myProblemList = [
+                      ...await makecubeproblem(
+                          problemNumber.toInt(), difficulty, directory),
+                    ];
+
+                    Exam newExam = Exam(
+                        dateCode: tempDate,
                         directory: directory,
-                        numberOfProblems: problemNumber.toInt(),
-                        remainSeconds: time.toInt(),
-                        difficulty: difficulty,
-                        cubeList: await makecubeproblem(
-                            problemNumber.toInt(), difficulty, directory));
+                        remainTime: time.toInt(),
+                        problemList: myProblemList);
 
                     // add newExan to (global) examList
                     examList.add(newExam);

@@ -95,12 +95,12 @@ class _MtlTestPageState extends State<MtlTestPage>
 
   Color checkWrongSelect(
       {required List<int> userAnswerList,
-      required List<int> answerList,
+      required List<dynamic> problemList,
       required int index,
       required select}) {
     if (userAnswerList[index] == select) {
       return Colors.red;
-    } else if (answerList[index] == select) {
+    } else if (problemList[index].answer == select) {
       return Colors.blue;
     } else {
       return Colors.grey;
@@ -175,7 +175,7 @@ class _MtlTestPageState extends State<MtlTestPage>
                     Container(
                         width: double.infinity,
                         child: Text(
-                          "#${this.widget.index + 1}\n${problemText[this.widget.exam.typeList[this.widget.index]]}",
+                          "#${this.widget.index + 1}\n${problemText[this.widget.exam.problemList[this.widget.index].textType]}",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600),
                         )),
@@ -208,9 +208,10 @@ class _MtlTestPageState extends State<MtlTestPage>
                                   border: Border.all(
                                     width: 2,
                                     color: checkWrongSelect(
-                                        answerList: this.widget.exam.answerList,
+                                        problemList:
+                                            this.widget.exam.problemList,
                                         userAnswerList:
-                                            this.widget.exam.userAnswers,
+                                            this.widget.exam.userAnswer,
                                         index: this.widget.index,
                                         select: 0),
                                   ),
@@ -236,9 +237,10 @@ class _MtlTestPageState extends State<MtlTestPage>
                                   border: Border.all(
                                     width: 2,
                                     color: checkWrongSelect(
-                                        answerList: this.widget.exam.answerList,
+                                        problemList:
+                                            this.widget.exam.problemList,
                                         userAnswerList:
-                                            this.widget.exam.userAnswers,
+                                            this.widget.exam.userAnswer,
                                         index: this.widget.index,
                                         select: 1),
                                   ),
@@ -270,10 +272,10 @@ class _MtlTestPageState extends State<MtlTestPage>
                                     border: Border.all(
                                       width: 2,
                                       color: checkWrongSelect(
-                                          answerList:
-                                              this.widget.exam.answerList,
+                                          problemList:
+                                              this.widget.exam.problemList,
                                           userAnswerList:
-                                              this.widget.exam.userAnswers,
+                                              this.widget.exam.userAnswer,
                                           index: this.widget.index,
                                           select: 2),
                                     ),
@@ -299,10 +301,10 @@ class _MtlTestPageState extends State<MtlTestPage>
                                     border: Border.all(
                                       width: 2,
                                       color: checkWrongSelect(
-                                          answerList:
-                                              this.widget.exam.answerList,
+                                          problemList:
+                                              this.widget.exam.problemList,
                                           userAnswerList:
-                                              this.widget.exam.userAnswers,
+                                              this.widget.exam.userAnswer,
                                           index: this.widget.index,
                                           select: 3),
                                     ),
