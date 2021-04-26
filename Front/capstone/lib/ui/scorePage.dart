@@ -1,11 +1,11 @@
 import 'dart:core';
 
-import 'package:capstone/mtlTestPage.dart';
+import 'package:capstone/ui/mtlTestPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'component.dart';
-import 'exam.dart';
+import '../exam.dart';
 
 class ScorePage extends StatefulWidget {
   late Exam exam;

@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-import 'package:capstone/historyPage.dart';
+import 'package:capstone/ui/historyPage.dart';
 import 'package:capstone/home.dart';
-import 'package:capstone/mtlTestPage.dart';
-import 'package:capstone/problem.dart';
-import 'package:capstone/problemPage.dart';
-import 'package:capstone/recordPage.dart';
-import 'package:capstone/scorePage.dart';
-import 'package:capstone/selectPage.dart';
+import 'package:capstone/ui/mtlTestPage.dart';
+import 'package:capstone/visual/problem.dart';
+import 'package:capstone/ui/problemPage.dart';
+import 'package:capstone/ui/recordPage.dart';
+import 'package:capstone/ui/scorePage.dart';
+import 'package:capstone/ui/selectPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:ui' as UI;
 
-import 'package:capstone/settingPage.dart';
+import 'package:capstone/ui/settingPage.dart';
 
-import 'SplashScreen.dart';
+import 'ui/SplashScreen.dart';
 import 'exam.dart';
-import 'load.dart';
+import 'visual/load.dart';
 
 // String dir = "";
 List<Color?> colorlist = [

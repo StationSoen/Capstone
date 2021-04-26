@@ -1,4 +1,4 @@
-import 'package:capstone/scorePage.dart';
+import 'package:capstone/ui/scorePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:settings_ui/settings_ui.dart';

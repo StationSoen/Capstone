@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:capstone/load.dart';
+import 'package:capstone/visual/load.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -10,8 +10,8 @@ import 'package:flutter_cube/flutter_cube.dart';
 import 'dart:ui' as UI;
 import 'dart:ui';
 import 'SplashScreen.dart';
-import 'exam.dart';
-import 'main.dart';
+import '../exam.dart';
+import '../main.dart';
 
 class MtlTestPage extends StatefulWidget {
   late Exam exam;

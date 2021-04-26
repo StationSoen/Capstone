@@ -1,11 +1,11 @@
 import 'package:capstone/main.dart';
-import 'package:capstone/problemPage.dart';
-import 'package:capstone/scorePage.dart';
-import 'package:capstone/selectPage.dart';
+import 'package:capstone/ui/problemPage.dart';
+import 'package:capstone/ui/scorePage.dart';
+import 'package:capstone/ui/selectPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'component.dart';
+import 'ui/component.dart';
 
 class Home extends StatelessWidget {
   @override

@@ -1,13 +1,13 @@
 import 'package:capstone/exam.dart';
-import 'package:capstone/problem.dart';
-import 'package:capstone/problemPage.dart';
+import 'package:capstone/visual/problem.dart';
+import 'package:capstone/ui/problemPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 import 'component.dart';
-import 'load.dart';
-import 'main.dart';
+import '../visual/load.dart';
+import '../main.dart';
 
 class SelectPage extends StatefulWidget {
   @override

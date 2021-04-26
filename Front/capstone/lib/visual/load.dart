@@ -1,4 +1,4 @@
-import 'main.dart';
+import '../main.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:typed_data';

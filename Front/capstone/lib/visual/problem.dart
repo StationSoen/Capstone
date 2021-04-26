@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as UI;
 import 'dart:ui';
 
-import 'main.dart';
+import '../main.dart';
 import 'png.dart';
 import 'load.dart';
-import 'dev_cube.dart';
+import '../logic/dev_cube.dart';
 
 Future<List<DevCube>> makecubeproblem(
   int num,

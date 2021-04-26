@@ -1,4 +1,4 @@
-import 'package:capstone/dev_cube.dart';
+import 'package:capstone/logic/dev_cube.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 

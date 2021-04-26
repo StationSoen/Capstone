@@ -3,14 +3,14 @@ import 'dart:io';
 
 import 'package:capstone/main.dart';
 import 'package:capstone/problemPaused.dart';
-import 'package:capstone/recordPage.dart';
-import 'package:capstone/scorePage.dart';
+import 'package:capstone/ui/recordPage.dart';
+import 'package:capstone/ui/scorePage.dart';
 import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
-import 'exam.dart';
+import '../exam.dart';
 
 // ignore: deprecated_member_use
 List<int> userChoice = List.empty();
