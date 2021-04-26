@@ -35,30 +35,6 @@ class _ProblemPageState extends State<ProblemPage> {
   late int maxSecond;
   bool isPaused = true;
 
-  _showCupertinoDialog() {
-    showDialog(
-        context: context,
-        builder: (_) => new CupertinoAlertDialog(
-              title: new Text("시간 초과"),
-              content: new Text("설정된 시간이 완료되었습니다."),
-              actions: <Widget>[
-                CupertinoButton(
-                  child: Text('제출'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ScorePage(
-                          exam: this.widget.exam,
-                        ),
-                      ),
-                    );
-                  },
-                )
-              ],
-            ));
-  }
-
   late Timer timer;
 
   @override
@@ -78,7 +54,12 @@ class _ProblemPageState extends State<ProblemPage> {
       });
       if (second >= maxSecond) {
         timer.cancel();
-        _showCupertinoDialog();
+        showCupertinoDialog(
+            title: "시간 초과",
+            content: "설정한 시간이 만료되었습니다.",
+            cancel: false,
+            exam: this.widget.exam,
+            context: context);
       }
       // debugPrint("$second");
     });
@@ -257,151 +238,100 @@ class _ProblemCardState extends State<ProblemCard> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CupertinoButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () {
-                      debugPrint("01 select!");
-                      setState(() {
-                        this.widget.exam.userAnswer[this.widget.index] = 0;
-                      });
-
-                      debugPrint(
-                          "${this.widget.exam.userAnswer[this.widget.index]} : userAnswers");
-                      if (!(this.widget.index == this.widget.maxIndex)) {
-                        this.widget.swiperController.next();
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 2,
-                            color: checkSelect(
-                                userAnswerList: this.widget.exam.userAnswer,
-                                index: this.widget.index,
-                                select: 0)),
-                      ),
-                      height: this.widget.answerSize,
-                      width: this.widget.answerSize,
-                      child: Image.file(
-                        File(this.widget.exam.directory +
-                            "/example" +
-                            (this.widget.index + 1).toString() +
-                            "_" +
-                            "0" +
-                            ".png"),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                  CupertinoButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () {
-                      debugPrint("02 select!");
-                      setState(() {
-                        this.widget.exam.userAnswer[this.widget.index] = 1;
-                      });
-                      if (!(this.widget.index == this.widget.maxIndex)) {
-                        this.widget.swiperController.next();
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 2,
-                            color: checkSelect(
-                                userAnswerList: this.widget.exam.userAnswer,
-                                index: this.widget.index,
-                                select: 1)),
-                      ),
-                      height: this.widget.answerSize,
-                      width: this.widget.answerSize,
-                      child: Image.file(
-                        File(this.widget.exam.directory +
-                            "/example" +
-                            (this.widget.index + 1).toString() +
-                            "_" +
-                            "1" +
-                            ".png"),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  )
-                ],
+                children: [selectButton(0), selectButton(1)],
               ),
               SizedBox(height: 20),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                CupertinoButton(
-                  padding: EdgeInsets.all(0),
-                  onPressed: () {
-                    debugPrint("03 select!");
-                    setState(() {
-                      this.widget.exam.userAnswer[this.widget.index] = 2;
-                    });
-                    if (!(this.widget.index == this.widget.maxIndex)) {
-                      this.widget.swiperController.next();
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 2,
-                          color: checkSelect(
-                              userAnswerList: this.widget.exam.userAnswer,
-                              index: this.widget.index,
-                              select: 2)),
-                    ),
-                    height: this.widget.answerSize,
-                    width: this.widget.answerSize,
-                    child: Image.file(
-                      File(this.widget.exam.directory +
-                          "/example" +
-                          (this.widget.index + 1).toString() +
-                          "_" +
-                          "2" +
-                          ".png"),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-                CupertinoButton(
-                  padding: EdgeInsets.all(0),
-                  onPressed: () {
-                    debugPrint("04 select!");
-                    setState(() {
-                      this.widget.exam.userAnswer[this.widget.index] = 3;
-                    });
-                    if (!(this.widget.index == this.widget.maxIndex)) {
-                      this.widget.swiperController.next();
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 2,
-                          color: checkSelect(
-                              userAnswerList: this.widget.exam.userAnswer,
-                              index: this.widget.index,
-                              select: 3)),
-                    ),
-                    height: this.widget.answerSize,
-                    width: this.widget.answerSize,
-                    child: Image.file(
-                      File(this.widget.exam.directory +
-                          "/example" +
-                          (this.widget.index + 1).toString() +
-                          "_" +
-                          "3" +
-                          ".png"),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                )
-              ])
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [selectButton(2), selectButton(3)])
             ],
           )
         ],
       ),
     );
   }
+
+  Widget selectButton(int key) {
+    return CupertinoButton(
+      padding: EdgeInsets.all(0),
+      onPressed: () {
+        debugPrint((key + 1).toString() + "select!");
+        setState(() {
+          this.widget.exam.userAnswer[this.widget.index] = key;
+        });
+        if (!(this.widget.index == this.widget.maxIndex)) {
+          this.widget.swiperController.next();
+        } else {
+          showCupertinoDialog(
+              title: "마지막 문제",
+              content: "마지막 문제입니다.\n제출하시겠습니까?",
+              cancel: true,
+              exam: this.widget.exam,
+              context: context);
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+              width: 2,
+              color: checkSelect(
+                  userAnswerList: this.widget.exam.userAnswer,
+                  index: this.widget.index,
+                  select: key)),
+        ),
+        height: this.widget.answerSize,
+        width: this.widget.answerSize,
+        child: Image.file(
+          File(this.widget.exam.directory +
+              "/example" +
+              (this.widget.index + 1).toString() +
+              "_" +
+              key.toString() +
+              ".png"),
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+}
+
+showCupertinoDialog(
+    {required String title,
+    required String content,
+    required bool cancel,
+    required Exam exam,
+    required BuildContext context}) {
+  List<Widget> dialogActions = [
+    CupertinoButton(
+      child: Text('제출'),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => ScorePage(
+              exam: exam,
+            ),
+          ),
+        );
+      },
+    ),
+  ];
+  if (cancel == true) {
+    dialogActions.add(CupertinoButton(
+      child: Text(
+        '취소',
+        style: TextStyle(color: Colors.red),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    ));
+  }
+  showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (_) => new CupertinoAlertDialog(
+          title: new Text(title),
+          content: new Text(content),
+          actions: dialogActions));
 }
