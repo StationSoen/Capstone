@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:capstone/ui/historyPage.dart';
 import 'package:capstone/home.dart';
+import 'package:capstone/ui/previousExamPage.dart';
 import 'package:capstone/ui/problemPage.dart';
 import 'package:capstone/ui/problemPaused.dart';
 import 'package:capstone/ui/recordPage.dart';
@@ -15,6 +16,7 @@ import 'dart:ui' as UI;
 
 import 'package:capstone/ui/settingPage.dart';
 
+import 'logic/dev_cube.dart';
 import 'ui/SplashScreen.dart';
 import 'exam.dart';
 import 'visual/load.dart';
@@ -42,8 +44,13 @@ List<Exam> examList = [];
 void main() async {
   // initialize Hive and opening Hive boxes..
   await Hive.initFlutter();
+  Hive.registerAdapter(ExamAdapter());
+  Hive.registerAdapter(CubeProblemAdapter());
+  Hive.registerAdapter(DevCubeAdapter());
+
   await Hive.openBox('setting');
   var settingHive = Hive.box('setting');
+  await Hive.openBox('examList');
 
   // initialize Hive Value ...
   List<String> hiveSetting = ['location', 'id', 'pw'];
@@ -105,6 +112,7 @@ class MyApp extends StatelessWidget {
               '/problemPage': (BuildContext context) => new ProblemPage(),
               '/scorePage': (BuildContext context) => new ScorePage(),
               '/recordPage': (BuildContext context) => new RecordPage(),
+              '/previousExamPage': (BuildContext context) => PreviousExamPage(),
               // '/problemPaused': (BuildContext context) =>
               //     new ProblemPausedPage(),
             },

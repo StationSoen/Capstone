@@ -2,6 +2,7 @@ import 'package:capstone/visual/problem.dart';
 import 'package:capstone/ui/problemPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 import '../exam.dart';
@@ -24,6 +25,9 @@ class _SelectPageState extends State<SelectPage> {
   double extendedHeight = 230;
 
   double time = 10;
+
+  /// HiveBox for global examListHive
+  var examListHive = Hive.box('examList');
 
   /// 난이도 선택하는 액션시트
   void difficultyActionsheet(BuildContext context) async {
@@ -262,6 +266,8 @@ class _SelectPageState extends State<SelectPage> {
 
                     // add newExan to (global) examList
                     examList.add(newExam);
+
+                    examListHive.put('examList', examList);
 
                     // Navigator.pushNamed(context, '/problemPage');
                     Navigator.pushNamed(context, '/problemPage',
