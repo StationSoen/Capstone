@@ -16,9 +16,7 @@ import '../exam.dart';
 List<int> userChoice = List.empty();
 
 class ProblemPage extends StatefulWidget {
-  Exam exam;
-
-  ProblemPage({required this.exam});
+  late Exam exam;
 
   @override
   _ProblemPageState createState() => _ProblemPageState();
@@ -40,10 +38,6 @@ class _ProblemPageState extends State<ProblemPage> {
   @override
   void initState() {
     super.initState();
-
-    // data initialize for this.widget.exam
-    maxSecond = this.widget.exam.remainTime;
-    numberProblem = this.widget.exam.problemList.length;
 
     // timer .. add 1 per 1 second & stop when second >= maxSecond.
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -69,11 +63,19 @@ class _ProblemPageState extends State<ProblemPage> {
   void dispose() {
     // cancel timer
     timer.cancel();
+    debugPrint("Timer OUT!");
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // extract parameter from NamedPush
+    this.widget.exam = ModalRoute.of(context)!.settings.arguments as Exam;
+
+    // data initialize for this.widget.exam
+    maxSecond = this.widget.exam.remainTime;
+    numberProblem = this.widget.exam.problemList.length;
+
     return WillPopScope(
       onWillPop: () async => false,
       child: CupertinoPageScaffold(
@@ -160,6 +162,8 @@ class _ProblemPageState extends State<ProblemPage> {
             builder: (BuildContext context) => ProblemPausedPage(
                 numberOfProblems: this.widget.exam.problemList.length,
                 exam: this.widget.exam)));
+
+    debugPrint(result.toString());
     if (result != null) {
       swiperController.move(result);
     }
@@ -305,14 +309,9 @@ showCupertinoDialog(
     CupertinoButton(
       child: Text('제출'),
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => ScorePage(
-              exam: exam,
-            ),
-          ),
-        );
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/scorePage', ModalRoute.withName('/'),
+            arguments: exam);
       },
     ),
   ];

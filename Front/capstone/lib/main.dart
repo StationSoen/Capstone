@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:capstone/ui/historyPage.dart';
 import 'package:capstone/home.dart';
-import 'package:capstone/ui/mtlTestPage.dart';
-import 'package:capstone/visual/problem.dart';
 import 'package:capstone/ui/problemPage.dart';
+import 'package:capstone/ui/problemPaused.dart';
 import 'package:capstone/ui/recordPage.dart';
 import 'package:capstone/ui/scorePage.dart';
 import 'package:capstone/ui/selectPage.dart';
@@ -98,9 +97,16 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             routes: <String, WidgetBuilder>{
               '/home': (BuildContext context) => new Home(),
-              // '/problemPage': (BuildContext context) => new ProblemPage(),
               '/selectPage': (BuildContext context) => new SelectPage(),
               '/historyPage': (BuildContext context) => new HistoryPage(),
+
+              // == PushNamed ==
+
+              '/problemPage': (BuildContext context) => new ProblemPage(),
+              '/scorePage': (BuildContext context) => new ScorePage(),
+              '/recordPage': (BuildContext context) => new RecordPage(),
+              // '/problemPaused': (BuildContext context) =>
+              //     new ProblemPausedPage(),
             },
 
             home: MyHome(),

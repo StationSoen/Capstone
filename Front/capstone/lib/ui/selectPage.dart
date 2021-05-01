@@ -264,14 +264,8 @@ class _SelectPageState extends State<SelectPage> {
                     examList.add(newExam);
 
                     // Navigator.pushNamed(context, '/problemPage');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ProblemPage(
-                          exam: newExam,
-                        ),
-                      ),
-                    );
+                    Navigator.pushNamed(context, '/problemPage',
+                        arguments: newExam);
                   },
                 ),
                 CircleButton(

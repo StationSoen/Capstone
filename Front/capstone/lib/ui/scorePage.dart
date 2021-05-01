@@ -1,6 +1,6 @@
 import 'dart:core';
 
-import 'package:capstone/ui/mtlTestPage.dart';
+import 'package:capstone/ui/cube3D.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -10,7 +10,7 @@ import '../exam.dart';
 class ScorePage extends StatefulWidget {
   late Exam exam;
 
-  ScorePage({required this.exam});
+  // ScorePage({required this.exam});
 
   @override
   _ScorePageState createState() => _ScorePageState();
@@ -21,7 +21,11 @@ class _ScorePageState extends State<ScorePage> {
   List<bool> correctList = [];
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
+    // extract parameter from NamedPush
+    this.widget.exam = ModalRoute.of(context)!.settings.arguments as Exam;
+
+    // make correctList
     for (int i = 0; i < this.widget.exam.problemList.length; i++) {
       if (this.widget.exam.userAnswer[i] ==
           this.widget.exam.problemList[i].answer) {
@@ -32,13 +36,6 @@ class _ScorePageState extends State<ScorePage> {
       }
     }
 
-    debugPrint("asd : " + correctList.length.toString());
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: CupertinoPageScaffold(
@@ -107,7 +104,7 @@ class _ScorePageState extends State<ScorePage> {
                       width: 345,
                       marginVertical: 5,
                       onPressed: () {
-                        Navigator.pushNamed(context, '/');
+                        Navigator.popUntil(context, ModalRoute.withName('/'));
                       },
                     )
                   ],
@@ -157,7 +154,7 @@ class _ScorePageState extends State<ScorePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => MtlTestPage(
+                  builder: (BuildContext context) => Cube3D(
                     exam: this.widget.exam,
                     index: i,
                   ),

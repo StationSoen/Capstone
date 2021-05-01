@@ -45,14 +45,8 @@ class _ProblemPausedPageState extends State<ProblemPausedPage> {
                     SettingsTile(
                       title: "제출하기",
                       onPressed: (BuildContext context) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => ScorePage(
-                              exam: this.widget.exam,
-                            ),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/scorePage',
+                            arguments: this.widget.exam);
                       },
                     ),
                     SettingsTile(
