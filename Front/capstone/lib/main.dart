@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:capstone/ui/historyPage.dart';
 import 'package:capstone/home.dart';
 import 'package:capstone/ui/previousExamPage.dart';
+import 'package:capstone/ui/problemDetalPage.dart';
 import 'package:capstone/ui/problemPage.dart';
 import 'package:capstone/ui/problemPaused.dart';
 import 'package:capstone/ui/recordPage.dart';
@@ -113,6 +114,8 @@ class MyApp extends StatelessWidget {
               '/scorePage': (BuildContext context) => new ScorePage(),
               '/recordPage': (BuildContext context) => new RecordPage(),
               '/previousExamPage': (BuildContext context) => PreviousExamPage(),
+              '/problemDetailPage': (BuildContext context) =>
+                  ProblemDetailPage(),
               // '/problemPaused': (BuildContext context) =>
               //     new ProblemPausedPage(),
             },

@@ -54,7 +54,7 @@ List<SettingsTile> previousExamList() {
     SettingsTile settingTile = new SettingsTile(
       title: list[i].dateCode,
       onPressed: (BuildContext context) {
-        debugPrint("Hello World!");
+        Navigator.pushNamed(context, '/problemDetailPage', arguments: list[i]);
       },
     );
     result.add(settingTile);
