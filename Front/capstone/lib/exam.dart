@@ -38,13 +38,14 @@ class Exam extends HiveObject {
 class Problem {
   // late final int seed;
   //
-  /// 문제 종류 (전개도, 종이접기 등)
-  @HiveField(5)
-  late final int problemType;
 
   /// 지문 종류 (올바른것을 고르시오 / 틀린 것을 고르시오)
   @HiveField(6)
   late final int textType;
+
+  /// 문제 종류 (전개도, 종이접기 등)
+  @HiveField(5)
+  int problemType = -1;
 
   @HiveField(7)
   late final int difficulty;
@@ -68,8 +69,8 @@ class CubeProblem extends Problem {
   late DevCube primitiveData;
 
   CubeProblem({required this.primitiveData}) {
-    this.problemType = 0;
     this.textType = primitiveData.type;
+    this.problemType = 0;
     this.difficulty = primitiveData.level;
     this.answer = primitiveData.answer[0];
   }
