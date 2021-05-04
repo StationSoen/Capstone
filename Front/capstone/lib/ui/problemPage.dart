@@ -28,6 +28,7 @@ class _ProblemPageState extends State<ProblemPage> {
 
   /// counter second - add 1 in 1 second.
   int second = 0;
+  bool init = true;
 
   late int numberProblem;
   late int maxSecond;
@@ -71,6 +72,12 @@ class _ProblemPageState extends State<ProblemPage> {
   Widget build(BuildContext context) {
     // extract parameter from NamedPush
     this.widget.exam = ModalRoute.of(context)!.settings.arguments as Exam;
+
+    // initialize second with remain time
+    if (init) {
+      init = false;
+      second = this.widget.exam.originalTime - this.widget.exam.remainTime;
+    }
 
     // data initialize for this.widget.exam
     maxSecond = this.widget.exam.remainTime;

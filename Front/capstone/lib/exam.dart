@@ -19,6 +19,10 @@ class Exam extends HiveObject {
   @HiveField(2)
   late String directory;
 
+  /// Max time for Exam info..
+  @HiveField(10)
+  late int originalTime = 0;
+
   @HiveField(3)
   late String dateCode;
 
@@ -31,27 +35,27 @@ class Exam extends HiveObject {
       required this.directory,
       required this.dateCode}) {
     this.userAnswer = List.filled(this.problemList.length, -1);
+    originalTime = remainTime;
   }
 }
 
 @HiveType(typeId: 1)
 class Problem {
   // late final int seed;
-  //
-
-  /// 지문 종류 (올바른것을 고르시오 / 틀린 것을 고르시오)
-  @HiveField(6)
-  late final int textType;
 
   /// 문제 종류 (전개도, 종이접기 등)
   @HiveField(5)
   int problemType = -1;
 
+  /// 지문 종류 (올바른것을 고르시오 / 틀린 것을 고르시오)
+  @HiveField(6)
+  int textType = -1;
+
   @HiveField(7)
-  late final int difficulty;
+  int difficulty = -1;
 
   @HiveField(8)
-  late final int answer;
+  int answer = -1;
 
   // png 생성하여 디렉토리에 저장 함수
   // String 문제 예시 이미지 경로

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../exam.dart';
+import '../main.dart';
 
 class ProblemPausedPage extends StatefulWidget {
   late int numberOfProblems;
@@ -47,6 +48,10 @@ class _ProblemPausedPageState extends State<ProblemPausedPage> {
                       onPressed: (BuildContext context) {
                         Navigator.pushNamed(context, '/scorePage',
                             arguments: this.widget.exam);
+
+                        // examList 업데이트하고, Hive에 업데이트 해야 함.
+                        debugPrint(
+                            examList.indexOf(this.widget.exam).toString());
                       },
                     ),
                     SettingsTile(

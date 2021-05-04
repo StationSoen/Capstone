@@ -245,7 +245,7 @@ class _SelectPageState extends State<SelectPage> {
                   onPressed: () async {
                     // String tempDate = DateTime.now().toString();
                     //
-                    DateFormat formatter = DateFormat('M_d_H_m_s');
+                    DateFormat formatter = DateFormat('MM_dd_HH_mm_ss');
                     String tempDate = formatter.format(DateTime.now());
 
                     String directory = await loaddirectory(tempDate);
@@ -266,7 +266,7 @@ class _SelectPageState extends State<SelectPage> {
 
                     // add newExan to (global) examList
                     examList.add(newExam);
-
+                    // put examList to HIVE.
                     examListHive.put('examList', examList);
 
                     // Navigator.pushNamed(context, '/problemPage');

@@ -22,11 +22,17 @@ import 'ui/SplashScreen.dart';
 import 'exam.dart';
 import 'visual/load.dart';
 
+/*
+
+Next HiveField = 11
+
+*/
+
 // String dir = "";
 List<Color?> colorlist = [
   Colors.red[700],
   Colors.orange,
-  Colors.pink,
+  Colors.pink[200],
   Colors.yellow,
   Colors.black,
   Colors.lime,
@@ -35,7 +41,7 @@ List<Color?> colorlist = [
   Colors.cyan,
   Colors.indigo,
   Colors.brown,
-  Colors.purple
+  Colors.purple[600]
 ]; //색깔 리스트 길이:12
 List<UI.Image> imglist = []; //숫자 이미지 리스트 길이:9    0~8 숫자, 9~20까지는 문양
 

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../exam.dart';
@@ -49,10 +50,14 @@ List<SettingsTile> previousExamList() {
   var examListHive = Hive.box('examList');
   List<Exam> list = examListHive.get('examList');
 
+  /// 05/04 20:07:18 생성된 시험지
+  DateFormat formatter = DateFormat("MM/dd HH:mm:ss");
+
   List<SettingsTile> result = [];
   for (int i = 0; i < list.length; i++) {
     SettingsTile settingTile = new SettingsTile(
-      title: list[i].dateCode,
+      title: formatter
+          .format(DateFormat('MM_dd_HH_mm_ss').parse(list[i].dateCode)),
       onPressed: (BuildContext context) {
         Navigator.pushNamed(context, '/problemDetailPage', arguments: list[i]);
       },

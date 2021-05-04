@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../exam.dart';
+import '../main.dart';
 import 'component.dart';
 
 class ProblemDetailPage extends StatefulWidget {
@@ -12,6 +14,8 @@ class ProblemDetailPage extends StatefulWidget {
 class _ProblemDetailPageState extends State<ProblemDetailPage> {
   late Exam exam;
   int remainProblems = 0;
+
+  DateFormat formatter = DateFormat("MM/dd HH:mm:ss");
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +64,11 @@ class _ProblemDetailPageState extends State<ProblemDetailPage> {
                                   fontSize: 24, fontWeight: FontWeight.w600),
                             ),
                             Divider(),
-                            infoRow("문제 생성일", exam.dateCode),
-                            infoRow("전체 풀이 시간", exam.remainTime.toString()),
+                            infoRow(
+                                "문제 생성일",
+                                formatter.format(DateFormat('MM_dd_HH_mm_ss')
+                                    .parse(exam.dateCode))),
+                            infoRow("전체 풀이 시간", exam.originalTime.toString()),
                             infoRow(
                                 "전체 문제 수", exam.problemList.length.toString()),
                             infoRow("문제 유형", "전개도, 종이접기"),
