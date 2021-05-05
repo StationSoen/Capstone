@@ -33,9 +33,9 @@ List<Color?> colorlist = [
   Colors.red[700],
   Colors.orange,
   Colors.pink[200],
-  Colors.yellow,
-  Colors.black,
-  Colors.lime,
+  Colors.yellow[200],
+  Colors.black87,
+  Colors.lime[700],
   Colors.green[600],
   Colors.blue,
   Colors.cyan,
@@ -45,8 +45,14 @@ List<Color?> colorlist = [
 ]; //색깔 리스트 길이:12
 List<UI.Image> imglist = []; //숫자 이미지 리스트 길이:9    0~8 숫자, 9~20까지는 문양
 
-/// 문제 풀이한 내역 및 관련 데이터 저장.
-List<Exam> examList = [];
+/// 그만두기를 통해서 중간에 멈춘 문제들 리스트
+List<Exam> pausedExamList = [];
+
+/// 정상적으로 시험 끝낸 경우 문제들 리스트
+List<Exam> completeExamList = [];
+
+// 초기화 값
+List<Exam> initExamList = [];
 
 void main() async {
   // initialize Hive and opening Hive boxes..
@@ -59,6 +65,13 @@ void main() async {
   var settingHive = Hive.box('setting');
   await Hive.openBox('examList');
 
+  await Hive.openBox('pausedExamList');
+  await Hive.openBox('completeExamList');
+  var pausedExamListHive = Hive.box("pausedExamList");
+  var completeExamListHive = Hive.box("completeExamList");
+
+  pausedExamListHive.put('pausedExamList', initExamList);
+  completeExamListHive.put('completeExamList', initExamList);
   // initialize Hive Value ...
   List<String> hiveSetting = ['location', 'id', 'pw'];
 

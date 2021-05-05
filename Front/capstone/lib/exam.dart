@@ -23,6 +23,9 @@ class Exam extends HiveObject {
   @HiveField(10)
   late int originalTime = 0;
 
+  @HiveField(11)
+  bool complete = false;
+
   @HiveField(3)
   late String dateCode;
 

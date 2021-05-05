@@ -177,14 +177,6 @@ class Home extends StatelessWidget {
                   text: "이전 문제 계속",
                   onPressed: () {
                     Navigator.pushNamed(context, '/previousExamPage');
-
-                    // Test Code for HiveBox examList //
-                    var examListHive = Hive.box('examList');
-                    List<Exam> temp = examListHive.get('examList');
-                    for (int i = 0; i < temp.length; i++) {
-                      debugPrint(temp[i].dateCode);
-                    }
-                    // End of Test Code //
                   },
                 ),
                 CircleButton(

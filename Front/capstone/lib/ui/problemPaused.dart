@@ -1,6 +1,7 @@
 import 'package:capstone/ui/scorePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../exam.dart';
@@ -8,15 +9,29 @@ import '../main.dart';
 
 class ProblemPausedPage extends StatefulWidget {
   late int numberOfProblems;
+
+  // 남은 시간 원본인 Exam.
   late Exam exam;
 
-  ProblemPausedPage({required this.numberOfProblems, required this.exam});
+  // 남은 시간 업데이트 한 Exam.
+  late Exam updateTimeExam;
+
+  ProblemPausedPage(
+      {required this.numberOfProblems,
+      required this.exam,
+      required int remainTime}) {
+    updateTimeExam = exam;
+    updateTimeExam.remainTime = remainTime;
+  }
 
   @override
   _ProblemPausedPageState createState() => _ProblemPausedPageState();
 }
 
 class _ProblemPausedPageState extends State<ProblemPausedPage> {
+  var pausedExamListHive = Hive.box('pausedExamList');
+  var completeExamListHive = Hive.box('completeExamList');
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -46,18 +61,55 @@ class _ProblemPausedPageState extends State<ProblemPausedPage> {
                     SettingsTile(
                       title: "제출하기",
                       onPressed: (BuildContext context) {
-                        Navigator.pushNamed(context, '/scorePage',
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/scorePage', ModalRoute.withName('/'),
                             arguments: this.widget.exam);
 
-                        // examList 업데이트하고, Hive에 업데이트 해야 함.
-                        debugPrint(
-                            examList.indexOf(this.widget.exam).toString());
+                        this.widget.exam.complete = true;
+
+                        // pausedExamList에 값이 있다면, pausedExamList에서 제거해줘야 함.
+                        if (pausedExamList.contains(this.widget.exam)) {
+                          pausedExamList.remove(this.widget.exam);
+                        }
+                        // completeExamList에 값 추가.
+                        completeExamList.add(this.widget.exam);
+
+                        // Hive에 업데이트.
+                        completeExamListHive.put(
+                            'completeExamList', completeExamList);
+
+                        debugPrint("This Exam is in completeExamList index : " +
+                            completeExamList
+                                .indexOf(this.widget.exam)
+                                .toString());
                       },
                     ),
                     SettingsTile(
                       title: "그만두기",
                       onPressed: (BuildContext context) {
                         Navigator.popUntil(context, ModalRoute.withName('/'));
+
+                        if (pausedExamList.contains(this.widget.exam)) {
+                          // pausedExamList에 값이 있다면 - 과거에 그만뒀던 것 다시 푸는 경우.
+                          // pausedExamList에 remainTime 추가된 Exam 업데이트.
+                          pausedExamList[
+                                  pausedExamList.indexOf(this.widget.exam)] =
+                              this.widget.updateTimeExam;
+                        } else {
+                          // pausedExamList에 값이 없다면 - 처음 그만두는 경우
+                          // pausedExamList에 Add.
+                          pausedExamList.add(this.widget.updateTimeExam);
+                        }
+
+                        // Hive 업데이트
+                        pausedExamListHive.put(
+                            'pausedExamList', pausedExamList);
+
+                        // examList 업데이트하고, Hive에 업데이트 해야 함.
+                        debugPrint("This Exam is in pausedExamList index : " +
+                            pausedExamList
+                                .indexOf(this.widget.exam)
+                                .toString());
                       },
                     )
                   ],

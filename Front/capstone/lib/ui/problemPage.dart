@@ -9,6 +9,7 @@ import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:hive/hive.dart';
 
 import '../exam.dart';
 
@@ -42,6 +43,7 @@ class _ProblemPageState extends State<ProblemPage> {
 
     // timer .. add 1 per 1 second & stop when second >= maxSecond.
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      debugPrint("second in timer : $second / $maxSecond");
       setState(() {
         if (isPaused) {
           second++;
@@ -80,7 +82,7 @@ class _ProblemPageState extends State<ProblemPage> {
     }
 
     // data initialize for this.widget.exam
-    maxSecond = this.widget.exam.remainTime;
+    maxSecond = this.widget.exam.originalTime;
     numberProblem = this.widget.exam.problemList.length;
 
     return WillPopScope(
@@ -167,8 +169,10 @@ class _ProblemPageState extends State<ProblemPage> {
         context,
         MaterialPageRoute(
             builder: (BuildContext context) => ProblemPausedPage(
-                numberOfProblems: this.widget.exam.problemList.length,
-                exam: this.widget.exam)));
+                  numberOfProblems: this.widget.exam.problemList.length,
+                  exam: this.widget.exam,
+                  remainTime: second,
+                )));
 
     debugPrint(result.toString());
     if (result != null) {
@@ -312,10 +316,21 @@ showCupertinoDialog(
     required bool cancel,
     required Exam exam,
     required BuildContext context}) {
+  var completeExamListHive = Hive.box('completeExamList');
   List<Widget> dialogActions = [
     CupertinoButton(
       child: Text('제출'),
       onPressed: () {
+        exam.complete = true;
+
+        pausedExamList
+            .removeWhere((element) => element.dateCode == exam.dateCode);
+
+        // completeExamList에 값 추가.
+        completeExamList.add(exam);
+
+        // Hive에 업데이트.
+        completeExamListHive.put('completeExamList', completeExamList);
         Navigator.pushNamedAndRemoveUntil(
             context, '/scorePage', ModalRoute.withName('/'),
             arguments: exam);

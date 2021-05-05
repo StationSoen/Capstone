@@ -133,7 +133,15 @@ class _ScorePageState extends State<ScorePage> {
                   )
                 ]),
             onPressed: () {
-              debugPrint("Button Tapped!");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => Cube3D(
+                    exam: this.widget.exam,
+                    index: i,
+                  ),
+                ),
+              );
             }));
       } else {
         result.add(CupertinoButton(

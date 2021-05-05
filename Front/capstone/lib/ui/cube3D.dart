@@ -96,9 +96,9 @@ class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
       required List<dynamic> problemList,
       required int index,
       required select}) {
-    if (userAnswerList[index] == select) {
+    if (problemList[index].answer == select) {
       return Colors.red;
-    } else if (problemList[index].answer == select) {
+    } else if (userAnswerList[index] == select) {
       return Colors.blue;
     } else {
       return Colors.grey;

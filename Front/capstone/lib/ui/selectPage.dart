@@ -264,11 +264,6 @@ class _SelectPageState extends State<SelectPage> {
                         remainTime: time.toInt(),
                         problemList: myProblemList);
 
-                    // add newExan to (global) examList
-                    examList.add(newExam);
-                    // put examList to HIVE.
-                    examListHive.put('examList', examList);
-
                     // Navigator.pushNamed(context, '/problemPage');
                     Navigator.pushNamed(context, '/problemPage',
                         arguments: newExam);
