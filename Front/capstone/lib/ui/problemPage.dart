@@ -197,12 +197,16 @@ class ProblemCard extends StatefulWidget {
 
   late int second;
 
+  late int type;
+
   ProblemCard(
       {required this.index,
       required this.exam,
       required this.swiperController,
       required this.maxIndex,
-      required this.second});
+      required this.second}) {
+    this.type = this.exam.problemList[index].problemType;
+  }
 
   @override
   _ProblemCardState createState() => _ProblemCardState();
@@ -221,11 +225,17 @@ class _ProblemCardState extends State<ProblemCard> {
     }
   }
 
-  List<String> problemText = [
-    "주어진 전개도를 보고, 일치하는 입체도형을 고르시오.",
-    "주어진 전개도를 보고, 일치하지 않는 입체도형을 고르시오.",
-    "주어진 도형을 보고, 알맞은 전개도를 고르시오.",
-    "주어진 도형을 보고, 알맞지 않은 전개도를 고르시오."
+  List<List<String>> problemText = [
+    [
+      "주어진 전개도를 보고, 일치하는 입체도형을 고르시오.",
+      "주어진 전개도를 보고, 일치하지 않는 입체도형을 고르시오.",
+      "주어진 도형을 보고, 알맞은 전개도를 고르시오.",
+      "주어진 도형을 보고, 알맞지 않은 전개도를 고르시오."
+    ],
+    [
+      "다음과 같이 종이를 접었을 때, 마지막 종이의 앞면 또는 뒷면으로 알맞지 않은 것을 고르시오.",
+      "다음과 같이 종이를 접었을 때, 마지막 종이의 앞면 또는 뒷면으로 알맞은 것을 고르시오",
+    ]
   ];
 
   @override
@@ -239,19 +249,9 @@ class _ProblemCardState extends State<ProblemCard> {
           Container(
               width: double.infinity,
               child: Text(
-                  "#${this.widget.index + 1}\n${problemText[this.widget.exam.problemList[this.widget.index].textType]}")),
+                  "#${this.widget.index + 1}\n${problemText[this.widget.type][this.widget.exam.problemList[this.widget.index].textType]}")),
           Divider(),
-          Container(
-            height: 200,
-            width: 200,
-            child: Image.file(
-              File(this.widget.exam.directory +
-                  "/problem" +
-                  (this.widget.index + 1).toString() +
-                  ".png"),
-              fit: BoxFit.contain,
-            ),
-          ),
+
           Divider(),
 
           // Problem Answers Section
@@ -275,6 +275,74 @@ class _ProblemCardState extends State<ProblemCard> {
         ],
       ),
     );
+  }
+
+  Widget problemQuestion(int type) {
+    if (type == 0) {
+      // Cube Problem
+      return Container(
+        height: 200,
+        width: 200,
+        child: Image.file(
+          File(this.widget.exam.directory +
+              "/problem" +
+              (this.widget.index + 1).toString() +
+              ".png"),
+          fit: BoxFit.contain,
+        ),
+      );
+    } else if (type == 1) {
+      // PaperFlod Problem
+      return Container(
+        height: 200,
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.file(
+                  File(this.widget.exam.directory +
+                      "/problem" +
+                      (this.widget.index + 1).toString() +
+                      "_0.png"),
+                  fit: BoxFit.contain,
+                ),
+                Image.file(
+                  File(this.widget.exam.directory +
+                      "/problem" +
+                      (this.widget.index + 1).toString() +
+                      "_1.png"),
+                  fit: BoxFit.contain,
+                ),
+                Image.file(
+                  File(this.widget.exam.directory +
+                      "/problem" +
+                      (this.widget.index + 1).toString() +
+                      "_2.png"),
+                  fit: BoxFit.contain,
+                ),
+                Image.file(
+                  File(this.widget.exam.directory +
+                      "/problem" +
+                      (this.widget.index + 1).toString() +
+                      "_3.png"),
+                  fit: BoxFit.contain,
+                ),
+              ],
+            ),
+            Image(
+              image: AssetImage('assets/fold/paperex.png'),
+            )
+          ],
+        ),
+      );
+    } else {
+      return Container(
+        child: Text("Something Wrong!"),
+      );
+    }
   }
 
   Widget selectButton(int key, int second) {

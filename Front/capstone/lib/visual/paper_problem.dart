@@ -12,7 +12,7 @@ Future<List<FoldProblem>> makepaperproblem(
     int num, int level, String directory, int counter) async {
   List<FoldProblem> foldList = [];
   for (int i = 1; i <= num; i++) {
-    var temp = PaperFold(level);
+    var temp = PaperFold(0);
     foldList.add(FoldProblem(primitiveData: temp));
     //debugPrint(temp.example[0][1].toString());
     //debugPrint(temp.example[0][1].layerCount.toString());

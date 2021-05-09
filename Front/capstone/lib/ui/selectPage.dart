@@ -285,6 +285,7 @@ class _SelectPageState extends State<SelectPage> {
                       ...await makecubeproblem(typeProblemNumber[0].toInt(),
                           typeDifficulty[0], directory),
                     ];
+
                     myProblemList.addAll(await makepaperproblem(
                         typeProblemNumber[1].toInt(),
                         typeDifficulty[1],
