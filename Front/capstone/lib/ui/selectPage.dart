@@ -70,6 +70,90 @@ class _SelectPageState extends State<SelectPage> {
     );
   }
 
+  Widget typeSelector(String title) {
+    return AnimatedContainer(
+      height: 230,
+      duration: Duration(milliseconds: 250),
+      child: Container(
+          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+          margin: EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(26.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.17),
+                offset: Offset(0.0, 3.0), //(x,y)
+                blurRadius: 6.0,
+              ),
+            ],
+          ),
+          width: 345,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "3D 전개도 유형",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                  ),
+                  CupertinoSwitch(value: true, onChanged: null),
+                ],
+              ),
+              Divider(),
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "문제 수",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      Text(
+                        "${problemNumber.toInt()}개",
+                        style: TextStyle(fontSize: 17, color: Colors.grey),
+                      )
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 3),
+                child: CupertinoSlider(
+                    value: problemNumber,
+                    max: 10,
+                    min: 1,
+                    divisions: 9,
+                    onChanged: (value) {
+                      setState(() {
+                        problemNumber = value;
+                      });
+                    }),
+              ),
+              Divider(),
+              CupertinoButton(
+                  padding: EdgeInsets.all(0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "난이도",
+                          style: TextStyle(fontSize: 17, color: Colors.black),
+                        ),
+                        Text(
+                          difficultyList[difficulty],
+                          style: TextStyle(fontSize: 17, color: Colors.grey),
+                        )
+                      ]),
+                  onPressed: () {
+                    difficultyActionsheet(context);
+                  })
+            ],
+          )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -148,94 +232,7 @@ class _SelectPageState extends State<SelectPage> {
                             ],
                           )
                         ])),
-                AnimatedContainer(
-                  height: 230,
-                  duration: Duration(milliseconds: 250),
-                  child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(26.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.17),
-                            offset: Offset(0.0, 3.0), //(x,y)
-                            blurRadius: 6.0,
-                          ),
-                        ],
-                      ),
-                      width: 345,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "3D 전개도 유형",
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w600),
-                              ),
-                              CupertinoSwitch(value: true, onChanged: null),
-                            ],
-                          ),
-                          Divider(),
-                          Container(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "문제 수",
-                                    style: TextStyle(fontSize: 17),
-                                  ),
-                                  Text(
-                                    "${problemNumber.toInt()}개",
-                                    style: TextStyle(
-                                        fontSize: 17, color: Colors.grey),
-                                  )
-                                ]),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 3),
-                            child: CupertinoSlider(
-                                value: problemNumber,
-                                max: 10,
-                                min: 1,
-                                divisions: 9,
-                                onChanged: (value) {
-                                  setState(() {
-                                    problemNumber = value;
-                                  });
-                                }),
-                          ),
-                          Divider(),
-                          CupertinoButton(
-                              padding: EdgeInsets.all(0),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "난이도",
-                                      style: TextStyle(
-                                          fontSize: 17, color: Colors.black),
-                                    ),
-                                    Text(
-                                      difficultyList[difficulty],
-                                      style: TextStyle(
-                                          fontSize: 17, color: Colors.grey),
-                                    )
-                                  ]),
-                              onPressed: () {
-                                difficultyActionsheet(context);
-                              })
-                        ],
-                      )),
-                ),
+                typeSelector("test"),
                 CircleButton(
                   text: "문제 생성",
                   marginVertical: 5,
