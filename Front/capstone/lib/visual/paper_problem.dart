@@ -57,6 +57,28 @@ Future<List<Problem>> makepaperproblem(
           true,
           directory);
     }
+
+    for (int j = 0; j < 4; j++) {
+      // debugPrint(temp.suggestion[j].toString());
+      // debugPrint(temp.suggestion[j].layerCount.toString());
+      if (j == 3) {
+        await drawpaperpngback(
+            'back' + (i + counter).toString() + '_' + j.toString(),
+            temp.example[0][j],
+            temp.example[1][j],
+            true,
+            false,
+            directory);
+      } else {
+        await drawpaperpngback(
+            'back' + (i + counter).toString() + '_' + j.toString(),
+            temp.example[0][j],
+            temp.example[1][j],
+            false,
+            false,
+            directory);
+      }
+    }
   }
   // debugPrint("문제번호는$i");
   // debugPrint("${temp.toString()}");
