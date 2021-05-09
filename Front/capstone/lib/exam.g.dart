@@ -18,22 +18,29 @@ class ExamAdapter extends TypeAdapter<Exam> {
     };
     return Exam(
       problemList: (fields[0] as List).cast<dynamic>(),
-      remainTime: fields[1] as int,
       directory: fields[2] as String,
       dateCode: fields[3] as String,
-    )..userAnswer = (fields[4] as List).cast<int>();
+      settingTime: fields[10] as int,
+    )
+      ..elapsedTime = fields[1] as int
+      ..complete = fields[11] as bool
+      ..userAnswer = (fields[4] as List).cast<int>();
   }
 
   @override
   void write(BinaryWriter writer, Exam obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.problemList)
       ..writeByte(1)
-      ..write(obj.remainTime)
+      ..write(obj.elapsedTime)
       ..writeByte(2)
       ..write(obj.directory)
+      ..writeByte(10)
+      ..write(obj.settingTime)
+      ..writeByte(11)
+      ..write(obj.complete)
       ..writeByte(3)
       ..write(obj.dateCode)
       ..writeByte(4)

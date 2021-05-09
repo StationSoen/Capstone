@@ -151,7 +151,7 @@ class Home extends StatelessWidget {
                           color: Colors.white,
                           onPressed: () {
                             // button tapped!
-                            debugPrint("Button Tapped!");
+                            Navigator.pushNamed(context, '/previousComplete');
                           },
                           child: Text(
                             "다시 보기",

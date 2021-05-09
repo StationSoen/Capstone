@@ -19,9 +19,9 @@ class ProblemPausedPage extends StatefulWidget {
   ProblemPausedPage(
       {required this.numberOfProblems,
       required this.exam,
-      required int remainTime}) {
+      required int elapsedTime}) {
     updateTimeExam = exam;
-    updateTimeExam.remainTime = remainTime;
+    updateTimeExam.elapsedTime = elapsedTime;
   }
 
   @override
@@ -68,9 +68,8 @@ class _ProblemPausedPageState extends State<ProblemPausedPage> {
                         this.widget.exam.complete = true;
 
                         // pausedExamList에 값이 있다면, pausedExamList에서 제거해줘야 함.
-                        if (pausedExamList.contains(this.widget.exam)) {
-                          pausedExamList.remove(this.widget.exam);
-                        }
+                        pausedExamList.removeWhere((element) =>
+                            element.dateCode == this.widget.exam.dateCode);
                         // completeExamList에 값 추가.
                         completeExamList.add(this.widget.exam);
 

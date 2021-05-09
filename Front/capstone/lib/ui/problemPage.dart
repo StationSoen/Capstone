@@ -75,14 +75,15 @@ class _ProblemPageState extends State<ProblemPage> {
     // extract parameter from NamedPush
     this.widget.exam = ModalRoute.of(context)!.settings.arguments as Exam;
 
-    // initialize second with remain time
+    // initialize second with elapsedTime
+    // second를 경과시간으로 초기화함.
     if (init) {
       init = false;
-      second = this.widget.exam.originalTime - this.widget.exam.remainTime;
+      second = this.widget.exam.elapsedTime;
     }
 
     // data initialize for this.widget.exam
-    maxSecond = this.widget.exam.originalTime;
+    maxSecond = this.widget.exam.settingTime;
     numberProblem = this.widget.exam.problemList.length;
 
     return WillPopScope(
@@ -116,6 +117,8 @@ class _ProblemPageState extends State<ProblemPage> {
                             onPressed: () {
                               debugPrint("Tapped!");
                               isPaused = false;
+                              // 일시정지로 들어가면, 경과시간 업데이트
+                              this.widget.exam.elapsedTime = second;
                               _gotoIndex(context);
                             },
                             child: Icon(
@@ -171,7 +174,7 @@ class _ProblemPageState extends State<ProblemPage> {
             builder: (BuildContext context) => ProblemPausedPage(
                   numberOfProblems: this.widget.exam.problemList.length,
                   exam: this.widget.exam,
-                  remainTime: second,
+                  elapsedTime: second,
                 )));
 
     debugPrint(result.toString());

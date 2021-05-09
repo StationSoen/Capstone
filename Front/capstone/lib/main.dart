@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:capstone/ui/historyPage.dart';
 import 'package:capstone/home.dart';
+import 'package:capstone/ui/previousComplete.dart';
 import 'package:capstone/ui/previousExamPage.dart';
+import 'package:capstone/ui/problemDetailCompletePage.dart';
 import 'package:capstone/ui/problemDetalPage.dart';
 import 'package:capstone/ui/problemPage.dart';
 import 'package:capstone/ui/problemPaused.dart';
@@ -24,7 +26,7 @@ import 'visual/load.dart';
 
 /*
 
-Next HiveField = 11
+Next HiveField = 12
 
 */
 
@@ -69,9 +71,11 @@ void main() async {
   await Hive.openBox('completeExamList');
   var pausedExamListHive = Hive.box("pausedExamList");
   var completeExamListHive = Hive.box("completeExamList");
+  if (pausedExamListHive.get('pausedExamList') == null) {
+    pausedExamListHive.put('pausedExamList', initExamList);
+    completeExamListHive.put('completeExamList', initExamList);
+  }
 
-  pausedExamListHive.put('pausedExamList', initExamList);
-  completeExamListHive.put('completeExamList', initExamList);
   // initialize Hive Value ...
   List<String> hiveSetting = ['location', 'id', 'pw'];
 
@@ -135,6 +139,9 @@ class MyApp extends StatelessWidget {
               '/previousExamPage': (BuildContext context) => PreviousExamPage(),
               '/problemDetailPage': (BuildContext context) =>
                   ProblemDetailPage(),
+              '/previousComplete': (BuildContext context) => PreviousComplete(),
+              '/problemDetailCompletePage': (BuildContext context) =>
+                  ProblemDetailCompletePage(),
               // '/problemPaused': (BuildContext context) =>
               //     new ProblemPausedPage(),
             },

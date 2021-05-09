@@ -261,7 +261,7 @@ class _SelectPageState extends State<SelectPage> {
                     Exam newExam = Exam(
                         dateCode: tempDate,
                         directory: directory,
-                        remainTime: time.toInt(),
+                        settingTime: time.toInt(),
                         problemList: myProblemList);
 
                     // Navigator.pushNamed(context, '/problemPage');

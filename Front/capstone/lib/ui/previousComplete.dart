@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -7,12 +7,12 @@ import 'package:settings_ui/settings_ui.dart';
 import '../exam.dart';
 import 'component.dart';
 
-class PreviousExamPage extends StatefulWidget {
+class PreviousComplete extends StatefulWidget {
   @override
-  _PreviousExamPageState createState() => _PreviousExamPageState();
+  _PreviousCompleteState createState() => _PreviousCompleteState();
 }
 
-class _PreviousExamPageState extends State<PreviousExamPage> {
+class _PreviousCompleteState extends State<PreviousComplete> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -23,7 +23,7 @@ class _PreviousExamPageState extends State<PreviousExamPage> {
         transitionBetweenRoutes: false,
         // Strange...
         middle: Text(
-          "풀이 내역",
+          "오답 노트",
           style: TextStyle(fontSize: 18),
         ),
       ),
@@ -32,9 +32,9 @@ class _PreviousExamPageState extends State<PreviousExamPage> {
         child: SettingsList(
           sections: [
             SettingsSection(
-              title: '그만둔 문제',
+              title: '채점 내역',
               titleTextStyle: TextStyle(fontSize: 16),
-              tiles: previousExamList('pausedExamList'),
+              tiles: previousExamList('completeExamList'),
             ),
             // for padding.
             SettingsSection(
@@ -66,7 +66,7 @@ List<SettingsTile> previousExamList(String input) {
         title: formatter
             .format(DateFormat('MM_dd_HH_mm_ss').parse(list[i].dateCode)),
         onPressed: (BuildContext context) {
-          Navigator.pushNamed(context, '/problemDetailPage',
+          Navigator.pushNamed(context, '/problemDetailCompletePage',
               arguments: list[i]);
         },
       );

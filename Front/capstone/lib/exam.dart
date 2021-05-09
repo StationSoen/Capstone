@@ -13,15 +13,16 @@ class Exam extends HiveObject {
   @HiveField(0)
   late List<dynamic> problemList;
 
+  /// 플레이한 이후 경과 시간
   @HiveField(1)
-  late int remainTime;
+  late int elapsedTime = 0;
 
   @HiveField(2)
   late String directory;
 
-  /// Max time for Exam info..
+  /// 최초 설정한 시간
   @HiveField(10)
-  late int originalTime = 0;
+  late int settingTime;
 
   @HiveField(11)
   bool complete = false;
@@ -34,11 +35,10 @@ class Exam extends HiveObject {
 
   Exam(
       {required this.problemList,
-      required this.remainTime,
       required this.directory,
-      required this.dateCode}) {
+      required this.dateCode,
+      required this.settingTime}) {
     this.userAnswer = List.filled(this.problemList.length, -1);
-    originalTime = remainTime;
   }
 }
 
