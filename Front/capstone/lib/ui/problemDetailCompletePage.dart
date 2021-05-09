@@ -127,7 +127,7 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                             ])),
                     CircleButton(
                       text: "돌아가기",
-                      color: Colors.blue,
+                      color: const Color(0xFF4386F9),
                       textColor: Colors.white,
                       width: 345,
                       marginVertical: 10,
@@ -171,11 +171,13 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                 children: [
                   Text(
                     "#${(i + 1).toString().padLeft(2, '0')} - 전개도 유형",
-                    style: TextStyle(fontSize: 17, color: Colors.blue),
+                    style:
+                        TextStyle(fontSize: 17, color: const Color(0xFF4386F9)),
                   ),
                   Text(
                     "정답",
-                    style: TextStyle(fontSize: 17, color: Colors.blue),
+                    style:
+                        TextStyle(fontSize: 17, color: const Color(0xFF4386F9)),
                   )
                 ]),
             onPressed: () {

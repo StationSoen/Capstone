@@ -33,7 +33,7 @@ class Home extends StatelessWidget {
                   "점 선 면",
                   style: TextStyle(
                     fontSize: 40,
-                    fontWeight: FontWeight.w600,
+                    fontFamily: 'RecipeKorea',
                     color: Colors.white,
                     // fontFamily: "Binggrae"
                   ),
@@ -45,7 +45,7 @@ class Home extends StatelessWidget {
                   "By CAU Capstone Project",
                   style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontFamily: 'RecipeKorea',
                       color: Colors.white),
                 )
               ],

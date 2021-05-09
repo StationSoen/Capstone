@@ -26,7 +26,8 @@ import 'visual/load.dart';
 
 /*
 
-Next HiveField = 12
+Next HiveField = 20
+Next HiveType = 06
 
 */
 
@@ -62,6 +63,7 @@ void main() async {
   Hive.registerAdapter(ExamAdapter());
   Hive.registerAdapter(CubeProblemAdapter());
   Hive.registerAdapter(DevCubeAdapter());
+  Hive.registerAdapter(FoldProblemAdapter());
 
   await Hive.openBox('setting');
   var settingHive = Hive.box('setting');
@@ -176,7 +178,6 @@ class MyHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        border: Border(top: BorderSide(color: Colors.grey, width: 1.0)),
         currentIndex: int.parse(setting.get('start')),
         items: bottomItems,
         iconSize: 20,

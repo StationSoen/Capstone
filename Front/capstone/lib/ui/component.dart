@@ -23,7 +23,7 @@ class CircleButton extends StatelessWidget {
       required this.onPressed,
       this.marginVertical = 0,
       this.color = Colors.white,
-      this.textColor = Colors.blue});
+      this.textColor = const Color(0xFF4386F9)});
 
   @override
   Widget build(BuildContext context) {
@@ -66,3 +66,11 @@ BoxDecoration basicBox = new BoxDecoration(
     ),
   ],
 );
+
+Color disableColors({required bool isDisable, required Color inputColor}) {
+  if (!isDisable) {
+    return Colors.grey;
+  } else {
+    return inputColor;
+  }
+}

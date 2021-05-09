@@ -145,3 +145,49 @@ class CubeProblemAdapter extends TypeAdapter<CubeProblem> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class FoldProblemAdapter extends TypeAdapter<FoldProblem> {
+  @override
+  final int typeId = 4;
+
+  @override
+  FoldProblem read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return FoldProblem(
+      primitiveData: fields[12] as PaperFold,
+    )
+      ..problemType = fields[5] as int
+      ..textType = fields[6] as int
+      ..difficulty = fields[7] as int
+      ..answer = fields[8] as int;
+  }
+
+  @override
+  void write(BinaryWriter writer, FoldProblem obj) {
+    writer
+      ..writeByte(5)
+      ..writeByte(12)
+      ..write(obj.primitiveData)
+      ..writeByte(5)
+      ..write(obj.problemType)
+      ..writeByte(6)
+      ..write(obj.textType)
+      ..writeByte(7)
+      ..write(obj.difficulty)
+      ..writeByte(8)
+      ..write(obj.answer);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FoldProblemAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

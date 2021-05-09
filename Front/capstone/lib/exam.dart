@@ -1,4 +1,5 @@
 import 'package:capstone/logic/dev_cube.dart';
+import 'package:capstone/logic/paper_fold.dart';
 import 'package:hive/hive.dart';
 
 part 'exam.g.dart';
@@ -78,4 +79,15 @@ class CubeProblem extends Problem {
   }
 }
 
-class FoldProblem extends Problem {}
+@HiveType(typeId: 4)
+class FoldProblem extends Problem {
+  @HiveField(12)
+  late PaperFold primitiveData;
+
+  FoldProblem({required this.primitiveData}) {
+    this.textType = primitiveData.type;
+    this.problemType = 1;
+    this.difficulty = primitiveData.level;
+    this.answer = primitiveData.answer[0];
+  }
+}

@@ -27,6 +27,7 @@ class _RecordPageState extends State<RecordPage> {
   List<int> problemsN = [0, 0];
   List<int> correctsN = [0, 0];
   List<int> totalTime = [0, 0];
+  List<double> correctPercent = [0.0, 0.0];
 
   void calData(int segment) {
     var completeExamListHive = Hive.box('completeExamList');
@@ -44,10 +45,9 @@ class _RecordPageState extends State<RecordPage> {
           // 문제 종류 판단
           if (list[i].problemList[j].problemType == segment) {
             problemNumber++;
-          }
-          // 정답 개수 판단
-          if (list[i].problemList[j].answer == list[i].userAnswer[j]) {
-            correctNumber++;
+            if (list[i].problemList[j].answer == list[i].userAnswer[j]) {
+              correctNumber++;
+            }
           }
         }
       }
@@ -59,9 +59,17 @@ class _RecordPageState extends State<RecordPage> {
       return;
     }
 
+    if (problemNumber == 0) {
+      correctPercent[segment] = 0;
+    }
     problemsN[segment] = problemNumber;
     correctsN[segment] = correctNumber;
+    correctPercent[segment] = correctNumber / problemNumber;
     totalTime[segment] = times;
+
+    if (problemNumber == 0) {
+      correctPercent[segment] = 0;
+    }
   }
 
   @override
@@ -105,7 +113,31 @@ class _RecordPageState extends State<RecordPage> {
                         margin:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                         width: double.infinity,
-                        child: Text("문제 통계",
+                        child: Text("전체 통계",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 24,
+                                color: Colors.black)),
+                      ),
+                      RecordCard(
+                          icon: Icon(CupertinoIcons.alarm),
+                          name: "풀이한 시간",
+                          value: (totalTime[segment] ~/ 3600)
+                                  .toString()
+                                  .padLeft(2, '0') +
+                              " : " +
+                              (totalTime[segment] ~/ 60)
+                                  .toString()
+                                  .padLeft(2, '0') +
+                              " : " +
+                              (totalTime[segment] % 60)
+                                  .toString()
+                                  .padLeft(2, '0')),
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                        width: double.infinity,
+                        child: Text("유형별 통계",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 24,
@@ -124,24 +156,10 @@ class _RecordPageState extends State<RecordPage> {
                       RecordCard(
                         icon: Icon(CupertinoIcons.percent),
                         name: "정답률",
-                        value: ((correctsN[segment] / problemsN[segment]) * 100)
-                                .toStringAsFixed(2) +
-                            "%",
+                        value:
+                            (correctPercent[segment] * 100).toStringAsFixed(2) +
+                                "%",
                       ),
-                      RecordCard(
-                          icon: Icon(CupertinoIcons.alarm),
-                          name: "풀이한 시간",
-                          value: (totalTime[segment] ~/ 3600)
-                                  .toString()
-                                  .padLeft(2, '0') +
-                              " : " +
-                              (totalTime[segment] ~/ 60)
-                                  .toString()
-                                  .padLeft(2, '0') +
-                              " : " +
-                              (totalTime[segment] % 60)
-                                  .toString()
-                                  .padLeft(2, '0')),
                     ],
                   ),
                 ),
