@@ -47,13 +47,13 @@ class PaperFold {
       points.add([c / a, 0.0]);
     }
     if (a != 0 && (c - b * 100.0) / a >= 0 && (c - b * 100.0) / a <= 100) {
-      points.add([(c - b * 100.0), 100.0]);
+      points.add([(c - b * 100.0) / a, 100.0]);
     }
     if (b != 0 && c / b > 0 && c / b < 100) {
       points.add([0.0, c / b]);
     }
     if (b != 0 && (c - a * 100.0) / b > 0 && (c - a * 100.0) / b < 100) {
-      points.add([100.0, (c - a * 100.0)]);
+      points.add([100.0, (c - a * 100.0) / b]);
     }
     return points;
   }
@@ -80,7 +80,7 @@ class PaperFold {
     do {
       var standard = rng.nextInt(3);
       do {
-        linetype = rng.nextInt(4);
+        linetype = rng.nextInt((level == 2) ? 6 : 4);
       } while (linetype == except);
 
       if (standard == 0) {
@@ -96,6 +96,15 @@ class PaperFold {
         } else if (linetype == 3) {
           // 대각선 \
           line = [1, -1, 0];
+        } else {
+          var lv3 = rand(3, 2, true);
+          var a = (lv3[0] > 0) ? 2 : 1;
+          var b =
+              (lv3[0] > 0) ? ((lv3[1] > 0) ? 1 : -1) : ((lv3[1] > 0) ? 2 : -2);
+          var c = (lv3[1] > 0)
+              ? ((lv3[2] > 0) ? 200 : 100)
+              : ((lv3[2] > 0) ? 0 : ((lv3[0] > 0) ? 100 : -100));
+          line = [a, b, c];
         }
       } else {
         var x = rng.nextInt(61) + 20;
@@ -112,6 +121,19 @@ class PaperFold {
         } else if (linetype == 3) {
           // 대각선 \
           line = [1, -1, x - y];
+        } else {
+          var p1 = rng.nextInt(4);
+          var p2 = rng.nextInt(2);
+          var point1, point2;
+          if (p1 == 0) point1 = [0, 0];
+          if (p1 == 1) point1 = [0, 100];
+          if (p1 == 2) point1 = [100, 100];
+          if (p1 == 3) point1 = [100, 0];
+
+          if (p2 == 0) point2 = [100 - point1[0], y];
+          if (p2 == 1) point2 = [x, 100 - point1[1]];
+
+          line = Paper.pointToLine(point1: point1, point2: point2);
         }
       }
     } while (!paper.isCrossed(line));
@@ -126,6 +148,8 @@ class PaperFold {
   PaperFold(this.level, [this.type = -1, this.seed]) {
     seed ??= seedRng.nextInt(2147483647);
     rng = Random(seed);
+
+    print('seed : $seed\n');
 
     if (type == -1) {
       type = rng.nextInt(2);
