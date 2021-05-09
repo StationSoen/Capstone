@@ -105,12 +105,14 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                                   "문제 생성일",
                                   formatter.format(DateFormat('MM_dd_HH_mm_ss')
                                       .parse(exam.dateCode))),
-                              infoRow("전체 풀이 시간", exam.settingTime.toString()),
+                              infoRow("전체 풀이 시간",
+                                  "${(exam.settingTime / 60).toInt().toString().padLeft(2, "0")}:${(exam.settingTime % 60).toInt().toString().padLeft(2, "0")}"),
                               infoRow("전체 문제 수",
                                   exam.problemList.length.toString()),
                               infoRow("문제 유형", "전개도, 종이접기"),
                               Divider(),
-                              infoRow("소요 시간", exam.elapsedTime.toString()),
+                              infoRow("소요 시간",
+                                  "${(exam.elapsedTime / 60).toInt().toString().padLeft(2, "0")}:${(exam.elapsedTime % 60).toInt().toString().padLeft(2, "0")}"),
                             ])),
                     Container(
                         padding:
