@@ -20,14 +20,15 @@ import 'dart:ui' as UI;
 import 'package:capstone/ui/settingPage.dart';
 
 import 'logic/dev_cube.dart';
+import 'logic/paper_fold.dart';
 import 'ui/SplashScreen.dart';
 import 'exam.dart';
 import 'visual/load.dart';
 
 /*
 
-Next HiveField = 20
-Next HiveType = 06
+Next HiveField = 22
+Next HiveType = 07
 
 */
 
@@ -63,6 +64,7 @@ void main() async {
   Hive.registerAdapter(ExamAdapter());
   Hive.registerAdapter(CubeProblemAdapter());
   Hive.registerAdapter(DevCubeAdapter());
+  Hive.registerAdapter(PaperFoldAdapter());
   Hive.registerAdapter(FoldProblemAdapter());
 
   await Hive.openBox('setting');

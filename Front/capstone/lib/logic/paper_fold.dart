@@ -261,8 +261,11 @@ class PaperFold {
 }
 
 /// 하나의 이미지로 보여지는 접힌 종이
+@HiveType(typeId: 06)
 class Paper {
+  @HiveField(20)
   var layers = []; // 0이 맨 위 레이어
+  @HiveField(21)
   var layerCount = 0;
 
   bool inRange() {

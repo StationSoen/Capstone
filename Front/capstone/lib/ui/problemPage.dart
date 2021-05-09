@@ -188,7 +188,7 @@ class _ProblemPageState extends State<ProblemPage> {
 }
 
 class ProblemCard extends StatefulWidget {
-  late double answerSize = 125;
+  late double answerSize = 110;
   late int index;
   late SwiperController swiperController;
   late int maxIndex;
@@ -251,7 +251,7 @@ class _ProblemCardState extends State<ProblemCard> {
               child: Text(
                   "#${this.widget.index + 1}\n${problemText[this.widget.type][this.widget.exam.problemList[this.widget.index].textType]}")),
           Divider(),
-
+          problemQuestion(this.widget.type),
           Divider(),
 
           // Problem Answers Section
@@ -281,7 +281,7 @@ class _ProblemCardState extends State<ProblemCard> {
     if (type == 0) {
       // Cube Problem
       return Container(
-        height: 200,
+        height: 250,
         width: 200,
         child: Image.file(
           File(this.widget.exam.directory +
@@ -294,47 +294,68 @@ class _ProblemCardState extends State<ProblemCard> {
     } else if (type == 1) {
       // PaperFlod Problem
       return Container(
-        height: 200,
+        height: 240,
         width: double.infinity,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Image.file(
-                  File(this.widget.exam.directory +
-                      "/problem" +
-                      (this.widget.index + 1).toString() +
-                      "_0.png"),
-                  fit: BoxFit.contain,
+                Container(
+                  width: 100,
+                  child: Image.file(
+                    File(this.widget.exam.directory +
+                        "/problem" +
+                        (this.widget.index + 1).toString() +
+                        "_0.png"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                Image.file(
-                  File(this.widget.exam.directory +
-                      "/problem" +
-                      (this.widget.index + 1).toString() +
-                      "_1.png"),
-                  fit: BoxFit.contain,
-                ),
-                Image.file(
-                  File(this.widget.exam.directory +
-                      "/problem" +
-                      (this.widget.index + 1).toString() +
-                      "_2.png"),
-                  fit: BoxFit.contain,
-                ),
-                Image.file(
-                  File(this.widget.exam.directory +
-                      "/problem" +
-                      (this.widget.index + 1).toString() +
-                      "_3.png"),
-                  fit: BoxFit.contain,
+                Container(
+                  width: 100,
+                  child: Image.file(
+                    File(this.widget.exam.directory +
+                        "/problem" +
+                        (this.widget.index + 1).toString() +
+                        "_1.png"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ],
             ),
-            Image(
-              image: AssetImage('assets/fold/paperex.png'),
-            )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: 100,
+                  child: Image.file(
+                    File(this.widget.exam.directory +
+                        "/problem" +
+                        (this.widget.index + 1).toString() +
+                        "_2.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Container(
+                  width: 100,
+                  child: Image.file(
+                    File(this.widget.exam.directory +
+                        "/problem" +
+                        (this.widget.index + 1).toString() +
+                        "_3.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            ),
+            // Container(
+            //   height: 40,
+            //   child: Image(
+            //     image: AssetImage('assets/fold/paperex.png'),
+            //     fit: BoxFit.cover,
+            //   ),
+            // )
           ],
         ),
       );

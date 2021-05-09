@@ -57,3 +57,39 @@ class PaperFoldAdapter extends TypeAdapter<PaperFold> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class PaperAdapter extends TypeAdapter<Paper> {
+  @override
+  final int typeId = 6;
+
+  @override
+  Paper read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Paper()
+      ..layers = (fields[20] as List).cast<dynamic>()
+      ..layerCount = fields[21] as int;
+  }
+
+  @override
+  void write(BinaryWriter writer, Paper obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(20)
+      ..write(obj.layers)
+      ..writeByte(21)
+      ..write(obj.layerCount);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PaperAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
