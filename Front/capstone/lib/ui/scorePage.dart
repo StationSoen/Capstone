@@ -4,6 +4,7 @@ import 'package:capstone/ui/cube3D.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'PaperFold.dart';
 import 'component.dart';
 import '../exam.dart';
 
@@ -19,14 +20,18 @@ class ScorePage extends StatefulWidget {
 class _ScorePageState extends State<ScorePage> {
   int correct = 0;
   List<bool> correctList = [];
+  List<int> typeList = [];
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("Hello World");
     // extract parameter from NamedPush
     this.widget.exam = ModalRoute.of(context)!.settings.arguments as Exam;
 
     // make correctList
     for (int i = 0; i < this.widget.exam.problemList.length; i++) {
+      debugPrint(this.widget.exam.problemList[i].problemType.toString());
+      typeList.add(this.widget.exam.problemList[i].problemType);
       if (this.widget.exam.userAnswer[i] ==
           this.widget.exam.problemList[i].answer) {
         correctList.add(true);
@@ -95,7 +100,8 @@ class _ScorePageState extends State<ScorePage> {
                                     fontSize: 24, fontWeight: FontWeight.w600),
                               ),
                               Divider(),
-                              problemList(correctList.length, correctList),
+                              problemList(
+                                  correctList.length, correctList, typeList),
                             ])),
                     CircleButton(
                       text: "확인",
@@ -113,8 +119,9 @@ class _ScorePageState extends State<ScorePage> {
     );
   }
 
-  Widget problemList(int number, List<bool> correctList) {
+  Widget problemList(int number, List<bool> correctList, List<int> typeList) {
     List<Widget> result = [];
+    List<String> type = ["전개도 유형", "종이접기 유형"];
 
     for (int i = 0; i < number; i++) {
       if (correctList[i]) {
@@ -124,7 +131,8 @@ class _ScorePageState extends State<ScorePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "#${(i + 1).toString().padLeft(2, '0')} - 전개도 유형",
+                    "#${(i + 1).toString().padLeft(2, '0')} - " +
+                        type[typeList[i]],
                     style:
                         TextStyle(fontSize: 17, color: const Color(0xFF4386F9)),
                   ),
@@ -135,15 +143,28 @@ class _ScorePageState extends State<ScorePage> {
                   )
                 ]),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => Cube3D(
-                    exam: this.widget.exam,
-                    index: i,
+              debugPrint("AAA" + typeList[i].toString());
+              if (typeList[i] == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => Cube3D(
+                      exam: this.widget.exam,
+                      index: i,
+                    ),
                   ),
-                ),
-              );
+                );
+              } else if (typeList[i] == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => PaperFold(
+                      exam: this.widget.exam,
+                      index: i,
+                    ),
+                  ),
+                );
+              }
             }));
       } else {
         result.add(CupertinoButton(
@@ -152,7 +173,8 @@ class _ScorePageState extends State<ScorePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "#${(i + 1).toString().padLeft(2, '0')} - 전개도 유형",
+                    "#${(i + 1).toString().padLeft(2, '0')} - " +
+                        type[typeList[i]],
                     style: TextStyle(fontSize: 17, color: Colors.red),
                   ),
                   Text(
@@ -161,15 +183,28 @@ class _ScorePageState extends State<ScorePage> {
                   )
                 ]),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => Cube3D(
-                    exam: this.widget.exam,
-                    index: i,
+              debugPrint("AAA" + typeList[i].toString());
+              if (typeList[i] == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => Cube3D(
+                      exam: this.widget.exam,
+                      index: i,
+                    ),
                   ),
-                ),
-              );
+                );
+              } else if (typeList[i] == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => PaperFold(
+                      exam: this.widget.exam,
+                      index: i,
+                    ),
+                  ),
+                );
+              }
             }));
       }
     }

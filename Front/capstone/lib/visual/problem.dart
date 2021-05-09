@@ -8,15 +8,19 @@ import 'png.dart';
 import 'load.dart';
 import '../logic/dev_cube.dart';
 
-Future<List<CubeProblem>> makecubeproblem(
+Future<List<Problem>> makecubeproblem(
   int num,
   int level,
   String directory,
 ) async {
-  List<CubeProblem> cubeList = [];
+  List<Problem> cubeList = [];
   for (int i = 1; i <= num; i++) {
     var temp = DevCube(level);
-    cubeList.add(CubeProblem(primitiveData: temp));
+    cubeList.add(Problem(
+        answer: temp.answer[0],
+        problemType: 0,
+        difficulty: temp.level,
+        textType: temp.type));
     // debugPrint("문제번호는$i");
     // debugPrint("${temp.toString()}");
     if (temp.level > 0) {

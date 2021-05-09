@@ -3,9 +3,6 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:hive/hive.dart';
 
-part 'dev_cube.g.dart';
-
-@HiveType(typeId: 3)
 class DevCube {
   /// 문제 유형
   ///
@@ -14,7 +11,6 @@ class DevCube {
   /// - 2 도형을 보여주고 맞는 전개도 고르기
   /// - 3 도형을 보여주고 틀린 전개도 고르기
   /// - 4 전개도 중 다른 하나 고르기
-  @HiveField(10)
   int type = -1;
 
   /// 난이도
@@ -22,14 +18,10 @@ class DevCube {
   /// - 0 단순 색깔
   /// - 1 구별하기 쉬운 숫자 및 도형
   /// - 2 구별이 어려운 문양
-  @HiveField(11)
   int level = -1;
 
-  @HiveField(12)
   var example;
-  @HiveField(13)
   var suggestion;
-  @HiveField(14)
   var answer;
 
   /// 등각투영도와 방향 : 각각 0,1,2 순서대로 표기. 화살표방향이 0, 시계 반대방향 회전

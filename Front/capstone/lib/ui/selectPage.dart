@@ -281,19 +281,17 @@ class _SelectPageState extends State<SelectPage> {
                     debugPrint("problemNumber : $directory");
                     debugPrint("problemNumber : $tempDate");
 
-                    List<dynamic> myProblemList = [
+                    List<Problem> myProblemList = [
                       ...await makecubeproblem(typeProblemNumber[0].toInt(),
                           typeDifficulty[0], directory),
                     ];
 
-                    print("AAAAAAA");
                     myProblemList.addAll(await makepaperproblem(
                         typeProblemNumber[1].toInt(),
                         typeDifficulty[1],
                         directory,
                         typeProblemNumber[0].toInt()));
 
-                    print("BBBBBBB");
                     Exam newExam = Exam(
                         dateCode: tempDate,
                         directory: directory,

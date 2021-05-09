@@ -1,10 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:hive/hive.dart';
-
-part 'paper_fold.g.dart';
-
 /// 종이를 접는 조건
 /// * 같은 방법을 연속해서 쓰지 않는다
 /// * 범위 바깥으로 튀어나오게 접기 않는다
@@ -18,29 +14,21 @@ part 'paper_fold.g.dart';
 ///
 
 /// 2d 종이접기
-@HiveType(typeId: 05)
 class PaperFold {
   /// 문제 유형
   ///
   /// - 0 종이를 접고 앞면 또는 뒷면이 맞는것 고르기
   /// - 1 종이를 접고 앞면 또는 뒷면이 아닌것 고르기
-  @HiveField(13)
   int type = -1;
 
   /// 난이도
-  @HiveField(14)
   int level = -1;
 
-  @HiveField(15)
   var example;
-  @HiveField(16)
   var suggestion;
-  @HiveField(17)
   var answer;
 
-  @HiveField(18)
   var seed;
-  @HiveField(19)
   late Random rng;
 
   static Random seedRng = Random();
@@ -261,11 +249,8 @@ class PaperFold {
 }
 
 /// 하나의 이미지로 보여지는 접힌 종이
-@HiveType(typeId: 06)
 class Paper {
-  @HiveField(20)
   var layers = []; // 0이 맨 위 레이어
-  @HiveField(21)
   var layerCount = 0;
 
   bool inRange() {

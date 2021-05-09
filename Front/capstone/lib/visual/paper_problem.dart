@@ -8,14 +8,18 @@ import 'paper_png.dart';
 import 'load.dart';
 import '../logic/paper_fold.dart';
 
-Future<List<FoldProblem>> makepaperproblem(
+Future<List<Problem>> makepaperproblem(
     int num, int level, String directory, int counter) async {
-  List<FoldProblem> foldList = [];
+  List<Problem> foldList = [];
   debugPrint("페이퍼 문제 : 로딩시작");
   for (int i = 1; i <= num; i++) {
     debugPrint("페이퍼 문제$i");
     var temp = PaperFold(0, 0);
-    foldList.add(FoldProblem(primitiveData: temp));
+    foldList.add(Problem(
+        answer: temp.answer[0],
+        problemType: 1,
+        difficulty: temp.level,
+        textType: temp.type));
     //debugPrint(temp.example[0][1].toString());
     //debugPrint(temp.example[0][1].layerCount.toString());
     //debugPrint(temp.example[0][1].layers.toString());

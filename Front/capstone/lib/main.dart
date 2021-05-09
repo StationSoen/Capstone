@@ -62,10 +62,7 @@ void main() async {
   // initialize Hive and opening Hive boxes..
   await Hive.initFlutter();
   Hive.registerAdapter(ExamAdapter());
-  Hive.registerAdapter(CubeProblemAdapter());
-  Hive.registerAdapter(DevCubeAdapter());
-  Hive.registerAdapter(PaperFoldAdapter());
-  Hive.registerAdapter(FoldProblemAdapter());
+  Hive.registerAdapter(ProblemAdapter());
 
   await Hive.openBox('setting');
   var settingHive = Hive.box('setting');

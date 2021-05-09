@@ -17,14 +17,14 @@ class ExamAdapter extends TypeAdapter<Exam> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Exam(
-      problemList: (fields[0] as List).cast<dynamic>(),
+      problemList: (fields[0] as List).cast<Problem>(),
       directory: fields[2] as String,
-      dateCode: fields[3] as String,
-      settingTime: fields[10] as int,
+      dateCode: fields[5] as String,
+      settingTime: fields[3] as int,
     )
       ..elapsedTime = fields[1] as int
-      ..complete = fields[11] as bool
-      ..userAnswer = (fields[4] as List).cast<int>();
+      ..complete = fields[4] as bool
+      ..userAnswer = (fields[6] as List).cast<int>();
   }
 
   @override
@@ -37,13 +37,13 @@ class ExamAdapter extends TypeAdapter<Exam> {
       ..write(obj.elapsedTime)
       ..writeByte(2)
       ..write(obj.directory)
-      ..writeByte(10)
-      ..write(obj.settingTime)
-      ..writeByte(11)
-      ..write(obj.complete)
       ..writeByte(3)
-      ..write(obj.dateCode)
+      ..write(obj.settingTime)
       ..writeByte(4)
+      ..write(obj.complete)
+      ..writeByte(5)
+      ..write(obj.dateCode)
+      ..writeByte(6)
       ..write(obj.userAnswer);
   }
 
@@ -68,24 +68,25 @@ class ProblemAdapter extends TypeAdapter<Problem> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Problem()
-      ..problemType = fields[5] as int
-      ..textType = fields[6] as int
-      ..difficulty = fields[7] as int
-      ..answer = fields[8] as int;
+    return Problem(
+      textType: fields[8] as int,
+      problemType: fields[7] as int,
+      difficulty: fields[9] as int,
+      answer: fields[10] as int,
+    );
   }
 
   @override
   void write(BinaryWriter writer, Problem obj) {
     writer
       ..writeByte(4)
-      ..writeByte(5)
-      ..write(obj.problemType)
-      ..writeByte(6)
-      ..write(obj.textType)
       ..writeByte(7)
-      ..write(obj.difficulty)
+      ..write(obj.problemType)
       ..writeByte(8)
+      ..write(obj.textType)
+      ..writeByte(9)
+      ..write(obj.difficulty)
+      ..writeByte(10)
       ..write(obj.answer);
   }
 
@@ -96,98 +97,6 @@ class ProblemAdapter extends TypeAdapter<Problem> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ProblemAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
-class CubeProblemAdapter extends TypeAdapter<CubeProblem> {
-  @override
-  final int typeId = 2;
-
-  @override
-  CubeProblem read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return CubeProblem(
-      primitiveData: fields[9] as DevCube,
-    )
-      ..problemType = fields[5] as int
-      ..textType = fields[6] as int
-      ..difficulty = fields[7] as int
-      ..answer = fields[8] as int;
-  }
-
-  @override
-  void write(BinaryWriter writer, CubeProblem obj) {
-    writer
-      ..writeByte(5)
-      ..writeByte(9)
-      ..write(obj.primitiveData)
-      ..writeByte(5)
-      ..write(obj.problemType)
-      ..writeByte(6)
-      ..write(obj.textType)
-      ..writeByte(7)
-      ..write(obj.difficulty)
-      ..writeByte(8)
-      ..write(obj.answer);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CubeProblemAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
-class FoldProblemAdapter extends TypeAdapter<FoldProblem> {
-  @override
-  final int typeId = 4;
-
-  @override
-  FoldProblem read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return FoldProblem(
-      primitiveData: fields[12] as PaperFold,
-    )
-      ..problemType = fields[5] as int
-      ..textType = fields[6] as int
-      ..difficulty = fields[7] as int
-      ..answer = fields[8] as int;
-  }
-
-  @override
-  void write(BinaryWriter writer, FoldProblem obj) {
-    writer
-      ..writeByte(5)
-      ..writeByte(12)
-      ..write(obj.primitiveData)
-      ..writeByte(5)
-      ..write(obj.problemType)
-      ..writeByte(6)
-      ..write(obj.textType)
-      ..writeByte(7)
-      ..write(obj.difficulty)
-      ..writeByte(8)
-      ..write(obj.answer);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FoldProblemAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
