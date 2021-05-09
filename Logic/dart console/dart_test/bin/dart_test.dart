@@ -107,5 +107,6 @@ void main(List<String> arguments) {
   // print('one : $one, zero : $zero');
 
   //print(PaperFold.rangeEdge([0, 1, 50]));
-  print(PaperFold(1, 0));
+  var p = PaperFold(1, 1);
+  print(p);
 }

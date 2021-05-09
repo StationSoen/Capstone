@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:collection/collection.dart';
 
 /// 종이를 접는 조건
 /// * 같은 방법을 연속해서 쓰지 않는다
@@ -23,6 +22,10 @@ class PaperFold {
   int type = -1;
 
   /// 난이도
+  ///
+  /// - 0 앞으로만 접기
+  /// - 1 앞뒤로 접기
+  /// - 2 정해진 각도 이외로도 접기
   int level = -1;
 
   var example;
@@ -41,16 +44,16 @@ class PaperFold {
     var points = [];
 
     if (a != 0 && c / a >= 0 && c / a <= 100) {
-      points.add([c / a, 0]);
+      points.add([c / a, 0.0]);
     }
-    if (a != 0 && (c - b * 100) / a >= 0 && (c - b * 100) / a <= 100) {
-      points.add([(c - b * 100), 100]);
+    if (a != 0 && (c - b * 100.0) / a >= 0 && (c - b * 100.0) / a <= 100) {
+      points.add([(c - b * 100.0), 100.0]);
     }
     if (b != 0 && c / b > 0 && c / b < 100) {
-      points.add([0, c / b]);
+      points.add([0.0, c / b]);
     }
-    if (b != 0 && (c - a * 100) / b > 0 && (c - a * 100) / b < 100) {
-      points.add([100, (c - a * 100)]);
+    if (b != 0 && (c - a * 100.0) / b > 0 && (c - a * 100.0) / b < 100) {
+      points.add([100.0, (c - a * 100.0)]);
     }
     return points;
   }
@@ -72,50 +75,54 @@ class PaperFold {
   /// 무작위 linetype과 line을 반환
   List setFoldLine(Paper paper, [int except = -1]) {
     var line;
-    var standard = rng.nextInt(2);
     var linetype;
-    do {
-      linetype = rng.nextInt(4);
-    } while (linetype == except);
 
-    if (standard == 0) {
-      if (linetype == 0) {
-        //세로
-        line = [1, 0, 50];
-      } else if (linetype == 1) {
-        //가로
-        line = [0, 1, 50];
-      } else if (linetype == 2) {
-        // 대각선 /
-        line = [1, 1, 100];
-      } else if (linetype == 3) {
-        // 대각선 \
-        line = [1, -1, 0];
+    do {
+      var standard = rng.nextInt(3);
+      do {
+        linetype = rng.nextInt(4);
+      } while (linetype == except);
+
+      if (standard == 0) {
+        if (linetype == 0) {
+          //세로
+          line = [1, 0, 50];
+        } else if (linetype == 1) {
+          //가로
+          line = [0, 1, 50];
+        } else if (linetype == 2) {
+          // 대각선 /
+          line = [1, 1, 100];
+        } else if (linetype == 3) {
+          // 대각선 \
+          line = [1, -1, 0];
+        }
+      } else {
+        var x = rng.nextInt(61) + 20;
+        var y = rng.nextInt(61) + 20;
+        if (linetype == 0) {
+          //세로
+          line = [1, 0, x];
+        } else if (linetype == 1) {
+          //가로
+          line = [0, 1, y];
+        } else if (linetype == 2) {
+          // 대각선 /
+          line = [1, 1, x + y];
+        } else if (linetype == 3) {
+          // 대각선 \
+          line = [1, -1, x - y];
+        }
       }
-    } else {
-      var x = rng.nextInt(61) + 20;
-      var y = rng.nextInt(61) + 20;
-      if (linetype == 0) {
-        //세로
-        line = [1, 0, x];
-      } else if (linetype == 1) {
-        //가로
-        line = [0, 1, y];
-      } else if (linetype == 2) {
-        // 대각선 /
-        line = [1, 1, x + y];
-      } else if (linetype == 3) {
-        // 대각선 \
-        line = [1, -1, x - y];
-      }
-    }
+    } while (!paper.isCrossed(line));
 
     return [linetype, line];
   }
 
-  /// * example[0] : 접힌 종이
-  /// * example[1] : [선, 방향]
-  /// *
+  /// * example[0] : [접힌 종이...]
+  /// * example[1] : [[선, 방향]...]
+  /// * suggsetion : [종이 ...]
+  /// * answer     : [정답번호]
   PaperFold(this.level, [this.type = -1, this.seed]) {
     seed ??= seedRng.nextInt(2147483647);
     rng = Random(seed);
@@ -162,15 +169,22 @@ class PaperFold {
 
       lines.add([rangeEdge(line), direction, line, select]);
     }
-    // 보기 데이터
+    // 예시 데이터
     example = [papers, lines];
 
+    // 난이도 조절(0)
+    if (level == 0) {
+      for (var i = 0; i < 4; i++) {
+        lines[i][1] = true;
+      }
+    }
+
+    // 정답과 보기
     var order = rand(4, 4);
-    print(order);
     answer = [order[0]];
     suggestion = List<Paper>.filled(4, Paper());
     if (type == 0) {
-      // 정답
+      // 정답(옳은 것)
       Paper p = papers[3].clone();
       p.foldPaper(line, select, direction);
       suggestion[order[0]] = p;
@@ -195,7 +209,45 @@ class PaperFold {
       s3.foldPaper(lines[2][2], lines[2][3], !lines[2][1]);
       s3.foldPaper(lines[3][2], lines[3][3], !lines[3][1]);
       suggestion[order[3]] = s3;
-    } else if (type == 1) {}
+    } else if (type == 1) {
+      // 오답
+      Paper p1 = papers[3].clone();
+      p1.foldPaper(line, !select, direction);
+
+      Paper p2 = papers[3].clone();
+      p2.foldPaper(line, select, direction);
+
+      while (!p1.inRange() || !p2.inRange()) {
+        data = setFoldLine(papers[3], linetype);
+        line = data[1];
+
+        p1 = papers[3].clone();
+        p1.foldPaper(line, !select, direction);
+
+        p2 = papers[3].clone();
+        p2.foldPaper(line, select, direction);
+      }
+
+      lines[3][0] = rangeEdge(line);
+      lines[3][2] = line;
+
+      Paper p3 = papers[3].clone();
+      p3.foldPaper(line, select, !direction);
+
+      suggestion[order[1]] = p1;
+      suggestion[order[2]] = p2;
+      suggestion[order[3]] = p3;
+
+      var wrong = rand(4, 2, true);
+      var mp = wrong.map((e) => e > 0).toList();
+
+      // 정답(틀린 것)
+      Paper s = papers[0].clone();
+      for (var i = 0; i < 4; i++) {
+        s.foldPaper(lines[i][2], lines[i][3], mp[i] ^ !lines[i][1]);
+      }
+      suggestion[order[0]] = s;
+    }
   }
 
   @override
@@ -219,6 +271,18 @@ class PaperFold {
 class Paper {
   var layers = []; // 0이 맨 위 레이어
   var layerCount = 0;
+
+  bool inRange() {
+    for (var i = 0; i < layerCount; i++) {
+      var layer = layers[i];
+      int p = layer.length;
+      for (var j = 0; j < p; j++) {
+        if (layer[j][0] < 0 || layer[j][0] > 100) return false;
+        if (layer[j][1] < 0 || layer[j][1] > 100) return false;
+      }
+    }
+    return true;
+  }
 
   /// point가 접힌 종이 안에 있는지 체크
   bool isIn(List point) {
@@ -249,7 +313,7 @@ class Paper {
     return false;
   }
 
-  /// point가 접힌 종이 안에 있는지 체크
+  /// line이 접힌 종이를 지나는지 체크
   bool isCrossed(List line) {
     var n = layerCount;
 
@@ -418,10 +482,10 @@ class Paper {
   Paper() {
     layerCount = 1;
     layers.add([
-      [0, 0],
-      [100, 0],
-      [100, 100],
-      [0, 100]
+      [0.0, 0.0],
+      [100.0, 0.0],
+      [100.0, 100.0],
+      [0.0, 100.0]
     ]);
   }
 
