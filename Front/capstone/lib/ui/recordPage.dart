@@ -25,46 +25,48 @@ class _RecordPageState extends State<RecordPage> {
 
   // data
   List<int> problemsN = [0, 0];
-  List<int> corretsN = [0, 0];
+  List<int> correctsN = [0, 0];
   List<int> totalTime = [0, 0];
 
   void calData(int segment) {
     var completeExamListHive = Hive.box('completeExamList');
     List<dynamic> list;
 
+    int problemNumber = 0;
+    int correctNumber = 0;
+    int times = 0;
+
     if (completeExamListHive.isNotEmpty) {
       list = completeExamListHive.get("completeExamList");
       for (int i = 0; i < list.length; i++) {
+        times = list[i].elapsedTime + times;
         for (int j = 0; j < list[i].problemList.length; j++) {
-          totalTime[segment] = list[i].elapsedTime + totalTime[segment];
           // 문제 종류 판단
           if (list[i].problemList[j].problemType == segment) {
-            problemsN[segment]++;
+            problemNumber++;
           }
           // 정답 개수 판단
           if (list[i].problemList[j].answer == list[i].userAnswer[j]) {
-            corretsN[segment]++;
+            correctNumber++;
           }
         }
       }
     } else {
       debugPrint("completeExamListHive Box에 저장된 값이 없습니다.");
       problemsN[segment] = -1;
-      corretsN[segment] = -1;
+      correctsN[segment] = -1;
       totalTime[segment] = -1;
       return;
     }
-  }
 
-  @override
-  void initState() {
-    super.initState();
-    calData(segment);
-    print("problemsN : $problemsN, correctsN : $corretsN, times : $totalTime");
+    problemsN[segment] = problemNumber;
+    correctsN[segment] = correctNumber;
+    totalTime[segment] = times;
   }
 
   @override
   Widget build(BuildContext context) {
+    calData(segment);
     return CupertinoPageScaffold(
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
@@ -117,12 +119,12 @@ class _RecordPageState extends State<RecordPage> {
                       RecordCard(
                         icon: Icon(CupertinoIcons.circle),
                         name: "성공한 문제",
-                        value: corretsN[segment].toString(),
+                        value: correctsN[segment].toString(),
                       ),
                       RecordCard(
                         icon: Icon(CupertinoIcons.percent),
                         name: "정답률",
-                        value: ((corretsN[segment] / problemsN[segment]) * 100)
+                        value: ((correctsN[segment] / problemsN[segment]) * 100)
                                 .toStringAsFixed(2) +
                             "%",
                       ),
