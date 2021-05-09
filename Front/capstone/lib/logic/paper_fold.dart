@@ -22,10 +22,6 @@ class PaperFold {
   int type = -1;
 
   /// 난이도
-  ///
-  /// - 0 앞으로만 접기
-  /// - 1 앞뒤로 접기
-  /// - 2 정해진 각도 이외로도 접기
   int level = -1;
 
   var example;
@@ -47,13 +43,13 @@ class PaperFold {
       points.add([c / a, 0.0]);
     }
     if (a != 0 && (c - b * 100.0) / a >= 0 && (c - b * 100.0) / a <= 100) {
-      points.add([(c - b * 100.0) / a, 100.0]);
+      points.add([(c - b * 100.0), 100.0]);
     }
     if (b != 0 && c / b > 0 && c / b < 100) {
       points.add([0.0, c / b]);
     }
     if (b != 0 && (c - a * 100.0) / b > 0 && (c - a * 100.0) / b < 100) {
-      points.add([100.0, (c - a * 100.0) / b]);
+      points.add([100.0, (c - a * 100.0)]);
     }
     return points;
   }
@@ -73,72 +69,45 @@ class PaperFold {
   }
 
   /// 무작위 linetype과 line을 반환
-  List setFoldLine(Paper paper, List except) {
-    var range = (level == 2) ? 5 : 4;
+  List setFoldLine(Paper paper, [int except = -1]) {
     var line;
     var linetype;
-    var lasttype = except.last;
 
     do {
-      linetype = rng.nextInt(2 * range);
-    } while (
-        (linetype < range && lasttype < range) || except.contains(linetype));
-
-    do {
-      var standard = (linetype / range).toInt();
-      var modtype = linetype % range;
+      var standard = rng.nextInt(2);
+      do {
+        linetype = rng.nextInt(4);
+      } while (linetype == except);
 
       if (standard == 0) {
-        if (modtype == 0) {
+        if (linetype == 0) {
           //세로
           line = [1, 0, 50];
-        } else if (modtype == 1) {
+        } else if (linetype == 1) {
           //가로
           line = [0, 1, 50];
-        } else if (modtype == 2) {
+        } else if (linetype == 2) {
           // 대각선 /
           line = [1, 1, 100];
-        } else if (modtype == 3) {
+        } else if (linetype == 3) {
           // 대각선 \
           line = [1, -1, 0];
-        } else {
-          var lv3 = rand(3, 2, true);
-          var a = (lv3[0] > 0) ? 2 : 1;
-          var b =
-              (lv3[0] > 0) ? ((lv3[1] > 0) ? 1 : -1) : ((lv3[1] > 0) ? 2 : -2);
-          var c = (lv3[1] > 0)
-              ? ((lv3[2] > 0) ? 200 : 100)
-              : ((lv3[2] > 0) ? 0 : ((lv3[0] > 0) ? 100 : -100));
-          line = [a, b, c];
         }
       } else {
         var x = rng.nextInt(61) + 20;
         var y = rng.nextInt(61) + 20;
-        if (modtype == 0) {
+        if (linetype == 0) {
           //세로
           line = [1, 0, x];
-        } else if (modtype == 1) {
+        } else if (linetype == 1) {
           //가로
           line = [0, 1, y];
-        } else if (modtype == 2) {
+        } else if (linetype == 2) {
           // 대각선 /
           line = [1, 1, x + y];
-        } else if (modtype == 3) {
+        } else if (linetype == 3) {
           // 대각선 \
           line = [1, -1, x - y];
-        } else {
-          var p1 = rng.nextInt(4);
-          var p2 = rng.nextInt(2);
-          var point1, point2;
-          if (p1 == 0) point1 = [0, 0];
-          if (p1 == 1) point1 = [0, 100];
-          if (p1 == 2) point1 = [100, 100];
-          if (p1 == 3) point1 = [100, 0];
-
-          if (p2 == 0) point2 = [100 - point1[0], y];
-          if (p2 == 1) point2 = [x, 100 - point1[1]];
-
-          line = Paper.pointToLine(point1: point1, point2: point2);
         }
       }
     } while (!paper.isCrossed(line));
@@ -146,15 +115,13 @@ class PaperFold {
     return [linetype, line];
   }
 
-  /// * example[0] : [접힌 종이...]
-  /// * example[1] : [[선, 방향]...]
+  /// * example[0] : 접힌 종이
+  /// * example[1] : [선, 방향]
   /// * suggsetion : [종이 ...]
   /// * answer     : [정답번호]
   PaperFold(this.level, [this.type = -1, this.seed]) {
     seed ??= seedRng.nextInt(2147483647);
     rng = Random(seed);
-
-    print('seed : $seed\n');
 
     if (type == -1) {
       type = rng.nextInt(2);
@@ -167,14 +134,12 @@ class PaperFold {
     papers.add(Paper());
 
     // 선 초기화
-    var except = [22];
-    var data = setFoldLine(papers[0], except);
+    var data = setFoldLine(papers[0]);
     var linetype = data[0];
     var line = data[1];
-    except.add(linetype);
 
     var select = rng.nextInt(2) > 0;
-    var direction = (level == 0) ? true : rng.nextInt(2) > 0;
+    var direction = rng.nextInt(2) > 0;
     if ((line[0] * 50 + line[1] * 50 - line[2]) * (select ? 1 : -1) < 0) {
       select = !select;
     }
@@ -188,13 +153,12 @@ class PaperFold {
       papers.add(nextPaper);
 
       // 선 정하기
-      data = setFoldLine(nextPaper, except);
+      data = setFoldLine(nextPaper, linetype);
       linetype = data[0];
       line = data[1];
-      except.add(linetype);
 
       select = rng.nextInt(2) > 0;
-      direction = (level == 0) ? true : rng.nextInt(2) > 0;
+      direction = rng.nextInt(2) > 0;
       if ((line[0] * 50 + line[1] * 50 - line[2]) * (select ? 1 : -1) < 0) {
         select = !select;
       }
@@ -206,6 +170,7 @@ class PaperFold {
 
     // 정답과 보기
     var order = rand(4, 4);
+    print(order);
     answer = [order[0]];
     suggestion = List<Paper>.filled(4, Paper());
     if (type == 0) {
@@ -221,16 +186,10 @@ class PaperFold {
       suggestion[order[1]] = s1;
 
       //오답 2
-      Paper s2 = papers[3].clone();
-      var choose = rand(4, s2.layerCount);
-      var shuffle = rand(4, 4);
-      var temp = [];
-      for (var i = 0; i < 4; i++) {
-        temp.add(s2.layers[choose[i]]);
-      }
-      for (var i = 0; i < 4; i++) {
-        s2.layers[choose[i]] = temp[shuffle[i]];
-      }
+      Paper s2 = papers[1].clone();
+      s2.foldPaper(lines[1][2], lines[1][3], !lines[1][1]);
+      s2.foldPaper(lines[2][2], lines[2][3], !lines[2][1]);
+      s2.foldPaper(lines[3][2], lines[3][3], !lines[3][1]);
       suggestion[order[2]] = s2;
 
       //오답 3
@@ -249,7 +208,7 @@ class PaperFold {
       p2.foldPaper(line, select, direction);
 
       while (!p1.inRange() || !p2.inRange()) {
-        data = setFoldLine(papers[3], except);
+        data = setFoldLine(papers[0], linetype);
         line = data[1];
 
         p1 = papers[3].clone();
@@ -269,7 +228,7 @@ class PaperFold {
       suggestion[order[2]] = p2;
       suggestion[order[3]] = p3;
 
-      var wrong = rand(4, 2, true);
+      var wrong = rand(4, 2);
       var mp = wrong.map((e) => e > 0).toList();
 
       // 정답(틀린 것)
