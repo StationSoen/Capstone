@@ -1,10 +1,5 @@
-import 'dart:io';
-
 import 'package:capstone/logic/dev_cube.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 
 part 'exam.g.dart';
 

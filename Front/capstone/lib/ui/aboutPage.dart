@@ -6,14 +6,12 @@ class AboutPage extends StatelessWidget {
   String appVersion;
 
   String developers;
-  String logoDesigner;
   String githubLink;
 
   AboutPage(
       {required this.appName,
       required this.appVersion,
       required this.developers,
-      required this.logoDesigner,
       required this.githubLink});
 
   @override
@@ -57,15 +55,9 @@ class AboutPage extends StatelessWidget {
                           margin: EdgeInsets.only(bottom: 20),
                           child: Text(
                             developers,
+                            textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.black54),
                           )),
-                      Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          child: Text("Logo Design")),
-                      Container(
-                          margin: EdgeInsets.only(bottom: 20),
-                          child: Text(logoDesigner,
-                              style: TextStyle(color: Colors.black54))),
                       Container(
                           margin: EdgeInsets.only(bottom: 10),
                           child: Text("GitHub Link")),

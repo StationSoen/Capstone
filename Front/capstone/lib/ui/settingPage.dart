@@ -16,8 +16,8 @@ class _SettingPageState extends State<SettingPage> {
   List<String> startSubtitle = ["60초", "5분", "10분"];
   int id = 0000;
 
-  late int result;
-  late int start;
+  int result = 0;
+  int start = 0;
   bool fingerPrint = false;
 
   void actionsheet(BuildContext context) async {
@@ -134,7 +134,7 @@ class _SettingPageState extends State<SettingPage> {
 
   void _launchURL() async {
     const url =
-        'https://github.com/kyw2271/cbhs_app/blob/main/Privacy%20Statement';
+        'https://github.com/StationSoen/Capstone/blob/main/Privacy%20Statement';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -170,7 +170,7 @@ class _SettingPageState extends State<SettingPage> {
                       subtitle: location[int.parse(setting.get('location'))],
                       leading: Icon(CupertinoIcons.search),
                       onPressed: (BuildContext context) {
-                        actionsheet(context);
+                        // actionsheet(context);
                       },
                     ),
                     SettingsTile(
@@ -186,7 +186,7 @@ class _SettingPageState extends State<SettingPage> {
                       subtitle: startSubtitle[int.parse(setting.get('start'))],
                       leading: Icon(CupertinoIcons.alarm),
                       onPressed: (BuildContext context) {
-                        startActionsheet(context);
+                        // startActionsheet(context);
                       },
                     ),
                   ],
@@ -199,25 +199,16 @@ class _SettingPageState extends State<SettingPage> {
                         title: '정보',
                         leading: Icon(CupertinoIcons.person),
                         onPressed: (BuildContext context) {
-                          // showAboutDialog(
-                          //     context: context,
-                          //     applicationVersion: "1.0.0",
-                          //     applicationName: "옴놈뇸",
-                          //     applicationLegalese: "개발자",
-                          //     applicationIcon: ImageIcon(
-                          //         AssetImage("assets/images/logo.png")));
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) => AboutPage(
-                                        appName: "오소리",
-                                        appVersion: "0.1.0",
+                                        appName: "점선면",
+                                        appVersion: "0.0.1",
                                         developers:
-                                            "Sunghyun(StationSoen@github)\nYoungwoo(kyw2271@github)",
-                                        logoDesigner:
-                                            "조하연(loosainfjn@naver.com)",
+                                            "손  민(miney272@github)\n유성현(stationsoen@github)\n이길상(oat641@github)",
                                         githubLink:
-                                            "github.com/kyw2271/cbhs_app",
+                                            "github.com/stationsoen/Capstone",
                                       )));
                           debugPrint(setting.get('id').toString());
                         },

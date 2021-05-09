@@ -320,7 +320,7 @@ showCupertinoDialog(
     required Exam exam,
     required BuildContext context}) {
   var completeExamListHive = Hive.box('completeExamList');
-  var pausedExamListHive = Hive.box('puasedExamList');
+  var pausedExamListHive = Hive.box('pausedExamList');
   List<Widget> dialogActions = [
     CupertinoButton(
       child: Text('제출'),
