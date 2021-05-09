@@ -201,16 +201,25 @@ class PaperFold {
       suggestion[order[3]] = s3;
     } else if (type == 1) {
       // 오답
-      Paper test0, test1;
-      do {
-        test0 = papers[3].clone();
-        test1 = papers[3].clone();
-      } while (true);
       Paper p1 = papers[3].clone();
       p1.foldPaper(line, !select, direction);
 
       Paper p2 = papers[3].clone();
       p2.foldPaper(line, select, direction);
+
+      while (!p1.inRange() || !p2.inRange()) {
+        data = setFoldLine(papers[0], linetype);
+        line = data[1];
+
+        p1 = papers[3].clone();
+        p1.foldPaper(line, !select, direction);
+
+        p2 = papers[3].clone();
+        p2.foldPaper(line, select, direction);
+      }
+
+      lines[3][0] = rangeEdge(line);
+      lines[3][2] = line;
 
       Paper p3 = papers[3].clone();
       p3.foldPaper(line, select, !direction);
