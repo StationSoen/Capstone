@@ -176,7 +176,6 @@ class MyHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        border: Border(top: BorderSide(color: Colors.grey, width: 1.0)),
         currentIndex: int.parse(setting.get('start')),
         items: bottomItems,
         iconSize: 20,

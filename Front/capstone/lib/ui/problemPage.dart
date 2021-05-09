@@ -56,7 +56,8 @@ class _ProblemPageState extends State<ProblemPage> {
             content: "설정한 시간이 만료되었습니다.",
             cancel: false,
             exam: this.widget.exam,
-            context: context);
+            context: context,
+            second: this.widget.exam.settingTime);
       }
       // debugPrint("$second");
     });
@@ -156,6 +157,7 @@ class _ProblemPageState extends State<ProblemPage> {
                     swiperController: swiperController,
                     maxIndex: this.widget.exam.problemList.length - 1,
                     exam: this.widget.exam,
+                    second: second,
                   );
                 },
                 onIndexChanged: (int i) {
@@ -193,12 +195,14 @@ class ProblemCard extends StatefulWidget {
 
   late Exam exam;
 
-  ProblemCard({
-    required this.index,
-    required this.exam,
-    required this.swiperController,
-    required this.maxIndex,
-  });
+  late int second;
+
+  ProblemCard(
+      {required this.index,
+      required this.exam,
+      required this.swiperController,
+      required this.maxIndex,
+      required this.second});
 
   @override
   _ProblemCardState createState() => _ProblemCardState();
@@ -256,12 +260,16 @@ class _ProblemCardState extends State<ProblemCard> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [selectButton(0), selectButton(1)],
+                children: [
+                  selectButton(0, this.widget.second),
+                  selectButton(1, this.widget.second)
+                ],
               ),
               SizedBox(height: 20),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [selectButton(2), selectButton(3)])
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                selectButton(2, this.widget.second),
+                selectButton(3, this.widget.second)
+              ])
             ],
           )
         ],
@@ -269,7 +277,7 @@ class _ProblemCardState extends State<ProblemCard> {
     );
   }
 
-  Widget selectButton(int key) {
+  Widget selectButton(int key, int second) {
     return CupertinoButton(
       padding: EdgeInsets.all(0),
       onPressed: () {
@@ -285,7 +293,8 @@ class _ProblemCardState extends State<ProblemCard> {
               content: "마지막 문제입니다.\n제출하시겠습니까?",
               cancel: true,
               exam: this.widget.exam,
-              context: context);
+              context: context,
+              second: second);
         }
       },
       child: Container(
@@ -318,7 +327,8 @@ showCupertinoDialog(
     required String content,
     required bool cancel,
     required Exam exam,
-    required BuildContext context}) {
+    required BuildContext context,
+    required int second}) {
   var completeExamListHive = Hive.box('completeExamList');
   var pausedExamListHive = Hive.box('pausedExamList');
   List<Widget> dialogActions = [
@@ -326,6 +336,7 @@ showCupertinoDialog(
       child: Text('제출'),
       onPressed: () {
         exam.complete = true;
+        exam.elapsedTime = second;
 
         pausedExamList
             .removeWhere((element) => element.dateCode == exam.dateCode);

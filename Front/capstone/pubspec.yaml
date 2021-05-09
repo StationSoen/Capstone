@@ -93,15 +93,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: binggrae
-  #     fonts:
-  #       - asset: assets/fonts/binggrae-bold.ttf
-  # #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: binggrae
+      fonts:
+        - asset: assets/fonts/binggrae-bold.ttf
+    - family: RecipeKorea
+      fonts:
+        - asset: assets/fonts/Recipekorea.ttf
+    - family: YSpotlight
+      fonts:
+        - asset: assets/fonts/YSpotlight.ttf
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
