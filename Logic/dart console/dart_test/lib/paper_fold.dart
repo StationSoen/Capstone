@@ -80,7 +80,7 @@ class PaperFold {
     do {
       var standard = rng.nextInt(3);
       do {
-        linetype = rng.nextInt((level == 2) ? 6 : 4);
+        linetype = rng.nextInt((level == 2) ? 5 : 4);
       } while (linetype == except);
 
       if (standard == 0) {
@@ -220,10 +220,16 @@ class PaperFold {
       suggestion[order[1]] = s1;
 
       //오답 2
-      Paper s2 = papers[1].clone();
-      s2.foldPaper(lines[1][2], lines[1][3], !lines[1][1]);
-      s2.foldPaper(lines[2][2], lines[2][3], !lines[2][1]);
-      s2.foldPaper(lines[3][2], lines[3][3], !lines[3][1]);
+      Paper s2 = papers[3].clone();
+      var choose = rand(4, s2.layerCount);
+      var shuffle = rand(4, 4);
+      var temp = [];
+      for (var i = 0; i < 4; i++) {
+        temp.add(s2.layers[choose[i]]);
+      }
+      for (var i = 0; i < 4; i++) {
+        s2.layers[choose[i]] = temp[shuffle[i]];
+      }
       suggestion[order[2]] = s2;
 
       //오답 3
