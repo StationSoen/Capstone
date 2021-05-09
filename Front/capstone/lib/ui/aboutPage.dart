@@ -65,6 +65,13 @@ class AboutPage extends StatelessWidget {
                           margin: EdgeInsets.only(bottom: 20),
                           child: Text(githubLink,
                               style: TextStyle(color: Colors.black54))),
+                      Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text("Font Info")),
+                      Container(
+                          margin: EdgeInsets.only(bottom: 20),
+                          child: Text("레코체 : recipekorea.com",
+                              style: TextStyle(color: Colors.black54))),
                     ],
                   ),
                 ),
