@@ -97,7 +97,12 @@ class Home extends StatelessWidget {
                           color: Color(0xFF4386F9),
                           onPressed: () {
                             // button tapped!
-                            debugPrint("Tapped!");
+                            var pausedExamListHive = Hive.box("pausedExamList");
+                            print("HIVE PROBLEM! : " +
+                                pausedExamListHive
+                                    .get('pausedExamList')[0]
+                                    .dateCode
+                                    .toString());
                             // open selectPage();
                           },
                           child: Text(

@@ -320,6 +320,7 @@ showCupertinoDialog(
     required Exam exam,
     required BuildContext context}) {
   var completeExamListHive = Hive.box('completeExamList');
+  var pausedExamListHive = Hive.box('puasedExamList');
   List<Widget> dialogActions = [
     CupertinoButton(
       child: Text('제출'),
@@ -334,6 +335,7 @@ showCupertinoDialog(
 
         // Hive에 업데이트.
         completeExamListHive.put('completeExamList', completeExamList);
+        pausedExamListHive.put('pausedExamList', pausedExamList);
         Navigator.pushNamedAndRemoveUntil(
             context, '/scorePage', ModalRoute.withName('/'),
             arguments: exam);

@@ -49,30 +49,30 @@ class _PreviousCompleteState extends State<PreviousComplete> {
 /// List
 List<SettingsTile> previousExamList(String input) {
   var examListHive = Hive.box(input);
-  List<Exam> list = examListHive.get(input);
-
-  /// 05/04 20:07:18 생성된 시험지
   DateFormat formatter = DateFormat("MM/dd HH:mm:ss");
   List<SettingsTile> result = [];
+  List<dynamic> list;
 
-  if (list.isEmpty) {
-    // 아무 값도 없을 경우.
+  if (examListHive.isNotEmpty) {
+    list = examListHive.get(input);
+  } else {
     result.add(new SettingsTile(title: "내역이 없습니다."));
     return result;
-  } else {
-    // 값이 있을 경우.
-    for (int i = 0; i < list.length; i++) {
-      SettingsTile settingTile = new SettingsTile(
-        title: formatter
-            .format(DateFormat('MM_dd_HH_mm_ss').parse(list[i].dateCode)),
-        onPressed: (BuildContext context) {
-          Navigator.pushNamed(context, '/problemDetailCompletePage',
-              arguments: list[i]);
-        },
-      );
-      result.add(settingTile);
-    }
-
-    return result;
   }
+
+  /// 05/04 20:07:18 생성된 시험지
+  // 값이 있을 경우.
+  for (int i = 0; i < list.length; i++) {
+    SettingsTile settingTile = new SettingsTile(
+      title: formatter
+          .format(DateFormat('MM_dd_HH_mm_ss').parse(list[i].dateCode)),
+      onPressed: (BuildContext context) {
+        Navigator.pushNamed(context, '/problemDetailCompletePage',
+            arguments: list[i]);
+      },
+    );
+    result.add(settingTile);
+  }
+
+  return result;
 }

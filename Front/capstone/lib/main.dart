@@ -69,12 +69,6 @@ void main() async {
 
   await Hive.openBox('pausedExamList');
   await Hive.openBox('completeExamList');
-  var pausedExamListHive = Hive.box("pausedExamList");
-  var completeExamListHive = Hive.box("completeExamList");
-  if (pausedExamListHive.get('pausedExamList') == null) {
-    pausedExamListHive.put('pausedExamList', initExamList);
-    completeExamListHive.put('completeExamList', initExamList);
-  }
 
   // initialize Hive Value ...
   List<String> hiveSetting = ['location', 'id', 'pw'];

@@ -76,6 +76,8 @@ class _ProblemPausedPageState extends State<ProblemPausedPage> {
                         // Hive에 업데이트.
                         completeExamListHive.put(
                             'completeExamList', completeExamList);
+                        pausedExamListHive.put(
+                            'pausedExamList', pausedExamList);
 
                         debugPrint("This Exam is in completeExamList index : " +
                             completeExamList
