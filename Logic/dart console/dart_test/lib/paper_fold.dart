@@ -85,7 +85,7 @@ class PaperFold {
         (linetype < range && lasttype < range) || except.contains(linetype));
 
     do {
-      int standard = linetype / range;
+      var standard = (linetype / range).toInt();
       linetype -= standard * range;
 
       if (standard == 0) {
@@ -167,7 +167,7 @@ class PaperFold {
     papers.add(Paper());
 
     // 선 초기화
-    var except = [];
+    var except = [22];
     var data = setFoldLine(papers[0], except);
     var linetype = data[0];
     var line = data[1];
