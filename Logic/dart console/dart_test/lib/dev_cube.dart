@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:collection/collection.dart';
 
 /// 3d 전개도
@@ -20,9 +21,13 @@ class DevCube {
   /// - 2 구별이 어려운 문양
   int level = -1;
 
-  var example;
-  var suggestion;
-  var answer;
+  late var example;
+  late var suggestion;
+  late var answer;
+  late var seed;
+
+  static var seedRng = Random();
+  static var rng;
 
   /// 등각투영도와 방향 : 각각 0,1,2 순서대로 표기. 화살표방향이 0, 시계 반대방향 회전
   static var isometrics = [
@@ -93,7 +98,6 @@ class DevCube {
   /// [0, range) 범위의 number개의 수. duplicate 가 true로 주어지면 중복을 허용하여 선택. 기본값은 false
   static List rand(int number, int range, [bool duplicate = false]) {
     var list = [];
-    var rng = Random();
     for (var i = 0; i < number; i++) {
       int n;
       do {
@@ -290,7 +294,10 @@ class DevCube {
   /// - example:예시 이미지
   /// - suggestion:보기 데이터
   /// - answer: 정답 데이터
-  DevCube(this.level, [this.type]) {
+  DevCube(this.level, [this.type = -1, this.seed]) {
+    seed ??= seedRng.nextInt(2147483647);
+    rng = Random(seed);
+
     if (type == -1) {
       type = rand(1, 4)[0];
     }

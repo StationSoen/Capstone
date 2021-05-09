@@ -2,7 +2,17 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:collection/collection.dart';
 
-var rng = Random(0);
+/// 종이를 접는 조건
+/// * 같은 방법을 연속해서 쓰지 않는다
+/// * 범위 바깥으로 튀어나오게 접기 않는다
+///
+/// 위 조건을 만족하는 상황에서의 방법은 다음과같다
+/// * 가로로 접기
+/// * 세로로 접기
+/// * 대각선 45도 /
+/// * 대각선 135도 \
+/// * 범위면의 인접한 두 면에서 점을 골라 삼각형으로 접기
+///
 
 /// 2d 종이접기
 class PaperFold {
@@ -13,88 +23,359 @@ class PaperFold {
   int type = -1;
 
   /// 난이도
-  ///
-  /// - 0 가로, 세로, 대각선으로만 접기
-  /// - 1 각도 제한없이 접기
-  /// - 2 겹쳐진 일부만 접기
   int level = -1;
+
   var example;
   var suggestion;
   var answer;
 
-  /// [0, range) 범위의 number개의 수. duplicate 가 true로 주어지면 중복을 허용하여 선택. 기본값은 false
-  List rand(int number, int range, [bool duplicate = false]) {
-    var list = [];
-    for (var i = 0; i < number; i++) {
-      int n;
-      do {
-        n = rng.nextInt(range);
-        if (duplicate) break;
-      } while (list.contains(n));
-      list.add(n);
+  var seed;
+  late Random rng;
+
+  static Random seedRng = Random();
+
+  static List rangeEdge(List line) {
+    var a = line[0];
+    var b = line[1];
+    var c = line[2];
+    var points = [];
+
+    if (a != 0 && c / a >= 0 && c / a <= 100) {
+      points.add([c / a, 0]);
     }
-    return list;
+    if (a != 0 && (c - b * 100) / a >= 0 && (c - b * 100) / a <= 100) {
+      points.add([(c - b * 100), 100]);
+    }
+    if (b != 0 && c / b > 0 && c / b < 100) {
+      points.add([0, c / b]);
+    }
+    if (b != 0 && (c - a * 100) / b > 0 && (c - a * 100) / b < 100) {
+      points.add([100, (c - a * 100)]);
+    }
+    return points;
   }
 
-  PaperFold(this.level, [this.type = -1]) {
-    example = [];
+  /// 무작위 linetype과 line을 반환
+  List setFoldLine(Paper paper, [int except = -1]) {
+    var line;
+    var standard = rng.nextInt(2);
+    var linetype;
+    do {
+      linetype = rng.nextInt(4);
+    } while (linetype == except);
+
+    if (standard == 0) {
+      if (linetype == 0) {
+        //세로
+        line = [1, 0, 50];
+      } else if (linetype == 1) {
+        //가로
+        line = [0, 1, 50];
+      } else if (linetype == 2) {
+        // 대각선 /
+        line = [1, 1, 100];
+      } else if (linetype == 3) {
+        // 대각선 \
+        line = [1, -1, 0];
+      }
+    } else {
+      var x = rng.nextInt(61) + 20;
+      var y = rng.nextInt(61) + 20;
+      if (linetype == 0) {
+        //세로
+        line = [1, 0, x];
+      } else if (linetype == 1) {
+        //가로
+        line = [0, 1, y];
+      } else if (linetype == 2) {
+        // 대각선 /
+        line = [1, 1, x + y];
+      } else if (linetype == 3) {
+        // 대각선 \
+        line = [1, -1, x - y];
+      }
+    }
+
+    return [linetype, line];
+  }
+
+  /// * example[0] : 접힌 종이
+  /// * example[1] : [선, 방향]
+  /// *
+  PaperFold(this.level, [this.type = -1, this.seed]) {
+    seed ??= seedRng.nextInt(2147483647);
+    rng = Random(seed);
+
+    var papers = [];
+    var lines = [];
+
+    // 종이 초기화
+    papers.add(Paper());
+
+    // 선 초기화
+    var data = setFoldLine(papers[0]);
+    var linetype = data[0];
+    var line = data[1];
+
+    var select = rng.nextInt(2) > 0;
+    var direction = rng.nextInt(2) > 0;
+    if ((line[0] * 50 + line[1] * 50 - line[2]) * (select ? 1 : -1) < 0) {
+      select = !select;
+    }
+
+    lines.add([rangeEdge(line), direction]);
+
+    for (var i = 0; i < 3; i++) {
+      // 접기
+      Paper nextPaper = papers[i].clone();
+      nextPaper.foldPaper(line, select, direction);
+      papers.add(nextPaper);
+
+      // 선 정하기
+      data = setFoldLine(nextPaper, linetype);
+      linetype = data[0];
+      line = data[1];
+
+      select = rng.nextInt(2) > 0;
+      direction = rng.nextInt(2) > 0;
+      if ((line[0] * 50 + line[1] * 50 - line[2]) * (select ? 1 : -1) < 0) {
+        select = !select;
+      }
+
+      lines.add([rangeEdge(line), direction]);
+    }
+
+    // 보기 데이터
+    example = [papers, lines];
+
     suggestion = [];
     answer = [];
-    if (type == -1) {
-      type = rand(1, 4)[0];
-    }
-    answer.add(rand(1, 4)[0]);
-    for (var i = 0; i < 4; i++) {
-      example.add(Paper());
-      suggestion.add(Paper());
-      answer.add(Paper());
-    }
   }
 
   @override
   String toString() {
     var ty = '유형 : $type, 난이도 : $level\n';
     var ex = '예시 : \n';
-    for (var i = 0; i < example.length; i++) {
-      var exi = example[i];
-      ex += '   $exi\n';
+    for (var i = 0; i < 4; i++) {
+      ex +=
+          ' 종이 :\n ${example[0][i]} \n 선 :\n ${example[1][i][0]}, ${example[1][i][1]}\n\n';
     }
     var su = '보기 : \n';
-    for (var i = 0; i < suggestion.length; i++) {
-      var sui = suggestion[i];
-      su += '   $sui\n';
-    }
     var an = '정답 : \n';
-    for (var i = 0; i < answer.length; i++) {
-      var ani = answer[i];
-      an += '   $ani\n';
-    }
     return ty + ex + su + an;
   }
 }
 
+/// 하나의 이미지로 보여지는 접힌 종이
 class Paper {
-  var layers;
-  var layerCount;
-  // var cartesian;
+  var layers = []; // 0이 맨 위 레이어
+  var layerCount = 0;
+
+  /// point가 접힌 종이 안에 있는지 체크
+  bool isIn(List point) {
+    var n = layerCount;
+    var insec = 0;
+
+    var px = point[0];
+    var py = point[1];
+
+    for (var i = 0; i < n; i++) {
+      var layer = layers[i];
+      int p = layer.length;
+      for (var j = 0; j < p; j++) {
+        var u = layer[(j - 1) % p][0];
+        var v = layer[(j - 1) % p][1];
+
+        var x = layer[j][0];
+        var y = layer[j][1];
+
+        if ((py < v) != (py < y)) {
+          var scale = (u - x) / (v - y);
+          var newX = scale * (py - y) + x;
+          if (newX > px) insec++;
+        }
+      }
+      if (insec % 2 > 0) return true;
+    }
+    return false;
+  }
+
+  /// point가 접힌 종이 안에 있는지 체크
+  bool isCrossed(List line) {
+    var n = layerCount;
+
+    var a = line[0];
+    var b = line[1];
+    var c = line[2];
+
+    for (var i = 0; i < n; i++) {
+      var layer = layers[i];
+      int p = layer.length;
+      var left = false;
+      var right = false;
+      for (var j = 0; j < p; j++) {
+        var x = layer[j][0];
+        var y = layer[j][1];
+        if (a * x + b * y < c) left = true;
+        if (a * x + b * y > c) right = true;
+      }
+      if (left && right) return true;
+    }
+    return false;
+  }
+
+  /// * (x,y)형태의 좌표 Path의 집합인 layers를 ax + by = c 형태의 line으로 분할, 한쪽을 접는다.
+  /// * select가 true면 왼쪽을, false면 오른쪽을 선택
+  /// * direction이 true면 앞으로, false면 뒤로 접음
+  void foldPaper(List line, bool select, bool direction) {
+    var fold = [];
+    var stay = [];
+
+    for (var i = 0; i < layerCount; i++) {
+      var result = foldLayer(layers[i], line, select);
+      if (result[0].length > 0) {
+        if (select) {
+          fold.insert(0, result[0]);
+        } else {
+          stay.add(result[0]);
+        }
+      }
+      if (result[1].length > 0) {
+        if (select) {
+          stay.add(result[1]);
+        } else {
+          fold.insert(0, result[1]);
+        }
+      }
+    }
+
+    if (direction) {
+      layers = stay + fold;
+    } else {
+      layers = fold + stay;
+    }
+
+    layerCount = layers.length;
+  }
+
+  /// line을 기준으로 point를 대칭한 점을 반환
+  /// * point = (u,v)
+  /// * line = (a,b,c) -> ax + by = c
+  static List linearSymmerty(List point, List line) {
+    var x, y;
+    var a = line[0];
+    var b = line[1];
+    var c = line[2];
+    var u = point[0];
+    var v = point[1];
+
+    x = (2 * a * c - a * a * u + b * b * u - 2 * a * b * v) / (a * a + b * b);
+    y = (2 * b * c + a * a * v - b * b * v - 2 * a * b * u) / (a * a + b * b);
+    return [x, y];
+  }
+
+  /// 두 line의 교점 반환
+  static List intersection({required List line1, required List line2}) {
+    var a = line1[0];
+    var b = line1[1];
+    var c = line1[2];
+
+    var d = line2[0];
+    var e = line2[1];
+    var f = line2[2];
+
+    var x = (b * f - c * e) / (b * d - a * e);
+    var y = (c * d - a * f) / (b * d - a * e);
+
+    return [x, y];
+  }
+
+  /// 두 point 를 지나는 선 반환
+  static List pointToLine({required List point1, required List point2}) {
+    var a = point2[1] - point1[1];
+    var b = point1[0] - point2[0];
+    var c = a * point1[0] + b * point1[1];
+
+    return [a, b, c];
+  }
+
+  /// * (x,y)형태의 좌표 Path인 layer를 ax + by = c 형태의 line으로 분할, 한쪽을 대칭이동함.
+  /// * direction이 true면 left를, false면 right를 반전
+  static List foldLayer(List layer, List line, bool select) {
+    List newLayer = json.decode(json.encode(layer));
+    var n = newLayer.length;
+
+    var a = line[0];
+    var b = line[1];
+    var c = line[2];
+
+    var left = [];
+    var right = [];
+
+    // Path 분리
+    for (var i = 0; i < n; i++) {
+      var u = newLayer[(i - 1) % n][0];
+      var v = newLayer[(i - 1) % n][1];
+      var sign0 = a * u + b * v - c;
+
+      var x = newLayer[i][0];
+      var y = newLayer[i][1];
+      var sign1 = a * x + b * y - c;
+
+      if (sign0 * sign1 < 0) {
+        var point = intersection(
+            line1: pointToLine(point1: [u, v], point2: [x, y]), line2: line);
+        left.add(point);
+        right.add(point);
+      }
+
+      if (sign1 == 0) {
+        left.add([x, y]);
+        right.add([x, y]);
+      } else if (sign1 > 0) {
+        right.add([x, y]);
+      } else if (sign1 < 0) {
+        left.add([x, y]);
+      }
+    }
+
+    // 한쪽 접기
+    if (select) {
+      for (var j = 0; j < left.length; j++) {
+        left[j] = linearSymmerty(left[j], line);
+      }
+    } else {
+      for (var j = 0; j < right.length; j++) {
+        right[j] = linearSymmerty(right[j], line);
+      }
+    }
+
+    if (left.length < 3) {
+      left = [];
+    }
+    if (right.length < 3) {
+      right = [];
+    }
+    return [left, right];
+  }
+
+  Paper clone() {
+    var p = Paper();
+    p.layerCount = layerCount;
+    p.layers = json.decode(json.encode(layers));
+    return p;
+  }
 
   Paper() {
-    layerCount = 0;
-    var count = rng.nextInt(5) + 1;
-    layers = [];
-    for (var i = 0; i < count; i++) {
-      layerCount++;
-      var layer = [];
-      var n = rng.nextInt(5) + 1;
-      for (var j = 0; j < n; j++) {
-        var point = [];
-        point.add(rng.nextInt(100));
-        point.add(rng.nextInt(100));
-        layer.add(point);
-      }
-      layers.add(layer);
-    }
+    layerCount = 1;
+    layers.add([
+      [0, 0],
+      [100, 0],
+      [100, 100],
+      [0, 100]
+    ]);
   }
+
   @override
   String toString() {
     var co = '레이어 수 : $layerCount\n';

@@ -82,3 +82,5 @@ class CubeProblem extends Problem {
     this.answer = primitiveData.answer[0];
   }
 }
+
+class FoldProblem extends Problem {}
