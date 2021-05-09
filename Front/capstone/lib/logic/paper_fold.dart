@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:collection/collection.dart';
 
 /// 종이를 접는 조건
 /// * 같은 방법을 연속해서 쓰지 않는다
