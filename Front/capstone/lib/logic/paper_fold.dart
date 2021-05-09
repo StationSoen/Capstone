@@ -22,6 +22,10 @@ class PaperFold {
   int type = -1;
 
   /// 난이도
+  ///
+  /// - 0 앞으로만 접기
+  /// - 1 앞뒤로 접기
+  /// - 2 정해진 각도 이외로도 접기
   int level = -1;
 
   var example;
@@ -43,13 +47,13 @@ class PaperFold {
       points.add([c / a, 0.0]);
     }
     if (a != 0 && (c - b * 100.0) / a >= 0 && (c - b * 100.0) / a <= 100) {
-      points.add([(c - b * 100.0), 100.0]);
+      points.add([(c - b * 100.0) / a, 100.0]);
     }
     if (b != 0 && c / b > 0 && c / b < 100) {
       points.add([0.0, c / b]);
     }
     if (b != 0 && (c - a * 100.0) / b > 0 && (c - a * 100.0) / b < 100) {
-      points.add([100.0, (c - a * 100.0)]);
+      points.add([100.0, (c - a * 100.0) / b]);
     }
     return points;
   }
@@ -74,9 +78,9 @@ class PaperFold {
     var linetype;
 
     do {
-      var standard = rng.nextInt(2);
+      var standard = rng.nextInt(3);
       do {
-        linetype = rng.nextInt(4);
+        linetype = rng.nextInt((level == 2) ? 6 : 4);
       } while (linetype == except);
 
       if (standard == 0) {
@@ -92,6 +96,15 @@ class PaperFold {
         } else if (linetype == 3) {
           // 대각선 \
           line = [1, -1, 0];
+        } else {
+          var lv3 = rand(3, 2, true);
+          var a = (lv3[0] > 0) ? 2 : 1;
+          var b =
+              (lv3[0] > 0) ? ((lv3[1] > 0) ? 1 : -1) : ((lv3[1] > 0) ? 2 : -2);
+          var c = (lv3[1] > 0)
+              ? ((lv3[2] > 0) ? 200 : 100)
+              : ((lv3[2] > 0) ? 0 : ((lv3[0] > 0) ? 100 : -100));
+          line = [a, b, c];
         }
       } else {
         var x = rng.nextInt(61) + 20;
@@ -108,6 +121,19 @@ class PaperFold {
         } else if (linetype == 3) {
           // 대각선 \
           line = [1, -1, x - y];
+        } else {
+          var p1 = rng.nextInt(4);
+          var p2 = rng.nextInt(2);
+          var point1, point2;
+          if (p1 == 0) point1 = [0, 0];
+          if (p1 == 1) point1 = [0, 100];
+          if (p1 == 2) point1 = [100, 100];
+          if (p1 == 3) point1 = [100, 0];
+
+          if (p2 == 0) point2 = [100 - point1[0], y];
+          if (p2 == 1) point2 = [x, 100 - point1[1]];
+
+          line = Paper.pointToLine(point1: point1, point2: point2);
         }
       }
     } while (!paper.isCrossed(line));
@@ -115,13 +141,15 @@ class PaperFold {
     return [linetype, line];
   }
 
-  /// * example[0] : 접힌 종이
-  /// * example[1] : [선, 방향]
+  /// * example[0] : [접힌 종이...]
+  /// * example[1] : [[선, 방향]...]
   /// * suggsetion : [종이 ...]
   /// * answer     : [정답번호]
   PaperFold(this.level, [this.type = -1, this.seed]) {
     seed ??= seedRng.nextInt(2147483647);
     rng = Random(seed);
+
+    print('seed : $seed\n');
 
     if (type == -1) {
       type = rng.nextInt(2);
@@ -168,9 +196,15 @@ class PaperFold {
     // 예시 데이터
     example = [papers, lines];
 
+    // 난이도 조절(0)
+    if (level == 0) {
+      for (var i = 0; i < 4; i++) {
+        lines[i][1] = true;
+      }
+    }
+
     // 정답과 보기
     var order = rand(4, 4);
-    print(order);
     answer = [order[0]];
     suggestion = List<Paper>.filled(4, Paper());
     if (type == 0) {
@@ -208,7 +242,7 @@ class PaperFold {
       p2.foldPaper(line, select, direction);
 
       while (!p1.inRange() || !p2.inRange()) {
-        data = setFoldLine(papers[0], linetype);
+        data = setFoldLine(papers[3], linetype);
         line = data[1];
 
         p1 = papers[3].clone();
@@ -228,7 +262,7 @@ class PaperFold {
       suggestion[order[2]] = p2;
       suggestion[order[3]] = p3;
 
-      var wrong = rand(4, 2);
+      var wrong = rand(4, 2, true);
       var mp = wrong.map((e) => e > 0).toList();
 
       // 정답(틀린 것)
