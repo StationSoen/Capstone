@@ -15,7 +15,7 @@ Future<void> saveImage(
     String fileName, ByteData image, String directory) async {
   await File('${directory}/${fileName}.png')
       .writeAsBytes(image.buffer.asInt8List());
-  debugPrint('${directory}/${fileName}.png');
+  // debugPrint('${directory}/${fileName}.png');
 
   // await File('${dir}/${fileName}.png').writeAsBytes(image.buffer.asInt8List());
 }
@@ -119,7 +119,7 @@ Future<void> drawisopng(String name, int topimage, int toprotate, int leftimage,
   if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
   {
     await saveImage(name, abc, directory);
-    debugPrint("저장됨");
+    // debugPrint("저장됨");
   }
 }
 

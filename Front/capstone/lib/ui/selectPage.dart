@@ -2,6 +2,7 @@ import 'package:capstone/visual/problem.dart';
 import 'package:capstone/ui/problemPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 import '../exam.dart';
@@ -24,6 +25,9 @@ class _SelectPageState extends State<SelectPage> {
   double extendedHeight = 230;
 
   double time = 10;
+
+  /// HiveBox for global examListHive
+  var examListHive = Hive.box('examList');
 
   /// 난이도 선택하는 액션시트
   void difficultyActionsheet(BuildContext context) async {
@@ -241,7 +245,7 @@ class _SelectPageState extends State<SelectPage> {
                   onPressed: () async {
                     // String tempDate = DateTime.now().toString();
                     //
-                    DateFormat formatter = DateFormat('M_d_H_m_s');
+                    DateFormat formatter = DateFormat('MM_dd_HH_mm_ss');
                     String tempDate = formatter.format(DateTime.now());
 
                     String directory = await loaddirectory(tempDate);
@@ -257,21 +261,12 @@ class _SelectPageState extends State<SelectPage> {
                     Exam newExam = Exam(
                         dateCode: tempDate,
                         directory: directory,
-                        remainTime: time.toInt(),
+                        settingTime: time.toInt(),
                         problemList: myProblemList);
 
-                    // add newExan to (global) examList
-                    examList.add(newExam);
-
                     // Navigator.pushNamed(context, '/problemPage');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ProblemPage(
-                          exam: newExam,
-                        ),
-                      ),
-                    );
+                    Navigator.pushNamed(context, '/problemPage',
+                        arguments: newExam);
                   },
                 ),
                 CircleButton(
@@ -290,171 +285,3 @@ class _SelectPageState extends State<SelectPage> {
         ));
   }
 }
-
-// class SelectionCard extends StatefulWidget {
-//   String title;
-
-//   SelectionCard({required this.title});
-
-//   @override
-//   _SelectionCardState createState() => _SelectionCardState();
-// }
-
-// class _SelectionCardState extends State<SelectionCard> {
-//   bool cardOnOff = false;
-
-//   int difficulty = 0;
-//   List<String> difficultyList = ["쉬움", "보통", "어려움"];
-
-//   double problemNumber = 0;
-
-//   double height = 80;
-//   double extendedHeight = 230;
-
-//   final String problemType = "";
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return AnimatedContainer(
-//       height: 230,
-//       duration: Duration(milliseconds: 250),
-//       child: Container(
-//           padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-//           margin: EdgeInsets.symmetric(vertical: 5),
-//           decoration: BoxDecoration(
-//             color: Colors.white,
-//             borderRadius: BorderRadius.circular(26.0),
-//             boxShadow: [
-//               BoxShadow(
-//                 color: Colors.black.withOpacity(0.17),
-//                 offset: Offset(0.0, 3.0), //(x,y)
-//                 blurRadius: 6.0,
-//               ),
-//             ],
-//           ),
-//           width: 345,
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.stretch,
-//             children: [
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   Text(
-//                     this.widget.title,
-//                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-//                   ),
-//                   CupertinoSwitch(
-//                       value: cardOnOff,
-//                       onChanged: (value) {
-//                         setState(() {
-//                           cardOnOff = value;
-//                           if (value) {
-//                             height = extendedHeight;
-//                           } else {
-//                             height = 80;
-//                           }
-//                         });
-//                       }),
-//                 ],
-//               ),
-//               cardBody(cardOnOff)
-//             ],
-//           )),
-//     );
-//   }
-
-//   Widget cardBody(bool isOn) {
-//     if (isOn) {
-//       return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-//         Divider(),
-//         Container(
-//           padding: EdgeInsets.only(top: 10),
-//           child:
-//               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-//             Text(
-//               "문제 수",
-//               style: TextStyle(fontSize: 17),
-//             ),
-//             Text(
-//               "${problemNumber.toInt()}개",
-//               style: TextStyle(fontSize: 17, color: Colors.grey),
-//             )
-//           ]),
-//         ),
-//         Container(
-//           padding: EdgeInsets.only(top: 3),
-//           child: CupertinoSlider(
-//               value: problemNumber,
-//               max: 10,
-//               min: 0,
-//               divisions: 10,
-//               onChanged: (value) {
-//                 setState(() {
-//                   problemNumber = value;
-//                 });
-//               }),
-//         ),
-//         Divider(),
-//         CupertinoButton(
-//             padding: EdgeInsets.all(0),
-//             child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   Text(
-//                     "난이도",
-//                     style: TextStyle(fontSize: 17, color: Colors.black),
-//                   ),
-//                   Text(
-//                     difficultyList[difficulty],
-//                     style: TextStyle(fontSize: 17, color: Colors.grey),
-//                   )
-//                 ]),
-//             onPressed: () {
-//               difficultyActionsheet(context);
-//             })
-//       ]);
-//     } else {
-//       return Container();
-//     }
-//   }
-
-//   void difficultyActionsheet(BuildContext context) async {
-//     await showCupertinoModalPopup(
-//       context: context,
-//       builder: (BuildContext context) => CupertinoActionSheet(
-//           actions: <Widget>[
-//             CupertinoActionSheetAction(
-//               child: const Text('쉬움'),
-//               onPressed: () {
-//                 difficulty = 0;
-//                 setState(() {});
-//                 Navigator.pop(context);
-//               },
-//             ),
-//             CupertinoActionSheetAction(
-//               child: const Text('보통'),
-//               onPressed: () {
-//                 difficulty = 1;
-//                 setState(() {});
-//                 Navigator.pop(context);
-//               },
-//             ),
-//             CupertinoActionSheetAction(
-//               child: const Text('어려움'),
-//               onPressed: () {
-//                 difficulty = 2;
-//                 setState(() {});
-//                 Navigator.pop(context);
-//               },
-//             )
-//           ],
-//           cancelButton: CupertinoActionSheetAction(
-//             child: const Text('취소'),
-//             isDefaultAction: true,
-//             onPressed: () {
-//               Navigator.pop(context);
-//             },
-//           )),
-//     );
-//   }
-// }

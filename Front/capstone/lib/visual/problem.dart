@@ -17,8 +17,8 @@ Future<List<CubeProblem>> makecubeproblem(
   for (int i = 1; i <= num; i++) {
     var temp = DevCube(level);
     cubeList.add(CubeProblem(primitiveData: temp));
-    debugPrint("문제번호는$i");
-    debugPrint("${temp.toString()}");
+    // debugPrint("문제번호는$i");
+    // debugPrint("${temp.toString()}");
     if (temp.level > 0) {
       switch (temp.type) {
         case 0:

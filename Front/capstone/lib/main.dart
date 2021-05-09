@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:capstone/ui/historyPage.dart';
 import 'package:capstone/home.dart';
-import 'package:capstone/ui/mtlTestPage.dart';
-import 'package:capstone/visual/problem.dart';
+import 'package:capstone/ui/previousComplete.dart';
+import 'package:capstone/ui/previousExamPage.dart';
+import 'package:capstone/ui/problemDetailCompletePage.dart';
+import 'package:capstone/ui/problemDetalPage.dart';
 import 'package:capstone/ui/problemPage.dart';
+import 'package:capstone/ui/problemPaused.dart';
 import 'package:capstone/ui/recordPage.dart';
 import 'package:capstone/ui/scorePage.dart';
 import 'package:capstone/ui/selectPage.dart';
@@ -16,35 +19,56 @@ import 'dart:ui' as UI;
 
 import 'package:capstone/ui/settingPage.dart';
 
+import 'logic/dev_cube.dart';
 import 'ui/SplashScreen.dart';
 import 'exam.dart';
 import 'visual/load.dart';
+
+/*
+
+Next HiveField = 12
+
+*/
 
 // String dir = "";
 List<Color?> colorlist = [
   Colors.red[700],
   Colors.orange,
-  Colors.pink,
-  Colors.yellow,
-  Colors.black,
-  Colors.lime,
+  Colors.pink[200],
+  Colors.yellow[200],
+  Colors.black87,
+  Colors.lime[700],
   Colors.green[600],
   Colors.blue,
   Colors.cyan,
   Colors.indigo,
   Colors.brown,
-  Colors.purple
+  Colors.purple[600]
 ]; //색깔 리스트 길이:12
 List<UI.Image> imglist = []; //숫자 이미지 리스트 길이:9    0~8 숫자, 9~20까지는 문양
 
-/// 문제 풀이한 내역 및 관련 데이터 저장.
-List<Exam> examList = [];
+/// 그만두기를 통해서 중간에 멈춘 문제들 리스트
+List<Exam> pausedExamList = [];
+
+/// 정상적으로 시험 끝낸 경우 문제들 리스트
+List<Exam> completeExamList = [];
+
+// 초기화 값
+List<Exam> initExamList = [];
 
 void main() async {
   // initialize Hive and opening Hive boxes..
   await Hive.initFlutter();
+  Hive.registerAdapter(ExamAdapter());
+  Hive.registerAdapter(CubeProblemAdapter());
+  Hive.registerAdapter(DevCubeAdapter());
+
   await Hive.openBox('setting');
   var settingHive = Hive.box('setting');
+  await Hive.openBox('examList');
+
+  await Hive.openBox('pausedExamList');
+  await Hive.openBox('completeExamList');
 
   // initialize Hive Value ...
   List<String> hiveSetting = ['location', 'id', 'pw'];
@@ -98,9 +122,22 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             routes: <String, WidgetBuilder>{
               '/home': (BuildContext context) => new Home(),
-              // '/problemPage': (BuildContext context) => new ProblemPage(),
               '/selectPage': (BuildContext context) => new SelectPage(),
               '/historyPage': (BuildContext context) => new HistoryPage(),
+
+              // == PushNamed ==
+
+              '/problemPage': (BuildContext context) => new ProblemPage(),
+              '/scorePage': (BuildContext context) => new ScorePage(),
+              '/recordPage': (BuildContext context) => new RecordPage(),
+              '/previousExamPage': (BuildContext context) => PreviousExamPage(),
+              '/problemDetailPage': (BuildContext context) =>
+                  ProblemDetailPage(),
+              '/previousComplete': (BuildContext context) => PreviousComplete(),
+              '/problemDetailCompletePage': (BuildContext context) =>
+                  ProblemDetailCompletePage(),
+              // '/problemPaused': (BuildContext context) =>
+              //     new ProblemPausedPage(),
             },
 
             home: MyHome(),

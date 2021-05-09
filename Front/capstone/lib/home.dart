@@ -4,7 +4,9 @@ import 'package:capstone/ui/scorePage.dart';
 import 'package:capstone/ui/selectPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
+import 'exam.dart';
 import 'ui/component.dart';
 
 class Home extends StatelessWidget {
@@ -95,7 +97,12 @@ class Home extends StatelessWidget {
                           color: Color(0xFF4386F9),
                           onPressed: () {
                             // button tapped!
-                            debugPrint("Tapped!");
+                            var pausedExamListHive = Hive.box("pausedExamList");
+                            print("HIVE PROBLEM! : " +
+                                pausedExamListHive
+                                    .get('pausedExamList')[0]
+                                    .dateCode
+                                    .toString());
                             // open selectPage();
                           },
                           child: Text(
@@ -149,7 +156,7 @@ class Home extends StatelessWidget {
                           color: Colors.white,
                           onPressed: () {
                             // button tapped!
-                            debugPrint("Button Tapped!");
+                            Navigator.pushNamed(context, '/previousComplete');
                           },
                           child: Text(
                             "다시 보기",
@@ -174,10 +181,7 @@ class Home extends StatelessWidget {
                 CircleButton(
                   text: "이전 문제 계속",
                   onPressed: () {
-                    for (int i = 0; i < examList.length; i++) {
-                      debugPrint(examList[i].dateCode);
-                    }
-                    // Navigator.pushNamed(context, '/mtlTestPage');
+                    Navigator.pushNamed(context, '/previousExamPage');
                   },
                 ),
                 CircleButton(

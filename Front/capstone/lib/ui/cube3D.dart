@@ -11,20 +11,18 @@ import 'dart:ui' as UI;
 import 'dart:ui';
 import 'SplashScreen.dart';
 import '../exam.dart';
-import '../main.dart';
 
-class MtlTestPage extends StatefulWidget {
+class Cube3D extends StatefulWidget {
   late Exam exam;
   late int index;
   late double answerSize = 125;
-  MtlTestPage({required this.exam, required this.index});
+  Cube3D({required this.exam, required this.index});
 
   @override
-  _MtlTestPageState createState() => _MtlTestPageState();
+  _Cube3DState createState() => _Cube3DState();
 }
 
-class _MtlTestPageState extends State<MtlTestPage>
-    with SingleTickerProviderStateMixin {
+class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
   late Scene _scene;
   Object? _cube;
   late AnimationController _controller;
@@ -98,9 +96,9 @@ class _MtlTestPageState extends State<MtlTestPage>
       required List<dynamic> problemList,
       required int index,
       required select}) {
-    if (userAnswerList[index] == select) {
+    if (problemList[index].answer == select) {
       return Colors.red;
-    } else if (problemList[index].answer == select) {
+    } else if (userAnswerList[index] == select) {
       return Colors.blue;
     } else {
       return Colors.grey;

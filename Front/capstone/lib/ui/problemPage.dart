@@ -9,6 +9,7 @@ import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:hive/hive.dart';
 
 import '../exam.dart';
 
@@ -16,9 +17,7 @@ import '../exam.dart';
 List<int> userChoice = List.empty();
 
 class ProblemPage extends StatefulWidget {
-  Exam exam;
-
-  ProblemPage({required this.exam});
+  late Exam exam;
 
   @override
   _ProblemPageState createState() => _ProblemPageState();
@@ -30,34 +29,11 @@ class _ProblemPageState extends State<ProblemPage> {
 
   /// counter second - add 1 in 1 second.
   int second = 0;
+  bool init = true;
 
   late int numberProblem;
   late int maxSecond;
   bool isPaused = true;
-
-  _showCupertinoDialog() {
-    showDialog(
-        context: context,
-        builder: (_) => new CupertinoAlertDialog(
-              title: new Text("시간 초과"),
-              content: new Text("설정된 시간이 완료되었습니다."),
-              actions: <Widget>[
-                CupertinoButton(
-                  child: Text('제출'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ScorePage(
-                          exam: this.widget.exam,
-                        ),
-                      ),
-                    );
-                  },
-                )
-              ],
-            ));
-  }
 
   late Timer timer;
 
@@ -65,12 +41,9 @@ class _ProblemPageState extends State<ProblemPage> {
   void initState() {
     super.initState();
 
-    // data initialize for this.widget.exam
-    maxSecond = this.widget.exam.remainTime;
-    numberProblem = this.widget.exam.problemList.length;
-
     // timer .. add 1 per 1 second & stop when second >= maxSecond.
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      debugPrint("second in timer : $second / $maxSecond");
       setState(() {
         if (isPaused) {
           second++;
@@ -78,7 +51,12 @@ class _ProblemPageState extends State<ProblemPage> {
       });
       if (second >= maxSecond) {
         timer.cancel();
-        _showCupertinoDialog();
+        showCupertinoDialog(
+            title: "시간 초과",
+            content: "설정한 시간이 만료되었습니다.",
+            cancel: false,
+            exam: this.widget.exam,
+            context: context);
       }
       // debugPrint("$second");
     });
@@ -88,11 +66,26 @@ class _ProblemPageState extends State<ProblemPage> {
   void dispose() {
     // cancel timer
     timer.cancel();
+    debugPrint("Timer OUT!");
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // extract parameter from NamedPush
+    this.widget.exam = ModalRoute.of(context)!.settings.arguments as Exam;
+
+    // initialize second with elapsedTime
+    // second를 경과시간으로 초기화함.
+    if (init) {
+      init = false;
+      second = this.widget.exam.elapsedTime;
+    }
+
+    // data initialize for this.widget.exam
+    maxSecond = this.widget.exam.settingTime;
+    numberProblem = this.widget.exam.problemList.length;
+
     return WillPopScope(
       onWillPop: () async => false,
       child: CupertinoPageScaffold(
@@ -124,6 +117,8 @@ class _ProblemPageState extends State<ProblemPage> {
                             onPressed: () {
                               debugPrint("Tapped!");
                               isPaused = false;
+                              // 일시정지로 들어가면, 경과시간 업데이트
+                              this.widget.exam.elapsedTime = second;
                               _gotoIndex(context);
                             },
                             child: Icon(
@@ -177,8 +172,12 @@ class _ProblemPageState extends State<ProblemPage> {
         context,
         MaterialPageRoute(
             builder: (BuildContext context) => ProblemPausedPage(
-                numberOfProblems: this.widget.exam.problemList.length,
-                exam: this.widget.exam)));
+                  numberOfProblems: this.widget.exam.problemList.length,
+                  exam: this.widget.exam,
+                  elapsedTime: second,
+                )));
+
+    debugPrint(result.toString());
     if (result != null) {
       swiperController.move(result);
     }
@@ -257,151 +256,108 @@ class _ProblemCardState extends State<ProblemCard> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CupertinoButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () {
-                      debugPrint("01 select!");
-                      setState(() {
-                        this.widget.exam.userAnswer[this.widget.index] = 0;
-                      });
-
-                      debugPrint(
-                          "${this.widget.exam.userAnswer[this.widget.index]} : userAnswers");
-                      if (!(this.widget.index == this.widget.maxIndex)) {
-                        this.widget.swiperController.next();
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 2,
-                            color: checkSelect(
-                                userAnswerList: this.widget.exam.userAnswer,
-                                index: this.widget.index,
-                                select: 0)),
-                      ),
-                      height: this.widget.answerSize,
-                      width: this.widget.answerSize,
-                      child: Image.file(
-                        File(this.widget.exam.directory +
-                            "/example" +
-                            (this.widget.index + 1).toString() +
-                            "_" +
-                            "0" +
-                            ".png"),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                  CupertinoButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () {
-                      debugPrint("02 select!");
-                      setState(() {
-                        this.widget.exam.userAnswer[this.widget.index] = 1;
-                      });
-                      if (!(this.widget.index == this.widget.maxIndex)) {
-                        this.widget.swiperController.next();
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 2,
-                            color: checkSelect(
-                                userAnswerList: this.widget.exam.userAnswer,
-                                index: this.widget.index,
-                                select: 1)),
-                      ),
-                      height: this.widget.answerSize,
-                      width: this.widget.answerSize,
-                      child: Image.file(
-                        File(this.widget.exam.directory +
-                            "/example" +
-                            (this.widget.index + 1).toString() +
-                            "_" +
-                            "1" +
-                            ".png"),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  )
-                ],
+                children: [selectButton(0), selectButton(1)],
               ),
               SizedBox(height: 20),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                CupertinoButton(
-                  padding: EdgeInsets.all(0),
-                  onPressed: () {
-                    debugPrint("03 select!");
-                    setState(() {
-                      this.widget.exam.userAnswer[this.widget.index] = 2;
-                    });
-                    if (!(this.widget.index == this.widget.maxIndex)) {
-                      this.widget.swiperController.next();
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 2,
-                          color: checkSelect(
-                              userAnswerList: this.widget.exam.userAnswer,
-                              index: this.widget.index,
-                              select: 2)),
-                    ),
-                    height: this.widget.answerSize,
-                    width: this.widget.answerSize,
-                    child: Image.file(
-                      File(this.widget.exam.directory +
-                          "/example" +
-                          (this.widget.index + 1).toString() +
-                          "_" +
-                          "2" +
-                          ".png"),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-                CupertinoButton(
-                  padding: EdgeInsets.all(0),
-                  onPressed: () {
-                    debugPrint("04 select!");
-                    setState(() {
-                      this.widget.exam.userAnswer[this.widget.index] = 3;
-                    });
-                    if (!(this.widget.index == this.widget.maxIndex)) {
-                      this.widget.swiperController.next();
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 2,
-                          color: checkSelect(
-                              userAnswerList: this.widget.exam.userAnswer,
-                              index: this.widget.index,
-                              select: 3)),
-                    ),
-                    height: this.widget.answerSize,
-                    width: this.widget.answerSize,
-                    child: Image.file(
-                      File(this.widget.exam.directory +
-                          "/example" +
-                          (this.widget.index + 1).toString() +
-                          "_" +
-                          "3" +
-                          ".png"),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                )
-              ])
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [selectButton(2), selectButton(3)])
             ],
           )
         ],
       ),
     );
   }
+
+  Widget selectButton(int key) {
+    return CupertinoButton(
+      padding: EdgeInsets.all(0),
+      onPressed: () {
+        debugPrint((key + 1).toString() + "select!");
+        setState(() {
+          this.widget.exam.userAnswer[this.widget.index] = key;
+        });
+        if (!(this.widget.index == this.widget.maxIndex)) {
+          this.widget.swiperController.next();
+        } else {
+          showCupertinoDialog(
+              title: "마지막 문제",
+              content: "마지막 문제입니다.\n제출하시겠습니까?",
+              cancel: true,
+              exam: this.widget.exam,
+              context: context);
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+              width: 2,
+              color: checkSelect(
+                  userAnswerList: this.widget.exam.userAnswer,
+                  index: this.widget.index,
+                  select: key)),
+        ),
+        height: this.widget.answerSize,
+        width: this.widget.answerSize,
+        child: Image.file(
+          File(this.widget.exam.directory +
+              "/example" +
+              (this.widget.index + 1).toString() +
+              "_" +
+              key.toString() +
+              ".png"),
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+}
+
+showCupertinoDialog(
+    {required String title,
+    required String content,
+    required bool cancel,
+    required Exam exam,
+    required BuildContext context}) {
+  var completeExamListHive = Hive.box('completeExamList');
+  var pausedExamListHive = Hive.box('puasedExamList');
+  List<Widget> dialogActions = [
+    CupertinoButton(
+      child: Text('제출'),
+      onPressed: () {
+        exam.complete = true;
+
+        pausedExamList
+            .removeWhere((element) => element.dateCode == exam.dateCode);
+
+        // completeExamList에 값 추가.
+        completeExamList.add(exam);
+
+        // Hive에 업데이트.
+        completeExamListHive.put('completeExamList', completeExamList);
+        pausedExamListHive.put('pausedExamList', pausedExamList);
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/scorePage', ModalRoute.withName('/'),
+            arguments: exam);
+      },
+    ),
+  ];
+  if (cancel == true) {
+    dialogActions.add(CupertinoButton(
+      child: Text(
+        '취소',
+        style: TextStyle(color: Colors.red),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    ));
+  }
+  showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (_) => new CupertinoAlertDialog(
+          title: new Text(title),
+          content: new Text(content),
+          actions: dialogActions));
 }
