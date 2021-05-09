@@ -17,10 +17,10 @@ Future<void> saveImage(
 
 void mypath(Canvas canvas,List a,paint){
   var path=Path();
-  path.moveTo(a[0][0],a[0][1]);
+  path.moveTo(a[0][0]*2,a[0][1]*2);
   for(int i=1;i<a.length;i++)
   {
-    path.lineTo(a[i][0],a[i][1]);
+    path.lineTo(a[i][0]*2,a[i][1]*2);
   }
   path.close();
   canvas.drawPath(path,paint);
@@ -85,12 +85,12 @@ Future<void> drawpaperpng(String name, var pointList, var lineList,bool is_Last,
   final canvas = new Canvas(
       recorder,
       new Rect.fromPoints(
-          new Offset(0, 0), new Offset(100.0, 100.0)));
+          new Offset(0, 0), new Offset(200.0, 200.0)));
 
   var paint = Paint();
 
 
-  List<List<double>> square=[[0,0],[0,100],[100,100],[100,0]];
+  List<List<double>> square=[[0,0],[0,200],[200,200],[200,0]];
 
 
 
@@ -125,16 +125,16 @@ Future<void> drawpaperpng(String name, var pointList, var lineList,bool is_Last,
   }
   if(!is_suggestion) {
     if (is_Last) {
-      dashed_line_both(canvas, lines[0][0].toDouble(), lines[0][1].toDouble(),
-          lines[1][0].toDouble(), lines[1][1].toDouble(), paint);
+      dashed_line_both(canvas, lines[0][0]*2.toDouble(), lines[0][1]*2.toDouble(),
+          lines[1][0]*2.toDouble(), lines[1][1]*2.toDouble(), paint);
     } else {
       if (lineList[1]) {
-        dashed_line_in(canvas, lines[0][0].toDouble(), lines[0][1].toDouble(),
-            lines[1][0].toDouble(), lines[1][1].toDouble(), paint);
+        dashed_line_in(canvas, lines[0][0]*2.toDouble(), lines[0][1]*2.toDouble(),
+            lines[1][0]*2.toDouble(), lines[1][1]*2.toDouble(), paint);
       } else {
         dashed_line_out(
-            canvas, lines[0][0].toDouble(), lines[0][1].toDouble(),
-            lines[1][0].toDouble(), lines[1][1].toDouble(), paint);
+            canvas, lines[0][0]*2.toDouble(), lines[0][1]*2.toDouble(),
+            lines[1][0]*2.toDouble(), lines[1][1]*2.toDouble(), paint);
       }
     }
   }
@@ -147,7 +147,7 @@ Future<void> drawpaperpng(String name, var pointList, var lineList,bool is_Last,
 
 
   final picture = recorder.endRecording();
-  UI.Image img = await picture.toImage(102, 102);
+  UI.Image img = await picture.toImage(200, 200);
   final abc =await img.toByteData(format:UI.ImageByteFormat.png);
   if(abc!=null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
       {
