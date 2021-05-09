@@ -39,10 +39,9 @@ class AboutPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 100),
-                      SizedBox(
-                          height: 200,
-                          width: 200,
-                          child: Image.asset("assets/images/logo.png")),
+                      // ------- logo image -------
+                      SizedBox(height: 200, width: 200, child: Container()),
+                      // ------- logo image -------
                       SizedBox(height: 20),
                       Container(
                           margin: EdgeInsets.only(bottom: 30),
