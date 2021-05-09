@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
+
+import '../exam.dart';
 
 class RecordPage extends StatefulWidget {
   @override
@@ -10,18 +13,55 @@ class _RecordPageState extends State<RecordPage> {
   // SegmentControl Tab Collection
   Map<int, Widget> segmentControlTabs = {
     0: SegmentTabs(
-      text: "쉬움",
+      text: "3D 전개도 유형",
     ),
     1: SegmentTabs(
-      text: "보통",
-    ),
-    2: SegmentTabs(
-      text: "어려움",
+      text: "종이접기 유형",
     ),
   };
 
   // index for SegmentControl - difficulty
-  int difficulty = 0;
+  int segment = 0;
+
+  // data
+  List<int> problemsN = [0, 0];
+  List<int> corretsN = [0, 0];
+  List<int> totalTime = [0, 0];
+
+  void calData(int segment) {
+    var completeExamListHive = Hive.box('completeExamList');
+    List<dynamic> list;
+
+    if (completeExamListHive.isNotEmpty) {
+      list = completeExamListHive.get("completeExamList");
+      for (int i = 0; i < list.length; i++) {
+        for (int j = 0; j < list[i].problemList.length; j++) {
+          totalTime[segment] = list[i].elapsedTime + totalTime[segment];
+          // 문제 종류 판단
+          if (list[i].problemList[j].problemType == segment) {
+            problemsN[segment]++;
+          }
+          // 정답 개수 판단
+          if (list[i].problemList[j].answer == list[i].userAnswer[j]) {
+            corretsN[segment]++;
+          }
+        }
+      }
+    } else {
+      debugPrint("completeExamListHive Box에 저장된 값이 없습니다.");
+      problemsN[segment] = -1;
+      corretsN[segment] = -1;
+      totalTime[segment] = -1;
+      return;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    calData(segment);
+    print("problemsN : $problemsN, correctsN : $corretsN, times : $totalTime");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,98 +85,68 @@ class _RecordPageState extends State<RecordPage> {
             children: [
               CupertinoSegmentedControl(
                 children: segmentControlTabs,
-                groupValue: difficulty,
+                groupValue: segment,
                 padding: EdgeInsets.symmetric(vertical: 12),
                 onValueChanged: (int value) {
                   setState(() {
-                    difficulty = value;
+                    segment = value;
                   });
                 },
               ),
-              RecordPageBody(
-                difficulty: difficulty,
-              ),
+              Container(
+                width: double.infinity,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                        width: double.infinity,
+                        child: Text("문제 통계",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 24,
+                                color: Colors.black)),
+                      ),
+                      RecordCard(
+                        icon: Icon(CupertinoIcons.square),
+                        name: "시도한 문제",
+                        value: problemsN[segment].toString(),
+                      ),
+                      RecordCard(
+                        icon: Icon(CupertinoIcons.circle),
+                        name: "성공한 문제",
+                        value: corretsN[segment].toString(),
+                      ),
+                      RecordCard(
+                        icon: Icon(CupertinoIcons.percent),
+                        name: "정답률",
+                        value: ((corretsN[segment] / problemsN[segment]) * 100)
+                                .toStringAsFixed(2) +
+                            "%",
+                      ),
+                      RecordCard(
+                          icon: Icon(CupertinoIcons.alarm),
+                          name: "풀이한 시간",
+                          value: (totalTime[segment] ~/ 3600)
+                                  .toString()
+                                  .padLeft(2, '0') +
+                              " : " +
+                              (totalTime[segment] ~/ 60)
+                                  .toString()
+                                  .padLeft(2, '0') +
+                              " : " +
+                              (totalTime[segment] % 60)
+                                  .toString()
+                                  .padLeft(2, '0')),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ));
-  }
-}
-
-class RecordPageBody extends StatelessWidget {
-  int difficulty;
-
-  RecordPageBody({required this.difficulty});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-              width: double.infinity,
-              child: Text("2D / 3D 전개도 유형 + 난이도 : $difficulty",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 24,
-                      color: Colors.black)),
-            ),
-            RecordCard(
-              icon: Icon(CupertinoIcons.square),
-              name: "시도한 문제",
-              value: "100",
-            ),
-            RecordCard(
-              icon: Icon(CupertinoIcons.circle),
-              name: "성공한 문제",
-              value: "40",
-            ),
-            RecordCard(
-              icon: Icon(CupertinoIcons.percent),
-              name: "정답률",
-              value: "40.0%",
-            ),
-            RecordCard(
-              icon: Icon(CupertinoIcons.alarm),
-              name: "시간 초과",
-              value: "20",
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-              width: double.infinity,
-              child: Text("종이 접기 유형",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 24,
-                      color: Colors.black)),
-            ),
-            RecordCard(
-              icon: Icon(CupertinoIcons.square),
-              name: "시도한 문제",
-              value: "300",
-            ),
-            RecordCard(
-              icon: Icon(CupertinoIcons.circle),
-              name: "성공한 문제",
-              value: "200",
-            ),
-            RecordCard(
-              icon: Icon(CupertinoIcons.percent),
-              name: "정답률",
-              value: "66.7%",
-            ),
-            RecordCard(
-              icon: Icon(CupertinoIcons.alarm),
-              name: "시간 초과",
-              value: "20",
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
 
