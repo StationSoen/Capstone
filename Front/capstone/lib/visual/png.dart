@@ -440,12 +440,25 @@ Future<void> drawtemplatepng(
   canvas.restore();
 
   final picture = recorder.endRecording();
-  UI.Image img = await picture.toImage(652, 392);
-  final abc = await img.toByteData(format: UI.ImageByteFormat.png);
-  if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
-  {
-    await saveImage(name, abc, directory);
-    debugPrint("저장됨");
+  if(x6==4){
+    UI.Image img = await picture.toImage(652, 392);
+    final abc = await img.toByteData(format: UI.ImageByteFormat.png);
+    if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
+        {
+      await saveImage(name, abc, directory);
+      debugPrint("저장됨");
+    }
+
+  }
+  else{
+    UI.Image img = await picture.toImage(522, 392);
+    final abc = await img.toByteData(format: UI.ImageByteFormat.png);
+    if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
+        {
+      await saveImage(name, abc, directory);
+      debugPrint("저장됨");
+    }
+
   }
 }
 
@@ -512,11 +525,26 @@ Future<void> drawcolortemplatepng(
       paint);
 
   final picture = recorder.endRecording();
-  UI.Image img = await picture.toImage(652, 392);
-  final abc = await img.toByteData(format: UI.ImageByteFormat.png);
-  if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
-  {
-    await saveImage(name, abc, directory);
-    debugPrint("저장됨");
+
+  if(x6==4){
+    UI.Image img = await picture.toImage(652, 392);
+    final abc = await img.toByteData(format: UI.ImageByteFormat.png);
+    if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
+        {
+      await saveImage(name, abc, directory);
+      debugPrint("저장됨");
+    }
+
   }
+  else{
+    UI.Image img = await picture.toImage(522, 392);
+    final abc = await img.toByteData(format: UI.ImageByteFormat.png);
+    if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
+        {
+      await saveImage(name, abc, directory);
+      debugPrint("저장됨");
+    }
+
+  }
+
 }
