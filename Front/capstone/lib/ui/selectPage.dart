@@ -285,12 +285,15 @@ class _SelectPageState extends State<SelectPage> {
                       ...await makecubeproblem(typeProblemNumber[0].toInt(),
                           typeDifficulty[0], directory),
                     ];
+
+                    print("AAAAAAA");
                     myProblemList.addAll(await makepaperproblem(
                         typeProblemNumber[1].toInt(),
                         typeDifficulty[1],
                         directory,
                         typeProblemNumber[0].toInt()));
 
+                    print("BBBBBBB");
                     Exam newExam = Exam(
                         dateCode: tempDate,
                         directory: directory,
