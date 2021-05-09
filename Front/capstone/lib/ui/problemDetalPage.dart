@@ -85,7 +85,7 @@ class _ProblemDetailPageState extends State<ProblemDetailPage> {
                       children: [
                         CircleButton(
                           text: "계속 진행하기",
-                          color: Colors.blue,
+                          color: const Color(0xFF4386F9),
                           textColor: Colors.white,
                           width: 345,
                           marginVertical: 5,

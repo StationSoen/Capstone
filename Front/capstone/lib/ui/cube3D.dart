@@ -97,9 +97,9 @@ class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
       required int index,
       required select}) {
     if (problemList[index].answer == select) {
-      return Colors.red;
+      return const Color(0xFF4386F9);
     } else if (userAnswerList[index] == select) {
-      return Colors.blue;
+      return Colors.red;
     } else {
       return Colors.grey;
     }
@@ -145,7 +145,8 @@ class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
                   debugPrint(isScrollLock.toString());
                 },
                 child: Container(
-                  color: Colors.grey,
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  // color: Colors.white,
                   child: Container(
                     width: double.infinity,
                     height: 300,
@@ -155,7 +156,7 @@ class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-
+              Divider(),
               // problem Card
               Container(
                 padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
@@ -163,12 +164,20 @@ class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
                   children: [
                     // Problem Question Section
                     Center(
-                        child: Text(
-                            "스크롤 잠금을 위해서 객체를 탭하세요. - " +
-                                locked +
-                                "\n오답은 적색, 정답은 청색입니다.",
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("스크롤 잠금",
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 16))),
+                            style: TextStyle(fontSize: 16)),
+                        CupertinoSwitch(
+                            value: isScrollLock,
+                            onChanged: (value) {
+                              isScrollLock = value;
+                              setState(() {});
+                            })
+                      ],
+                    )),
                     Divider(),
                     Container(
                         width: double.infinity,

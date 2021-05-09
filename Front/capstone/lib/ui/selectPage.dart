@@ -16,10 +16,14 @@ class SelectPage extends StatefulWidget {
 }
 
 class _SelectPageState extends State<SelectPage> {
-  int difficulty = 0;
   List<String> difficultyList = ["쉬움", "보통", "어려움"];
 
-  double problemNumber = 1;
+  // int difficulty = 0;
+  // double problemNumber = 1;
+
+  List<int> typeDifficulty = [0, 0];
+  List<double> typeProblemNumber = [1, 1];
+  List<bool> typeEnable = [true, true];
 
   double height = 80;
   double extendedHeight = 230;
@@ -30,7 +34,7 @@ class _SelectPageState extends State<SelectPage> {
   var examListHive = Hive.box('examList');
 
   /// 난이도 선택하는 액션시트
-  void difficultyActionsheet(BuildContext context) async {
+  void difficultyActionsheet(BuildContext contextm, int type) async {
     await showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -38,7 +42,7 @@ class _SelectPageState extends State<SelectPage> {
             CupertinoActionSheetAction(
               child: const Text('쉬움'),
               onPressed: () {
-                difficulty = 0;
+                typeDifficulty[type] = 0;
                 setState(() {});
                 Navigator.pop(context);
               },
@@ -46,7 +50,7 @@ class _SelectPageState extends State<SelectPage> {
             CupertinoActionSheetAction(
               child: const Text('보통'),
               onPressed: () {
-                difficulty = 1;
+                typeDifficulty[type] = 1;
                 setState(() {});
                 Navigator.pop(context);
               },
@@ -54,7 +58,7 @@ class _SelectPageState extends State<SelectPage> {
             CupertinoActionSheetAction(
               child: const Text('어려움'),
               onPressed: () {
-                difficulty = 2;
+                typeDifficulty[type] = 2;
                 setState(() {});
                 Navigator.pop(context);
               },
@@ -70,7 +74,7 @@ class _SelectPageState extends State<SelectPage> {
     );
   }
 
-  Widget typeSelector(String title) {
+  Widget typeSelector(String title, int type) {
     return AnimatedContainer(
       height: 230,
       duration: Duration(milliseconds: 250),
@@ -96,10 +100,21 @@ class _SelectPageState extends State<SelectPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "3D 전개도 유형",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                    title,
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: disableColors(
+                            isDisable: typeEnable[type],
+                            inputColor: Colors.black)),
                   ),
-                  CupertinoSwitch(value: true, onChanged: null),
+                  CupertinoSwitch(
+                      value: typeEnable[type],
+                      onChanged: (value) {
+                        setState(() {
+                          typeEnable[type] = value;
+                        });
+                      }),
                 ],
               ),
               Divider(),
@@ -110,10 +125,14 @@ class _SelectPageState extends State<SelectPage> {
                     children: [
                       Text(
                         "문제 수",
-                        style: TextStyle(fontSize: 17),
+                        style: TextStyle(
+                            fontSize: 17,
+                            color: disableColors(
+                                isDisable: typeEnable[type],
+                                inputColor: Colors.black)),
                       ),
                       Text(
-                        "${problemNumber.toInt()}개",
+                        "${typeProblemNumber[type].toInt()}개",
                         style: TextStyle(fontSize: 17, color: Colors.grey),
                       )
                     ]),
@@ -121,14 +140,20 @@ class _SelectPageState extends State<SelectPage> {
               Container(
                 padding: EdgeInsets.only(top: 3),
                 child: CupertinoSlider(
-                    value: problemNumber,
+                    value: typeProblemNumber[type],
                     max: 10,
                     min: 1,
                     divisions: 9,
+                    activeColor: disableColors(
+                      isDisable: typeEnable[type],
+                      inputColor: const Color(0xFF4386F9),
+                    ),
                     onChanged: (value) {
-                      setState(() {
-                        problemNumber = value;
-                      });
+                      if (typeEnable[type]) {
+                        setState(() {
+                          typeProblemNumber[type] = value;
+                        });
+                      }
                     }),
               ),
               Divider(),
@@ -139,15 +164,19 @@ class _SelectPageState extends State<SelectPage> {
                       children: [
                         Text(
                           "난이도",
-                          style: TextStyle(fontSize: 17, color: Colors.black),
+                          style: TextStyle(
+                              fontSize: 17,
+                              color: disableColors(
+                                  isDisable: typeEnable[type],
+                                  inputColor: Colors.black)),
                         ),
                         Text(
-                          difficultyList[difficulty],
+                          difficultyList[typeDifficulty[type]],
                           style: TextStyle(fontSize: 17, color: Colors.grey),
                         )
                       ]),
                   onPressed: () {
-                    difficultyActionsheet(context);
+                    difficultyActionsheet(context, type);
                   })
             ],
           )),
@@ -232,12 +261,13 @@ class _SelectPageState extends State<SelectPage> {
                             ],
                           )
                         ])),
-                typeSelector("test"),
+                typeSelector("3D 전개도 유형", 0),
+                typeSelector("종이접기 유형", 1),
                 CircleButton(
                   text: "문제 생성",
                   marginVertical: 5,
                   width: 345,
-                  color: Colors.blue,
+                  color: const Color(0xFF4386F9),
                   textColor: Colors.white,
                   onPressed: () async {
                     // String tempDate = DateTime.now().toString();
@@ -251,8 +281,8 @@ class _SelectPageState extends State<SelectPage> {
                     debugPrint("problemNumber : $tempDate");
 
                     List<dynamic> myProblemList = [
-                      ...await makecubeproblem(
-                          problemNumber.toInt(), difficulty, directory),
+                      ...await makecubeproblem(typeProblemNumber[0].toInt(),
+                          typeDifficulty[0], directory),
                     ];
 
                     Exam newExam = Exam(

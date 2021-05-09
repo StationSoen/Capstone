@@ -99,7 +99,7 @@ class _ScorePageState extends State<ScorePage> {
                             ])),
                     CircleButton(
                       text: "확인",
-                      color: Colors.blue,
+                      color: const Color(0xFF4386F9),
                       textColor: Colors.white,
                       width: 345,
                       marginVertical: 5,
@@ -125,11 +125,13 @@ class _ScorePageState extends State<ScorePage> {
                 children: [
                   Text(
                     "#${(i + 1).toString().padLeft(2, '0')} - 전개도 유형",
-                    style: TextStyle(fontSize: 17, color: Colors.blue),
+                    style:
+                        TextStyle(fontSize: 17, color: const Color(0xFF4386F9)),
                   ),
                   Text(
                     "정답",
-                    style: TextStyle(fontSize: 17, color: Colors.blue),
+                    style:
+                        TextStyle(fontSize: 17, color: const Color(0xFF4386F9)),
                   )
                 ]),
             onPressed: () {
