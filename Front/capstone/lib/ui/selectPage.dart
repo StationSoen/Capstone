@@ -1,3 +1,4 @@
+import 'package:capstone/visual/paper_problem.dart';
 import 'package:capstone/visual/problem.dart';
 import 'package:capstone/ui/problemPage.dart';
 import 'package:flutter/material.dart';
@@ -284,6 +285,11 @@ class _SelectPageState extends State<SelectPage> {
                       ...await makecubeproblem(typeProblemNumber[0].toInt(),
                           typeDifficulty[0], directory),
                     ];
+                    myProblemList.addAll(await makepaperproblem(
+                        typeProblemNumber[1].toInt(),
+                        typeDifficulty[1],
+                        directory,
+                        typeProblemNumber[0].toInt()));
 
                     Exam newExam = Exam(
                         dateCode: tempDate,
