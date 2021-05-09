@@ -86,19 +86,19 @@ class PaperFold {
 
     do {
       var standard = (linetype / range).toInt();
-      linetype -= standard * range;
+      var modtype = linetype % range;
 
       if (standard == 0) {
-        if (linetype == 0) {
+        if (modtype == 0) {
           //세로
           line = [1, 0, 50];
-        } else if (linetype == 1) {
+        } else if (modtype == 1) {
           //가로
           line = [0, 1, 50];
-        } else if (linetype == 2) {
+        } else if (modtype == 2) {
           // 대각선 /
           line = [1, 1, 100];
-        } else if (linetype == 3) {
+        } else if (modtype == 3) {
           // 대각선 \
           line = [1, -1, 0];
         } else {
@@ -114,16 +114,16 @@ class PaperFold {
       } else {
         var x = rng.nextInt(61) + 20;
         var y = rng.nextInt(61) + 20;
-        if (linetype == 0) {
+        if (modtype == 0) {
           //세로
           line = [1, 0, x];
-        } else if (linetype == 1) {
+        } else if (modtype == 1) {
           //가로
           line = [0, 1, y];
-        } else if (linetype == 2) {
+        } else if (modtype == 2) {
           // 대각선 /
           line = [1, 1, x + y];
-        } else if (linetype == 3) {
+        } else if (modtype == 3) {
           // 대각선 \
           line = [1, -1, x - y];
         } else {
