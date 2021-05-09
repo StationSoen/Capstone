@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 import '../exam.dart';
+import 'PaperFold.dart';
 import 'component.dart';
 import 'cube3D.dart';
 
@@ -25,10 +26,13 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
         remainProblems++;
       }
     }
+
     List<bool> correctList = [];
     int correct = 0;
+    List<int> typeList = [];
 
     for (int i = 0; i < exam.problemList.length; i++) {
+      typeList.add(exam.problemList[i].problemType);
       if (exam.userAnswer[i] == exam.problemList[i].answer) {
         correctList.add(true);
         correct++;
@@ -123,7 +127,8 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                                     fontSize: 24, fontWeight: FontWeight.w600),
                               ),
                               Divider(),
-                              problemList(correctList.length, correctList),
+                              problemList(
+                                  correctList.length, correctList, typeList),
                             ])),
                     CircleButton(
                       text: "돌아가기",
@@ -159,8 +164,9 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
     );
   }
 
-  Widget problemList(int number, List<bool> correctList) {
+  Widget problemList(int number, List<bool> correctList, List<int> typeList) {
     List<Widget> result = [];
+    List<String> type = ["전개도 유형", "종이접기 유형"];
 
     for (int i = 0; i < number; i++) {
       if (correctList[i]) {
@@ -170,7 +176,8 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "#${(i + 1).toString().padLeft(2, '0')} - 전개도 유형",
+                    "#${(i + 1).toString().padLeft(2, '0')} - " +
+                        type[typeList[i]],
                     style:
                         TextStyle(fontSize: 17, color: const Color(0xFF4386F9)),
                   ),
@@ -181,15 +188,28 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                   )
                 ]),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => Cube3D(
-                    exam: exam,
-                    index: i,
+              debugPrint("AAA" + typeList[i].toString());
+              if (typeList[i] == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => Cube3D(
+                      exam: exam,
+                      index: i,
+                    ),
                   ),
-                ),
-              );
+                );
+              } else if (typeList[i] == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => PaperFold(
+                      exam: exam,
+                      index: i,
+                    ),
+                  ),
+                );
+              }
             }));
       } else {
         result.add(CupertinoButton(
@@ -198,7 +218,8 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "#${(i + 1).toString().padLeft(2, '0')} - 전개도 유형",
+                    "#${(i + 1).toString().padLeft(2, '0')} - " +
+                        type[typeList[i]],
                     style: TextStyle(fontSize: 17, color: Colors.red),
                   ),
                   Text(
@@ -207,15 +228,28 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                   )
                 ]),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => Cube3D(
-                    exam: exam,
-                    index: i,
+              debugPrint("AAA" + typeList[i].toString());
+              if (typeList[i] == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => Cube3D(
+                      exam: exam,
+                      index: i,
+                    ),
                   ),
-                ),
-              );
+                );
+              } else if (typeList[i] == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => PaperFold(
+                      exam: exam,
+                      index: i,
+                    ),
+                  ),
+                );
+              }
             }));
       }
     }

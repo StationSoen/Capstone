@@ -271,36 +271,46 @@ class _SelectPageState extends State<SelectPage> {
                   color: const Color(0xFF4386F9),
                   textColor: Colors.white,
                   onPressed: () async {
-                    // String tempDate = DateTime.now().toString();
-                    //
-                    DateFormat formatter = DateFormat('MM_dd_HH_mm_ss');
-                    String tempDate = formatter.format(DateTime.now());
+                    if (typeEnable[0] == true || typeEnable[1] == true) {
+                      // String tempDate = DateTime.now().toString();
+                      //
+                      DateFormat formatter = DateFormat('MM_dd_HH_mm_ss');
+                      String tempDate = formatter.format(DateTime.now());
 
-                    String directory = await loaddirectory(tempDate);
+                      String directory = await loaddirectory(tempDate);
 
-                    debugPrint("problemNumber : $directory");
-                    debugPrint("problemNumber : $tempDate");
+                      debugPrint("problemNumber : $directory");
+                      debugPrint("problemNumber : $tempDate");
 
-                    List<Problem> myProblemList = [
-                      ...await makecubeproblem(typeProblemNumber[0].toInt(),
-                          typeDifficulty[0], directory),
-                    ];
+                      List<Problem> myProblemList = [];
 
-                    myProblemList.addAll(await makepaperproblem(
-                        typeProblemNumber[1].toInt(),
-                        typeDifficulty[1],
-                        directory,
-                        typeProblemNumber[0].toInt()));
+                      if (typeEnable[0] == true) {
+                        myProblemList.addAll(await makecubeproblem(
+                            typeProblemNumber[0].toInt(),
+                            typeDifficulty[0],
+                            directory));
+                      } else {
+                        typeProblemNumber[0] = 0;
+                      }
 
-                    Exam newExam = Exam(
-                        dateCode: tempDate,
-                        directory: directory,
-                        settingTime: time.toInt(),
-                        problemList: myProblemList);
+                      if (typeEnable[1] == true) {
+                        myProblemList.addAll(await makepaperproblem(
+                            typeProblemNumber[1].toInt(),
+                            typeDifficulty[1],
+                            directory,
+                            typeProblemNumber[0].toInt()));
+                      }
 
-                    // Navigator.pushNamed(context, '/problemPage');
-                    Navigator.pushNamed(context, '/problemPage',
-                        arguments: newExam);
+                      Exam newExam = Exam(
+                          dateCode: tempDate,
+                          directory: directory,
+                          settingTime: time.toInt(),
+                          problemList: myProblemList);
+
+                      // Navigator.pushNamed(context, '/problemPage');
+                      Navigator.pushNamed(context, '/problemPage',
+                          arguments: newExam);
+                    }
                   },
                 ),
                 CircleButton(
