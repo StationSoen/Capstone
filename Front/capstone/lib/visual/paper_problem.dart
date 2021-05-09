@@ -20,8 +20,8 @@ Future<List<FoldProblem>> makepaperproblem(
 
     //debugPrint(temp.example[1][1].toString());
     for (int j = 0; j < 4; j++) {
-      //debugPrint(temp.example[0][j].toString());
-      //debugPrint(temp.example[1][j].toString());
+      debugPrint(temp.example[0][j].toString());
+      debugPrint(temp.example[1][j].toString());
       if (j == 3) {
         drawpaperpng('problem' + (i + counter).toString() + '_' + j.toString(),
             temp.example[0][j], temp.example[1][j], true, false, directory);
@@ -40,6 +40,6 @@ Future<List<FoldProblem>> makepaperproblem(
   // debugPrint("문제번호는$i");
   // debugPrint("${temp.toString()}");
 
-  debugPrint("로딩끝남");
+  debugPrint("페이퍼 문제 : 로딩끝남");
   return foldList;
 }
