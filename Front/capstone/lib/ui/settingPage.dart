@@ -134,7 +134,7 @@ class _SettingPageState extends State<SettingPage> {
 
   void _launchURL() async {
     const url =
-        'https://github.com/kyw2271/cbhs_app/blob/main/Privacy%20Statement';
+        'https://github.com/StationSoen/Capstone/blob/main/Privacy%20Statement';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -208,7 +208,7 @@ class _SettingPageState extends State<SettingPage> {
                                         developers:
                                             "손  민(miney272@github)\n유성현(stationsoen@github)\n이길상(oat641@github)",
                                         githubLink:
-                                            "github.com/stationsoen/capstone",
+                                            "github.com/stationsoen/Capstone",
                                       )));
                           debugPrint(setting.get('id').toString());
                         },
