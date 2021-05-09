@@ -47,10 +47,113 @@ class _PaperFoldState extends State<PaperFold> {
         child: Column(
           children: [
             Container(
-              width: double.infinity,
-              height: 300,
-            ),
-            Divider(),
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    Container(
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        child: Text(
+                          "단계별 앞면",
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          width: 75,
+                          child: Image.file(
+                            File(this.widget.exam.directory +
+                                "/problem" +
+                                (this.widget.index + 1).toString() +
+                                "_0.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          width: 75,
+                          child: Image.file(
+                            File(this.widget.exam.directory +
+                                "/problem" +
+                                (this.widget.index + 1).toString() +
+                                "_1.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          width: 75,
+                          child: Image.file(
+                            File(this.widget.exam.directory +
+                                "/problem" +
+                                (this.widget.index + 1).toString() +
+                                "_2.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          width: 75,
+                          child: Image.file(
+                            File(this.widget.exam.directory +
+                                "/problem" +
+                                (this.widget.index + 1).toString() +
+                                "_3.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        child: Text(
+                          "단계별 뒷면",
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          width: 75,
+                          child: Image.file(
+                            File(this.widget.exam.directory +
+                                "/back" +
+                                (this.widget.index + 1).toString() +
+                                "_0.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          width: 75,
+                          child: Image.file(
+                            File(this.widget.exam.directory +
+                                "/back" +
+                                (this.widget.index + 1).toString() +
+                                "_1.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          width: 75,
+                          child: Image.file(
+                            File(this.widget.exam.directory +
+                                "/back" +
+                                (this.widget.index + 1).toString() +
+                                "_2.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          width: 75,
+                          child: Image.file(
+                            File(this.widget.exam.directory +
+                                "/back" +
+                                (this.widget.index + 1).toString() +
+                                "_3.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
             // problem Card
             Container(
               padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
