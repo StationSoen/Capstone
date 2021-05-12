@@ -9,7 +9,6 @@ import 'package:capstone/ui/problemDetalPage.dart';
 import 'package:capstone/ui/problemPage.dart';
 import 'package:capstone/ui/problemPaused.dart';
 import 'package:capstone/ui/recordPage.dart';
-import 'package:capstone/ui/scorePage.dart';
 import 'package:capstone/ui/selectPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,13 +47,10 @@ List<Color?> colorlist = [
 List<UI.Image> imglist = []; //숫자 이미지 리스트 길이:9    0~8 숫자, 9~20까지는 문양
 
 /// 그만두기를 통해서 중간에 멈춘 문제들 리스트
-List<Exam> pausedExamList = [];
+List<dynamic> pausedExamList = [];
 
 /// 정상적으로 시험 끝낸 경우 문제들 리스트
-List<Exam> completeExamList = [];
-
-// 초기화 값
-List<Exam> initExamList = [];
+List<dynamic> completeExamList = [];
 
 void main() async {
   // initialize Hive and opening Hive boxes..
@@ -68,6 +64,14 @@ void main() async {
 
   await Hive.openBox('pausedExamList');
   await Hive.openBox('completeExamList');
+
+  var pausedExamListHive = Hive.box('pausedExamList');
+  var completeExamListHive = Hive.box('completeExamList');
+
+  pausedExamList = pausedExamListHive.get('pausedExamList');
+  completeExamList = completeExamListHive.get('completeExamList');
+
+  debugPrint("Paused Exam List : " + completeExamList.toString());
 
   // initialize Hive Value ...
   List<String> hiveSetting = ['location', 'id', 'pw'];
@@ -127,7 +131,6 @@ class MyApp extends StatelessWidget {
               // == PushNamed ==
 
               '/problemPage': (BuildContext context) => new ProblemPage(),
-              '/scorePage': (BuildContext context) => new ScorePage(),
               '/recordPage': (BuildContext context) => new RecordPage(),
               '/previousExamPage': (BuildContext context) => PreviousExamPage(),
               '/problemDetailPage': (BuildContext context) =>

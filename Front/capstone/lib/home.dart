@@ -1,10 +1,15 @@
+import 'dart:math';
+
 import 'package:capstone/main.dart';
 import 'package:capstone/ui/problemPage.dart';
-import 'package:capstone/ui/scorePage.dart';
 import 'package:capstone/ui/selectPage.dart';
+import 'package:capstone/visual/load.dart';
+import 'package:capstone/visual/paper_problem.dart';
+import 'package:capstone/visual/problem.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 
 import 'exam.dart';
 import 'ui/component.dart';
@@ -97,11 +102,11 @@ class Home extends StatelessWidget {
                           color: Color(0xFF4386F9),
                           onPressed: () {
                             // button tapped!
-
+                            randomProblem(context);
                             // open selectPage();
                           },
                           child: Text(
-                            "유형 선택",
+                            "문제 풀기",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -192,5 +197,30 @@ class Home extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> randomProblem(BuildContext context) async {
+    Random random = Random();
+    int problemType = random.nextInt(2);
+    int difficulty = random.nextInt(3);
+
+    DateFormat formatter = DateFormat('MM_dd_HH_mm_ss');
+    String tempDate = formatter.format(DateTime.now());
+    String directory = await loaddirectory(tempDate);
+    List<Problem> problemList = [];
+    if (problemType == 0) {
+      problemList = await makecubeproblem(1, difficulty, directory);
+    } else if (problemType == 1) {
+      problemList = await makepaperproblem(1, difficulty, directory, 0);
+    } else {
+      problemList = await makecubeproblem(1, difficulty, directory);
+    }
+    Exam randomProblem = Exam(
+        dateCode: tempDate,
+        directory: directory,
+        settingTime: 300,
+        problemList: problemList);
+
+    Navigator.pushNamed(context, '/problemPage', arguments: randomProblem);
   }
 }

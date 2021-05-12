@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:capstone/main.dart';
 import 'package:capstone/ui/problemPaused.dart';
 import 'package:capstone/ui/recordPage.dart';
-import 'package:capstone/ui/scorePage.dart';
 import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -432,7 +431,7 @@ showCupertinoDialog(
         completeExamListHive.put('completeExamList', completeExamList);
         pausedExamListHive.put('pausedExamList', pausedExamList);
         Navigator.pushNamedAndRemoveUntil(
-            context, '/scorePage', ModalRoute.withName('/'),
+            context, '/problemDetailCompletePage', ModalRoute.withName('/'),
             arguments: exam);
       },
     ),

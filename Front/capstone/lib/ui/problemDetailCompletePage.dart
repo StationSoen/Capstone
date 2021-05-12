@@ -30,15 +30,41 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
     List<bool> correctList = [];
     int correct = 0;
     List<int> typeList = [];
+    List<int> difficultyList = [];
+
+    List<String> typeString = ['전개도', '종이접기'];
+    List<String> difficultyString = ['쉬움', '보통', '어려움'];
 
     for (int i = 0; i < exam.problemList.length; i++) {
       typeList.add(exam.problemList[i].problemType);
+      difficultyList.add(exam.problemList[i].difficulty);
       if (exam.userAnswer[i] == exam.problemList[i].answer) {
         correctList.add(true);
         correct++;
       } else {
         correctList.add(false);
       }
+    }
+
+    String type = "";
+
+    if (typeList.contains(0)) {
+      type = type +
+          typeString[typeList.firstWhere((element) => element == 0)] +
+          "-";
+      type = type +
+          difficultyString[
+              difficultyList[typeList.indexWhere((element) => element == 0)]] +
+          " ";
+    }
+    if (typeList.contains(1)) {
+      type = type +
+          typeString[typeList.firstWhere((element) => element == 1)] +
+          "-";
+      type = type +
+          difficultyString[
+              difficultyList[typeList.indexWhere((element) => element == 1)]] +
+          " ";
     }
 
     return WillPopScope(
@@ -108,7 +134,7 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                               infoRow("전체 풀이 시간", exam.settingTime.toString()),
                               infoRow("전체 문제 수",
                                   exam.problemList.length.toString()),
-                              infoRow("문제 유형", "전개도, 종이접기"),
+                              infoRow("문제 유형", type),
                               Divider(),
                               infoRow("소요 시간", exam.elapsedTime.toString()),
                             ])),

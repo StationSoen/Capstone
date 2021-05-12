@@ -146,7 +146,7 @@ class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 10),
-                  // color: Colors.white,
+                  color: Colors.grey,
                   child: Container(
                     width: double.infinity,
                     height: 300,

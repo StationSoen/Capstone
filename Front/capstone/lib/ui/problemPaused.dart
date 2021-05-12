@@ -1,4 +1,3 @@
-import 'package:capstone/ui/scorePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
@@ -62,7 +61,9 @@ class _ProblemPausedPageState extends State<ProblemPausedPage> {
                       title: "제출하기",
                       onPressed: (BuildContext context) {
                         Navigator.pushNamedAndRemoveUntil(
-                            context, '/scorePage', ModalRoute.withName('/'),
+                            context,
+                            '/problemDetailCompletePage',
+                            ModalRoute.withName('/'),
                             arguments: this.widget.exam);
 
                         this.widget.exam.complete = true;
