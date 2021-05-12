@@ -73,27 +73,32 @@ class PaperFold {
   }
 
   /// 무작위 linetype과 line을 반환
-  List setFoldLine(Paper paper, [int except = -1]) {
+  List setFoldLine(Paper paper, List except) {
+    var range = (level == 2) ? 5 : 4;
     var line;
     var linetype;
+    var lasttype = except.last;
 
     do {
-      var standard = rng.nextInt(3);
-      do {
-        linetype = rng.nextInt((level == 2) ? 5 : 4);
-      } while (linetype == except);
+      linetype = rng.nextInt(2 * range);
+    } while (
+        (linetype < range && lasttype < range) || except.contains(linetype));
+
+    do {
+      var standard = (linetype / range).toInt();
+      var modtype = linetype % range;
 
       if (standard == 0) {
-        if (linetype == 0) {
+        if (modtype == 0) {
           //세로
           line = [1, 0, 50];
-        } else if (linetype == 1) {
+        } else if (modtype == 1) {
           //가로
           line = [0, 1, 50];
-        } else if (linetype == 2) {
+        } else if (modtype == 2) {
           // 대각선 /
           line = [1, 1, 100];
-        } else if (linetype == 3) {
+        } else if (modtype == 3) {
           // 대각선 \
           line = [1, -1, 0];
         } else {
@@ -109,16 +114,16 @@ class PaperFold {
       } else {
         var x = rng.nextInt(61) + 20;
         var y = rng.nextInt(61) + 20;
-        if (linetype == 0) {
+        if (modtype == 0) {
           //세로
           line = [1, 0, x];
-        } else if (linetype == 1) {
+        } else if (modtype == 1) {
           //가로
           line = [0, 1, y];
-        } else if (linetype == 2) {
+        } else if (modtype == 2) {
           // 대각선 /
           line = [1, 1, x + y];
-        } else if (linetype == 3) {
+        } else if (modtype == 3) {
           // 대각선 \
           line = [1, -1, x - y];
         } else {
@@ -162,12 +167,14 @@ class PaperFold {
     papers.add(Paper());
 
     // 선 초기화
-    var data = setFoldLine(papers[0]);
+    var except = [22];
+    var data = setFoldLine(papers[0], except);
     var linetype = data[0];
     var line = data[1];
+    except.add(linetype);
 
     var select = rng.nextInt(2) > 0;
-    var direction = rng.nextInt(2) > 0;
+    var direction = (level == 0) ? true : rng.nextInt(2) > 0;
     if ((line[0] * 50 + line[1] * 50 - line[2]) * (select ? 1 : -1) < 0) {
       select = !select;
     }
@@ -181,12 +188,13 @@ class PaperFold {
       papers.add(nextPaper);
 
       // 선 정하기
-      data = setFoldLine(nextPaper, linetype);
+      data = setFoldLine(nextPaper, except);
       linetype = data[0];
       line = data[1];
+      except.add(linetype);
 
       select = rng.nextInt(2) > 0;
-      direction = rng.nextInt(2) > 0;
+      direction = (level == 0) ? true : rng.nextInt(2) > 0;
       if ((line[0] * 50 + line[1] * 50 - line[2]) * (select ? 1 : -1) < 0) {
         select = !select;
       }
@@ -195,13 +203,6 @@ class PaperFold {
     }
     // 예시 데이터
     example = [papers, lines];
-
-    // 난이도 조절(0)
-    if (level == 0) {
-      for (var i = 0; i < 4; i++) {
-        lines[i][1] = true;
-      }
-    }
 
     // 정답과 보기
     var order = rand(4, 4);
@@ -248,7 +249,7 @@ class PaperFold {
       p2.foldPaper(line, select, direction);
 
       while (!p1.inRange() || !p2.inRange()) {
-        data = setFoldLine(papers[3], linetype);
+        data = setFoldLine(papers[3], except);
         line = data[1];
 
         p1 = papers[3].clone();
