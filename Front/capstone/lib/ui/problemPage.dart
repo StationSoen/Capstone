@@ -234,7 +234,8 @@ class _ProblemCardState extends State<ProblemCard> {
     [
       "다음과 같이 종이를 접었을 때, 마지막 종이의 앞면 또는 뒷면으로 알맞은 것을 고르시오.",
       "다음과 같이 종이를 접었을 때, 마지막 종이의 앞면 또는 뒷면으로 알맞지 않은 것을 고르시오.",
-    ]
+    ],
+    ["다음과 같이 종이를 접은 후, 구멍을 뚫고 펼친 뒤의 그림을 보기에서 고르시오."]
   ];
 
   @override
@@ -350,6 +351,62 @@ class _ProblemCardState extends State<ProblemCard> {
                 fit: BoxFit.cover,
               ),
             )
+          ],
+        ),
+      );
+    } else if (type == 2) {
+      // type 2
+      return Container(
+        height: 200,
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: 75,
+                  child: Image.file(
+                    File(this.widget.exam.directory +
+                        "/problem" +
+                        (this.widget.index + 1).toString() +
+                        "_0.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Container(
+                  width: 75,
+                  child: Image.file(
+                    File(this.widget.exam.directory +
+                        "/problem" +
+                        (this.widget.index + 1).toString() +
+                        "_1.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Container(
+                  width: 75,
+                  child: Image.file(
+                    File(this.widget.exam.directory +
+                        "/problem" +
+                        (this.widget.index + 1).toString() +
+                        "_2.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Container(
+                  width: 75,
+                  child: Image.file(
+                    File(this.widget.exam.directory +
+                        "/problem" +
+                        (this.widget.index + 1).toString() +
+                        "_3.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       );
