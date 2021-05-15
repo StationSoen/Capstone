@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:dart_test/dev_cube.dart';
+import 'package:dart_test/hole_punch.dart';
 import 'package:dart_test/paper_fold.dart';
 
 void main(List<String> arguments) {
@@ -106,7 +107,7 @@ void main(List<String> arguments) {
   // }
   // print('one : $one, zero : $zero');
 
-  //print(PaperFold.rangeEdge([0, 1, 50]));
-  var p = PaperFold(0, 0, 1981623965);
+  // print(PaperFold.rangeEdge([0, 1, 50]));
+  var p = HolePunch(level: 0, seed: 953220934);
   print(p);
 }
