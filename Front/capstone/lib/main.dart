@@ -68,8 +68,12 @@ void main() async {
   var pausedExamListHive = Hive.box('pausedExamList');
   var completeExamListHive = Hive.box('completeExamList');
 
-  pausedExamList = pausedExamListHive.get('pausedExamList');
-  completeExamList = completeExamListHive.get('completeExamList');
+  if (pausedExamListHive.get('pausedExamList') != null) {
+    pausedExamList = pausedExamListHive.get('pausedExamList');
+  }
+  if (completeExamListHive.get('completeExamList') != null) {
+    completeExamList = completeExamListHive.get('completeExamList');
+  }
 
   debugPrint("Paused Exam List : " + completeExamList.toString());
 
