@@ -1,3 +1,4 @@
+import 'package:capstone/ui/randomProblemSettingPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -166,10 +167,15 @@ class _SettingPageState extends State<SettingPage> {
                   titleTextStyle: TextStyle(fontSize: 16),
                   tiles: [
                     SettingsTile(
-                      title: '문제 배율 선택',
+                      title: '무작위 문제 옵션 설정',
                       subtitle: location[int.parse(setting.get('location'))],
-                      leading: Icon(CupertinoIcons.search),
+                      leading: Icon(CupertinoIcons.doc_text),
                       onPressed: (BuildContext context) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    RandomProblemSettingPage()));
                         // actionsheet(context);
                       },
                     ),

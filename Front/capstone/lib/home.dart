@@ -201,8 +201,27 @@ class Home extends StatelessWidget {
 
   Future<void> randomProblem(BuildContext context) async {
     Random random = Random();
-    int problemType = random.nextInt(2);
-    int difficulty = random.nextInt(3);
+
+    var settingHive = Hive.box('setting');
+    int problemType;
+    int difficulty;
+
+    List<dynamic> randomProblemSetting =
+        settingHive.get('randomProlemSettingList', defaultValue: [
+      [true, true, true],
+      [true, true, true],
+    ]);
+    double time =
+        settingHive.get('randomProlemSettingTime', defaultValue: 360.0);
+
+    while (true) {
+      problemType = random.nextInt(2);
+      difficulty = random.nextInt(3);
+
+      if (randomProblemSetting[problemType][difficulty] == true) {
+        break;
+      }
+    }
 
     DateFormat formatter = DateFormat('MM_dd_HH_mm_ss');
     String tempDate = formatter.format(DateTime.now());
@@ -218,7 +237,7 @@ class Home extends StatelessWidget {
     Exam randomProblem = Exam(
         dateCode: tempDate,
         directory: directory,
-        settingTime: 300,
+        settingTime: time.toInt(),
         problemList: problemList);
 
     Navigator.pushNamed(context, '/problemPage', arguments: randomProblem);
