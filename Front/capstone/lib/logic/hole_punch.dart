@@ -249,7 +249,7 @@ class HolePunch {
     suggestion[order[1]] = dotWrong1;
     //오답 2
     var dotWrong2 = json.decode(json.encode(dotAnswer));
-    var dotMid = rand(2, dotRange);
+    var dotMid = rand(2, dotWrong2.length);
     var dot0 = dotWrong2[dotMid[0]];
     var dot1 = dotWrong2[dotMid[1]];
     dotWrong2.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
