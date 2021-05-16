@@ -24,6 +24,9 @@ class HolePunch {
   /// - 2 정해진 각도 이외로도 접기
   int level = -1;
 
+  /// 타입은 하나뿐
+  int type = 0;
+
   var example;
   var suggestion;
   var answer;
