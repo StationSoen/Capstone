@@ -333,10 +333,14 @@ class Paper {
 
         var x = layer[j][0];
         var y = layer[j][1];
-
         if ((v <= y && py <= y && py >= v) || (v >= y && py >= y && py <= v)) {
-          var scale = (v == y) ? 0 : ((u - x) / (v - y));
-          var newX = scale * (py - y) + x;
+          var newX;
+          if (v == y) {
+            newX = (x + u / 2);
+          } else {
+            var scale = (v == y) ? 0 : ((u - x) / (v - y));
+            newX = scale * (py - y) + x;
+          }
           if (newX > px) right++;
           if (newX < px) left++;
         }

@@ -209,11 +209,12 @@ class HolePunch {
     if (level == 0) {
       var shape = papers.last.layers.last;
       num x = 0, y = 0;
-      for (var i = 0; i < shape.length; i++) {
+      var n = shape.length;
+      for (var i = 0; i < n; i++) {
         x += shape[i][0];
         y += shape[i][1];
       }
-      dotOrigin.add([x, y]);
+      dotOrigin.add([x / n, y / n]);
     } else {
       var dotRange = papers.last.layers.last.length;
       var dotEdge = rand(dotRange - rng.nextInt(3), dotRange);
@@ -268,6 +269,7 @@ class HolePunch {
     var dot0 = dotWrong2[dotMid[0]];
     var dot1 = dotWrong2[dotMid[1]];
     dotWrong2.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
+    dotWrong2.removeAt(rng.nextInt(dotWrong2.length - 1));
     suggestion[order[2]] = dotWrong2;
     //오답 3
     var dotWrong3 = json.decode(json.encode(dotAnswer));
