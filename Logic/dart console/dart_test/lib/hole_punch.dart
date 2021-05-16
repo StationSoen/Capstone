@@ -214,6 +214,7 @@ class HolePunch {
       var dot1 = papers.last.layers.last[dotMid[1]];
       dotOrigin.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
     }
+    dots.add(dotOrigin);
 
     print('example : dot origin complete.');
 
@@ -233,8 +234,9 @@ class HolePunch {
         if (papers[i].isIn(dotAnswer[j])) dotTemp.add(dotAnswer[j]);
       }
       dotAnswer = dotTemp;
+      dots.insert(0, json.decode(json.encode(dotAnswer)));
     }
-    example = [papers, lines, dotOrigin];
+    example = [papers, lines, dots];
 
     print('example : dot answer complete.');
 
