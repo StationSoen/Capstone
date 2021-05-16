@@ -1,3 +1,4 @@
+import 'package:capstone/ui/PunchHole.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -271,7 +272,6 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                   )
                 ]),
             onPressed: () {
-              debugPrint("AAA" + typeList[i].toString());
               if (typeList[i] == 0) {
                 Navigator.push(
                   context,
@@ -287,6 +287,16 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => PaperFold(
+                      exam: exam,
+                      index: i,
+                    ),
+                  ),
+                );
+              } else if (typeList[i] == 2) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => PunchHole(
                       exam: exam,
                       index: i,
                     ),
