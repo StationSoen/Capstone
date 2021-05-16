@@ -259,15 +259,15 @@ Future<void> drawpunchnotepng(String name, var pointList, var lineList, var dotL
     mypath(canvas,layers[i], paint);
   }
 
+  paint.style=PaintingStyle.fill;
   //마지막 예시, 즉 점을 찍어야됨
   for(int i=0;i<dotList.length;i++)
   {
-    paint.style=PaintingStyle.fill;
 
     canvas.drawCircle((Offset(dotList[i][0]*2,dotList[i][1]*2)), radius, paint);
   }
 
-
+  paint.style=PaintingStyle.stroke;
   for(int i=0;i<lineList.length;i++)
   {
 
