@@ -56,7 +56,7 @@ class _RandomProblemSettingPageState extends State<RandomProblemSettingPage> {
       [true, true, true],
       [true, true, true],
     ]);
-    this.time = settingHive.get('randomProlemSettingTime', defaultValue: 360.0);
+    this.time = settingHive.get('randomProlemSettingTime', defaultValue: 300.0);
     print(this.time);
   }
 
@@ -168,6 +168,21 @@ class _RandomProblemSettingPageState extends State<RandomProblemSettingPage> {
                         typeOnOff(
                             title: "종이접기 유형 - 어려움",
                             problemType: 1,
+                            difficulty: 2,
+                            list: randomProblemSetting),
+                        typeOnOff(
+                            title: "펀칭 유형 - 쉬움",
+                            problemType: 2,
+                            difficulty: 0,
+                            list: randomProblemSetting),
+                        typeOnOff(
+                            title: "펀칭 유형 - 보통",
+                            problemType: 2,
+                            difficulty: 1,
+                            list: randomProblemSetting),
+                        typeOnOff(
+                            title: "펀칭 유형 - 어려움",
+                            problemType: 2,
                             difficulty: 2,
                             list: randomProblemSetting),
                       ],
