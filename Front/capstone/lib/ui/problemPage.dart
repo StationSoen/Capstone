@@ -188,7 +188,7 @@ class _ProblemPageState extends State<ProblemPage> {
 }
 
 class ProblemCard extends StatefulWidget {
-  late double answerSize = 125;
+  late double answerSize = 100;
   late int index;
   late SwiperController swiperController;
   late int maxIndex;
@@ -245,6 +245,7 @@ class _ProblemCardState extends State<ProblemCard> {
       height: 500,
       padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           // Problem Question Section
           Container(
@@ -253,7 +254,9 @@ class _ProblemCardState extends State<ProblemCard> {
                   "#${this.widget.index + 1}\n${problemText[this.widget.type][this.widget.exam.problemList[this.widget.index].textType]}")),
           Divider(),
           problemQuestion(this.widget.type),
-          Divider(),
+          Divider(
+            color: Colors.black,
+          ),
 
           // Problem Answers Section
           Column(
@@ -282,8 +285,8 @@ class _ProblemCardState extends State<ProblemCard> {
     if (type == 0) {
       // Cube Problem
       return Container(
-        height: 200,
-        width: 200,
+        height: 250,
+        width: double.infinity,
         child: Image.file(
           File(this.widget.exam.directory +
               "/problem" +
@@ -295,7 +298,7 @@ class _ProblemCardState extends State<ProblemCard> {
     } else if (type == 1) {
       // PaperFlod Problem
       return Container(
-        height: 200,
+        height: 250,
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

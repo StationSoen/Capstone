@@ -52,29 +52,28 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
     if (typeList.contains(0)) {
       type = type +
           typeString[typeList.firstWhere((element) => element == 0)] +
-          "-";
-      type = type +
-          difficultyString[
-              difficultyList[typeList.indexWhere((element) => element == 0)]] +
-          " ";
+          ", ";
+      // type = type +
+      //     difficultyString[
+      //         difficultyList[typeList.indexWhere((element) => element == 0)]] +
+      //     " ";
     }
     if (typeList.contains(1)) {
       type = type +
           typeString[typeList.firstWhere((element) => element == 1)] +
-          "-";
-      type = type +
-          difficultyString[
-              difficultyList[typeList.indexWhere((element) => element == 1)]] +
-          " ";
+          ", ";
+      // type = type +
+      //     difficultyString[
+      //         difficultyList[typeList.indexWhere((element) => element == 1)]] +
+      //     " ";
     }
     if (typeList.contains(2)) {
-      type = type +
-          typeString[typeList.firstWhere((element) => element == 2)] +
-          "-";
-      type = type +
-          difficultyString[
-              difficultyList[typeList.indexWhere((element) => element == 2)]] +
-          " ";
+      type = type + typeString[typeList.firstWhere((element) => element == 2)];
+      // "-";
+      // type = type +
+      //     difficultyString[
+      //         difficultyList[typeList.indexWhere((element) => element == 2)]] +
+      //     " ";
     }
 
     return WillPopScope(
