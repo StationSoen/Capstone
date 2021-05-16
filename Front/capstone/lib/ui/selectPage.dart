@@ -27,9 +27,6 @@ class _SelectPageState extends State<SelectPage> {
   List<double> typeProblemNumber = [1, 1, 1];
   List<bool> typeEnable = [true, true, true];
 
-  double height = 80;
-  double extendedHeight = 230;
-
   double time = 10;
 
   /// HiveBox for global examListHive
@@ -77,56 +74,92 @@ class _SelectPageState extends State<SelectPage> {
   }
 
   Widget typeSelector(String title, int type) {
-    return AnimatedContainer(
-      height: 230,
-      duration: Duration(milliseconds: 250),
-      child: Container(
-          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-          margin: EdgeInsets.symmetric(vertical: 5),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(26.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.17),
-                offset: Offset(0.0, 3.0), //(x,y)
-                blurRadius: 6.0,
-              ),
-            ],
-          ),
-          width: 345,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: disableColors(
-                            isDisable: typeEnable[type],
-                            inputColor: Colors.black)),
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+        margin: EdgeInsets.symmetric(vertical: 5),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(26.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.17),
+              offset: Offset(0.0, 3.0), //(x,y)
+              blurRadius: 6.0,
+            ),
+          ],
+        ),
+        width: 345,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      color: disableColors(
+                          isDisable: typeEnable[type],
+                          inputColor: Colors.black)),
+                ),
+                CupertinoSwitch(
+                    value: typeEnable[type],
+                    onChanged: (value) {
+                      setState(() {
+                        typeEnable[type] = value;
+                      });
+                    }),
+              ],
+            ),
+            Divider(),
+            Container(
+              padding: EdgeInsets.only(top: 10),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "문제 수",
+                      style: TextStyle(
+                          fontSize: 17,
+                          color: disableColors(
+                              isDisable: typeEnable[type],
+                              inputColor: Colors.black)),
+                    ),
+                    Text(
+                      "${typeProblemNumber[type].toInt()}개",
+                      style: TextStyle(fontSize: 17, color: Colors.grey),
+                    )
+                  ]),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 3),
+              child: CupertinoSlider(
+                  value: typeProblemNumber[type],
+                  max: 10,
+                  min: 1,
+                  divisions: 9,
+                  activeColor: disableColors(
+                    isDisable: typeEnable[type],
+                    inputColor: const Color(0xFF4386F9),
                   ),
-                  CupertinoSwitch(
-                      value: typeEnable[type],
-                      onChanged: (value) {
-                        setState(() {
-                          typeEnable[type] = value;
-                        });
-                      }),
-                ],
-              ),
-              Divider(),
-              Container(
-                padding: EdgeInsets.only(top: 10),
+                  onChanged: (value) {
+                    if (typeEnable[type]) {
+                      setState(() {
+                        typeProblemNumber[type] = value;
+                      });
+                    }
+                  }),
+            ),
+            Divider(),
+            CupertinoButton(
+                padding: EdgeInsets.all(0),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "문제 수",
+                        "난이도",
                         style: TextStyle(
                             fontSize: 17,
                             color: disableColors(
@@ -134,55 +167,15 @@ class _SelectPageState extends State<SelectPage> {
                                 inputColor: Colors.black)),
                       ),
                       Text(
-                        "${typeProblemNumber[type].toInt()}개",
+                        difficultyList[typeDifficulty[type]],
                         style: TextStyle(fontSize: 17, color: Colors.grey),
                       )
                     ]),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 3),
-                child: CupertinoSlider(
-                    value: typeProblemNumber[type],
-                    max: 10,
-                    min: 1,
-                    divisions: 9,
-                    activeColor: disableColors(
-                      isDisable: typeEnable[type],
-                      inputColor: const Color(0xFF4386F9),
-                    ),
-                    onChanged: (value) {
-                      if (typeEnable[type]) {
-                        setState(() {
-                          typeProblemNumber[type] = value;
-                        });
-                      }
-                    }),
-              ),
-              Divider(),
-              CupertinoButton(
-                  padding: EdgeInsets.all(0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "난이도",
-                          style: TextStyle(
-                              fontSize: 17,
-                              color: disableColors(
-                                  isDisable: typeEnable[type],
-                                  inputColor: Colors.black)),
-                        ),
-                        Text(
-                          difficultyList[typeDifficulty[type]],
-                          style: TextStyle(fontSize: 17, color: Colors.grey),
-                        )
-                      ]),
-                  onPressed: () {
-                    difficultyActionsheet(context, type);
-                  })
-            ],
-          )),
-    );
+                onPressed: () {
+                  difficultyActionsheet(context, type);
+                })
+          ],
+        ));
   }
 
   @override
