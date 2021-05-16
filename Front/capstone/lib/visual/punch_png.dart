@@ -125,6 +125,7 @@ Future<void> drawpunchpng(String name, var pointList, var dotlineList, bool is_L
   }
 
   if(is_Last){ //마지막 예시, 즉 점을 찍어야됨
+    paint.style=PaintingStyle.fill;
     for(int i=0;i<dotlineList.length;i++)
     {
 
@@ -261,6 +262,7 @@ Future<void> drawpunchnotepng(String name, var pointList, var lineList, var dotL
   //마지막 예시, 즉 점을 찍어야됨
   for(int i=0;i<dotList.length;i++)
   {
+    paint.style=PaintingStyle.fill;
 
     canvas.drawCircle((Offset(dotList[i][0]*2,dotList[i][1]*2)), radius, paint);
   }
