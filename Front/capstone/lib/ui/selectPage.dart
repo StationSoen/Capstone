@@ -1,6 +1,7 @@
 import 'package:capstone/visual/paper_problem.dart';
 import 'package:capstone/visual/problem.dart';
 import 'package:capstone/ui/problemPage.dart';
+import 'package:capstone/visual/punchproblem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
@@ -22,9 +23,9 @@ class _SelectPageState extends State<SelectPage> {
   // int difficulty = 0;
   // double problemNumber = 1;
 
-  List<int> typeDifficulty = [0, 0];
-  List<double> typeProblemNumber = [1, 1];
-  List<bool> typeEnable = [true, true];
+  List<int> typeDifficulty = [0, 0, 0];
+  List<double> typeProblemNumber = [1, 1, 1];
+  List<bool> typeEnable = [true, true, true];
 
   double height = 80;
   double extendedHeight = 230;
@@ -264,6 +265,7 @@ class _SelectPageState extends State<SelectPage> {
                         ])),
                 typeSelector("3D 전개도 유형", 0),
                 typeSelector("종이접기 유형", 1),
+                typeSelector("펀칭 유형", 2),
                 CircleButton(
                   text: "문제 생성",
                   marginVertical: 5,
@@ -271,7 +273,9 @@ class _SelectPageState extends State<SelectPage> {
                   color: const Color(0xFF4386F9),
                   textColor: Colors.white,
                   onPressed: () async {
-                    if (typeEnable[0] == true || typeEnable[1] == true) {
+                    if (typeEnable[0] == true ||
+                        typeEnable[1] == true ||
+                        typeEnable[2] == true) {
                       // String tempDate = DateTime.now().toString();
                       //
                       DateFormat formatter = DateFormat('MM_dd_HH_mm_ss');
@@ -299,6 +303,17 @@ class _SelectPageState extends State<SelectPage> {
                             typeDifficulty[1],
                             directory,
                             typeProblemNumber[0].toInt()));
+                      } else {
+                        typeProblemNumber[1] = 0;
+                      }
+
+                      if (typeEnable[2] == true) {
+                        myProblemList.addAll(await makepunchproblem(
+                            typeProblemNumber[2].toInt(),
+                            typeDifficulty[2],
+                            directory,
+                            typeProblemNumber[0].toInt() +
+                                typeProblemNumber[1].toInt()));
                       }
 
                       Exam newExam = Exam(
