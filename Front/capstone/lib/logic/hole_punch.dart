@@ -88,7 +88,7 @@ class HolePunch {
     do {
       line = [];
       do {
-        linetype = rng.nextInt(2 * range);
+        linetype = rng.nextInt((level == 2) ? 2 * range : range);
       } while (except.contains(linetype));
 
       var standard = (linetype / range).toInt();
@@ -206,16 +206,26 @@ class HolePunch {
     // 점 선택
     var dotOrigin = [];
 
-    var dotRange = papers.last.layers.last.length;
-    var dotEdge = rand(dotRange - rng.nextInt(3), dotRange);
-    for (var i = 0; i < dotEdge.length; i++) {
-      dotOrigin.add(papers.last.layers.last[dotEdge[i]]);
-    }
-    if (rng.nextInt(2) > 0) {
-      var dotMid = rand(2, dotRange);
-      var dot0 = papers.last.layers.last[dotMid[0]];
-      var dot1 = papers.last.layers.last[dotMid[1]];
-      dotOrigin.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
+    if (level == 0) {
+      var shape = papers.last.layers.last;
+      num x = 0, y = 0;
+      for (var i = 0; i < shape.length; i++) {
+        x += shape[i][0];
+        y += shape[i][1];
+      }
+      dotOrigin.add([x, y]);
+    } else {
+      var dotRange = papers.last.layers.last.length;
+      var dotEdge = rand(dotRange - rng.nextInt(3), dotRange);
+      for (var i = 0; i < dotEdge.length; i++) {
+        dotOrigin.add(papers.last.layers.last[dotEdge[i]]);
+      }
+      if (rng.nextInt(2) > 0) {
+        var dotMid = rand(2, dotRange);
+        var dot0 = papers.last.layers.last[dotMid[0]];
+        var dot1 = papers.last.layers.last[dotMid[1]];
+        dotOrigin.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
+      }
     }
     dots.add(dotOrigin);
 
