@@ -24,6 +24,9 @@ class HolePunch {
   /// - 2 정해진 각도 이외로도 접기
   int level = -1;
 
+  /// 타입은 하나뿐
+  int type = 0;
+
   var example;
   var suggestion;
   var answer;
@@ -214,6 +217,7 @@ class HolePunch {
       var dot1 = papers.last.layers.last[dotMid[1]];
       dotOrigin.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
     }
+    dots.add(dotOrigin);
 
     print('example : dot origin complete.');
 
@@ -233,8 +237,9 @@ class HolePunch {
         if (papers[i].isIn(dotAnswer[j])) dotTemp.add(dotAnswer[j]);
       }
       dotAnswer = dotTemp;
+      dots.insert(0, json.decode(json.encode(dotAnswer)));
     }
-    example = [papers, lines, dotOrigin];
+    example = [papers, lines, dots];
 
     print('example : dot answer complete.');
 
@@ -245,7 +250,7 @@ class HolePunch {
     suggestion[order[0]] = dotAnswer;
     //오답 1
     var dotWrong1 = json.decode(json.encode(dotAnswer));
-    dotWrong1.removeAt(rng.nextInt(dotAnswer.length));
+    dotWrong1.removeAt(rng.nextInt(dotWrong1.length));
     suggestion[order[1]] = dotWrong1;
     //오답 2
     var dotWrong2 = json.decode(json.encode(dotAnswer));
