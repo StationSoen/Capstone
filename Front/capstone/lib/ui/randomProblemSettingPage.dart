@@ -54,6 +54,7 @@ class _RandomProblemSettingPageState extends State<RandomProblemSettingPage> {
         settingHive.get('randomProlemSettingList', defaultValue: [
       [true, true, true],
       [true, true, true],
+      [true, true, true],
     ]);
     this.time = settingHive.get('randomProlemSettingTime', defaultValue: 360.0);
     print(this.time);

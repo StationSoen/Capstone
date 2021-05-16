@@ -32,7 +32,7 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
     List<int> typeList = [];
     List<int> difficultyList = [];
 
-    List<String> typeString = ['전개도', '종이접기'];
+    List<String> typeString = ['전개도', '종이접기', '펀칭'];
     List<String> difficultyString = ['쉬움', '보통', '어려움'];
 
     for (int i = 0; i < exam.problemList.length; i++) {
@@ -64,6 +64,15 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
       type = type +
           difficultyString[
               difficultyList[typeList.indexWhere((element) => element == 1)]] +
+          " ";
+    }
+    if (typeList.contains(2)) {
+      type = type +
+          typeString[typeList.firstWhere((element) => element == 2)] +
+          "-";
+      type = type +
+          difficultyString[
+              difficultyList[typeList.indexWhere((element) => element == 2)]] +
           " ";
     }
 
@@ -194,7 +203,7 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
 
   Widget problemList(int number, List<bool> correctList, List<int> typeList) {
     List<Widget> result = [];
-    List<String> type = ["전개도 유형", "종이접기 유형"];
+    List<String> type = ["전개도 유형", "종이접기 유형", "펀칭 유형"];
 
     for (int i = 0; i < number; i++) {
       if (correctList[i]) {
