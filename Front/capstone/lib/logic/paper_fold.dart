@@ -317,7 +317,7 @@ class Paper {
   /// point가 접힌 종이 안에 있는지 체크
   bool isIn(List point) {
     var n = layerCount;
-    var insec = 0;
+    var left, right;
 
     var px = point[0];
     var py = point[1];
@@ -325,6 +325,8 @@ class Paper {
     for (var i = 0; i < n; i++) {
       var layer = layers[i];
       int p = layer.length;
+      left = 0;
+      right = 0;
       for (var j = 0; j < p; j++) {
         var u = layer[(j - 1) % p][0];
         var v = layer[(j - 1) % p][1];
@@ -332,13 +334,14 @@ class Paper {
         var x = layer[j][0];
         var y = layer[j][1];
 
-        if ((py < v) != (py < y)) {
-          var scale = (u - x) / (v - y);
+        if ((v <= y && py <= y && py >= v) || (v >= y && py >= y && py <= v)) {
+          var scale = (v == y) ? 0 : ((u - x) / (v - y));
           var newX = scale * (py - y) + x;
-          if (newX > px) insec++;
+          if (newX > px) right++;
+          if (newX < px) left++;
         }
       }
-      if (insec % 2 > 0) return true;
+      if ((left % 2 > 0) || (right % 2 > 0)) return true;
     }
     return false;
   }
