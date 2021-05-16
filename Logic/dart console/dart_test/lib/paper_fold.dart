@@ -333,16 +333,25 @@ class Paper {
 
         var x = layer[j][0];
         var y = layer[j][1];
+
+        if (px == u && py == v) return true;
+        if (px == x && py == y) return true;
+
         if ((v <= y && py <= y && py >= v) || (v >= y && py >= y && py <= v)) {
           var newX;
           if (v == y) {
             newX = (x + u / 2);
           } else {
-            var scale = (v == y) ? 0 : ((u - x) / (v - y));
+            var scale = (u - x) / (v - y);
             newX = scale * (py - y) + x;
           }
-          if (newX > px) right++;
-          if (newX < px) left++;
+          if (newX > px) {
+            right++;
+          } else if (newX < px) {
+            left++;
+          } else {
+            return true;
+          }
         }
       }
       if ((left % 2 > 0) || (right % 2 > 0)) return true;
