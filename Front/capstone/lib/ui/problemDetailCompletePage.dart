@@ -1,3 +1,4 @@
+import 'package:capstone/ui/PunchHole.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -92,92 +93,98 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
             ),
             leading: Container(),
           ),
-          child: SingleChildScrollView(
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(top: 70, bottom: 18),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        decoration: basicBox,
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 20),
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          decoration: basicBox,
+                          width: 345,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "시험 결과",
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Divider(),
+                                Text(
+                                  "${correct.toString().padLeft(2, '0')} / ${exam.problemList.length.toString().padLeft(2, '0')}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 48),
+                                )
+                              ])),
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 20),
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          decoration: basicBox,
+                          width: 345,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "문제 정보",
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Divider(),
+                                infoRow(
+                                    "문제 생성일",
+                                    formatter.format(
+                                        DateFormat('MM_dd_HH_mm_ss')
+                                            .parse(exam.dateCode))),
+                                infoRow("전체 풀이 시간",
+                                    "${(exam.settingTime / 60).toInt().toString().padLeft(2, "0")}:${(exam.settingTime % 60).toInt().toString().padLeft(2, "0")}"),
+                                infoRow("전체 문제 수",
+                                    exam.problemList.length.toString()),
+                                infoRow("문제 유형", type),
+                                Divider(),
+                                infoRow("소요 시간",
+                                    "${(exam.elapsedTime / 60).toInt().toString().padLeft(2, "0")}:${(exam.elapsedTime % 60).toInt().toString().padLeft(2, "0")}"),
+                              ])),
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 20),
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          decoration: basicBox,
+                          width: 345,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "정오표",
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Divider(),
+                                problemList(
+                                    correctList.length, correctList, typeList),
+                              ])),
+                      CircleButton(
+                        text: "돌아가기",
+                        color: const Color(0xFF4386F9),
+                        textColor: Colors.white,
                         width: 345,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "시험 결과",
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w600),
-                              ),
-                              Divider(),
-                              Text(
-                                "${correct.toString().padLeft(2, '0')} / ${exam.problemList.length.toString().padLeft(2, '0')}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 48),
-                              )
-                            ])),
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        decoration: basicBox,
-                        width: 345,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "문제 정보",
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w600),
-                              ),
-                              Divider(),
-                              infoRow(
-                                  "문제 생성일",
-                                  formatter.format(DateFormat('MM_dd_HH_mm_ss')
-                                      .parse(exam.dateCode))),
-                              infoRow("전체 풀이 시간",
-                                  "${(exam.settingTime / 60).toInt().toString().padLeft(2, "0")}:${(exam.settingTime % 60).toInt().toString().padLeft(2, "0")}"),
-                              infoRow("전체 문제 수",
-                                  exam.problemList.length.toString()),
-                              infoRow("문제 유형", type),
-                              Divider(),
-                              infoRow("소요 시간",
-                                  "${(exam.elapsedTime / 60).toInt().toString().padLeft(2, "0")}:${(exam.elapsedTime % 60).toInt().toString().padLeft(2, "0")}"),
-                            ])),
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        decoration: basicBox,
-                        width: 345,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "정오표",
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w600),
-                              ),
-                              Divider(),
-                              problemList(
-                                  correctList.length, correctList, typeList),
-                            ])),
-                    CircleButton(
-                      text: "돌아가기",
-                      color: const Color(0xFF4386F9),
-                      textColor: Colors.white,
-                      width: 345,
-                      marginVertical: 10,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ]),
+                        marginVertical: 10,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ]),
+              ),
             ),
           )),
     );
@@ -265,7 +272,6 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                   )
                 ]),
             onPressed: () {
-              debugPrint("AAA" + typeList[i].toString());
               if (typeList[i] == 0) {
                 Navigator.push(
                   context,
@@ -281,6 +287,16 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => PaperFold(
+                      exam: exam,
+                      index: i,
+                    ),
+                  ),
+                );
+              } else if (typeList[i] == 2) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => PunchHole(
                       exam: exam,
                       index: i,
                     ),

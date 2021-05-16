@@ -88,83 +88,84 @@ class _RecordPageState extends State<RecordPage> {
             style: TextStyle(fontSize: 18),
           ),
         ),
-        child: SingleChildScrollView(
-          // Padding for Navigation bar and Tabbar
-          padding: EdgeInsets.only(top: 70, bottom: 50),
-          child: Column(
-            children: [
-              CupertinoSegmentedControl(
-                children: segmentControlTabs,
-                groupValue: segment,
-                padding: EdgeInsets.symmetric(vertical: 12),
-                onValueChanged: (int value) {
-                  setState(() {
-                    segment = value;
-                  });
-                },
-              ),
-              Container(
-                width: double.infinity,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                        width: double.infinity,
-                        child: Text("전체 통계",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 24,
-                                color: Colors.black)),
-                      ),
-                      RecordCard(
-                          icon: Icon(CupertinoIcons.alarm),
-                          name: "풀이한 시간",
-                          value: (totalTime[segment] ~/ 3600)
-                                  .toString()
-                                  .padLeft(2, '0') +
-                              " : " +
-                              (totalTime[segment] ~/ 60)
-                                  .toString()
-                                  .padLeft(2, '0') +
-                              " : " +
-                              (totalTime[segment] % 60)
-                                  .toString()
-                                  .padLeft(2, '0')),
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                        width: double.infinity,
-                        child: Text("유형별 통계",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 24,
-                                color: Colors.black)),
-                      ),
-                      RecordCard(
-                        icon: Icon(CupertinoIcons.square),
-                        name: "시도한 문제",
-                        value: problemsN[segment].toString(),
-                      ),
-                      RecordCard(
-                        icon: Icon(CupertinoIcons.circle),
-                        name: "성공한 문제",
-                        value: correctsN[segment].toString(),
-                      ),
-                      RecordCard(
-                        icon: Icon(CupertinoIcons.percent),
-                        name: "정답률",
-                        value:
-                            (correctPercent[segment] * 100).toStringAsFixed(2) +
-                                "%",
-                      ),
-                    ],
-                  ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            // Padding for Navigation bar and Tabbar
+            child: Column(
+              children: [
+                CupertinoSegmentedControl(
+                  children: segmentControlTabs,
+                  groupValue: segment,
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  onValueChanged: (int value) {
+                    setState(() {
+                      segment = value;
+                    });
+                  },
                 ),
-              )
-            ],
+                Container(
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                          width: double.infinity,
+                          child: Text("전체 통계",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24,
+                                  color: Colors.black)),
+                        ),
+                        RecordCard(
+                            icon: Icon(CupertinoIcons.alarm),
+                            name: "풀이한 시간",
+                            value: (totalTime[segment] ~/ 3600)
+                                    .toString()
+                                    .padLeft(2, '0') +
+                                " : " +
+                                (totalTime[segment] ~/ 60)
+                                    .toString()
+                                    .padLeft(2, '0') +
+                                " : " +
+                                (totalTime[segment] % 60)
+                                    .toString()
+                                    .padLeft(2, '0')),
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                          width: double.infinity,
+                          child: Text("유형별 통계",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24,
+                                  color: Colors.black)),
+                        ),
+                        RecordCard(
+                          icon: Icon(CupertinoIcons.square),
+                          name: "시도한 문제",
+                          value: problemsN[segment].toString(),
+                        ),
+                        RecordCard(
+                          icon: Icon(CupertinoIcons.circle),
+                          name: "성공한 문제",
+                          value: correctsN[segment].toString(),
+                        ),
+                        RecordCard(
+                          icon: Icon(CupertinoIcons.percent),
+                          name: "정답률",
+                          value: (correctPercent[segment] * 100)
+                                  .toStringAsFixed(2) +
+                              "%",
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ));
   }

@@ -13,7 +13,6 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   var setting = Hive.box('setting');
-  List<String> location = ["25%", "50%", "75%", "125%"];
   List<String> startSubtitle = ["60초", "5분", "10분"];
   int id = 0000;
 
@@ -168,7 +167,6 @@ class _SettingPageState extends State<SettingPage> {
                   tiles: [
                     SettingsTile(
                       title: '무작위 문제 옵션 설정',
-                      subtitle: location[int.parse(setting.get('location'))],
                       leading: Icon(CupertinoIcons.doc_text),
                       onPressed: (BuildContext context) {
                         Navigator.push(

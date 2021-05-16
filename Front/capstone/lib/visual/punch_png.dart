@@ -140,18 +140,8 @@ Future<void> drawpunchpng(String name, var pointList, var dotlineList, bool is_L
           dotlineList[i][1][0]*2.toDouble(), dotlineList[i][1][1]*2.toDouble(), paint);
     }
   }
-  
-
-
-
 
   // dashed_line_in(canvas, pointList[k][0][0], pointList[k][0][1],pointList[k][1][0],pointList[k][1][1], paint);
-
-
-
-
-
-
 
   final picture = recorder.endRecording();
   UI.Image img = await picture.toImage(200, 200);
@@ -206,6 +196,90 @@ Future<void> drawpunchsuggestionpng(String name, var dotList,String directory) a
   for(int i=0;i<dotList.length;i++){
     canvas.drawCircle((Offset(dotList[i][0]*2,dotList[i][1]*2)), radius, paint);
   }
+
+
+
+
+
+
+  final picture = recorder.endRecording();
+  UI.Image img = await picture.toImage(200, 200);
+  final abc =await img.toByteData(format:UI.ImageByteFormat.png);
+  if(abc!=null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
+      {
+    await saveImage(name,abc, directory);
+    debugPrint("저장됨");
+  }
+
+}
+
+Future<void> drawpunchnotepng(String name, var pointList, var lineList, var dotList,String directory) async{
+
+  var recorder = new UI.PictureRecorder();
+  final canvas = new Canvas(
+      recorder,
+      new Rect.fromPoints(
+          new Offset(0, 0), new Offset(100.0, 100.0)));
+
+  var paint = Paint();
+
+
+  List<List<double>> square=[[0,0],[0,100],[100,100],[100,0]];
+
+
+  var radius=6.5; //점의 반지름
+
+
+  final mycolor=Colors.deepOrange[50];
+  var layers=pointList.layers;
+
+  debugPrint('레이어 수는 ${pointList.layerCount}');
+
+
+  for(int i=0;i<pointList.layerCount;i++)
+  {
+
+    paint.color=Colors.grey; //먼저 회색 외곽선을 그린 뒤
+    paint.strokeWidth=1;
+    mypath(canvas, square, paint);
+
+    if(mycolor!=null) // 색 부분을 그리고
+        {
+      paint.color=mycolor;
+    }
+    paint.strokeWidth=1;
+    paint.style=PaintingStyle.fill;
+    mypath(canvas,layers[i], paint);
+    //debugPrint('${pointList[1]}이라');
+
+    paint.color=Colors.black; //검은선으로 감싼다
+    paint.strokeWidth=1;
+    paint.style=PaintingStyle.stroke;
+    mypath(canvas,layers[i], paint);
+  }
+
+  //마지막 예시, 즉 점을 찍어야됨
+  for(int i=0;i<dotList.length;i++)
+  {
+
+    canvas.drawCircle((Offset(dotList[i][0]*2,dotList[i][1]*2)), radius, paint);
+  }
+
+
+  for(int i=0;i<lineList.length;i++)
+  {
+
+    dashed_line_in(canvas, lineList[i][0][0]*2.toDouble(), lineList[i][0][1]*2.toDouble(),
+        lineList[i][1][0]*2.toDouble(), lineList[i][1][1]*2.toDouble(), paint);
+  }
+
+
+
+
+
+
+  // dashed_line_in(canvas, pointList[k][0][0], pointList[k][0][1],pointList[k][1][0],pointList[k][1][1], paint);
+
 
 
 
