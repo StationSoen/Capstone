@@ -108,6 +108,6 @@ void main(List<String> arguments) {
   // print('one : $one, zero : $zero');
 
   // print(PaperFold.rangeEdge([0, 1, 50]));
-  var p = HolePunch(level: 0, seed: 953220934);
+  var p = HolePunch(level: 1, seed: 557452608);
   print(p);
 }

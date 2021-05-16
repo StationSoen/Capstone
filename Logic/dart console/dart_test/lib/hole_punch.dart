@@ -88,7 +88,7 @@ class HolePunch {
     do {
       line = [];
       do {
-        linetype = rng.nextInt(2 * range);
+        linetype = rng.nextInt((level == 2) ? 2 * range : range);
       } while (except.contains(linetype));
 
       var standard = (linetype / range).toInt();
@@ -206,16 +206,27 @@ class HolePunch {
     // 점 선택
     var dotOrigin = [];
 
-    var dotRange = papers.last.layers.last.length;
-    var dotEdge = rand(dotRange - rng.nextInt(3), dotRange);
-    for (var i = 0; i < dotEdge.length; i++) {
-      dotOrigin.add(papers.last.layers.last[dotEdge[i]]);
-    }
-    if (rng.nextInt(2) > 0) {
-      var dotMid = rand(2, dotRange);
-      var dot0 = papers.last.layers.last[dotMid[0]];
-      var dot1 = papers.last.layers.last[dotMid[1]];
-      dotOrigin.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
+    if (level == 0) {
+      var shape = papers.last.layers.last;
+      num x = 0, y = 0;
+      var n = shape.length;
+      for (var i = 0; i < n; i++) {
+        x += shape[i][0];
+        y += shape[i][1];
+      }
+      dotOrigin.add([x / n, y / n]);
+    } else {
+      var dotRange = papers.last.layers.last.length;
+      var dotEdge = rand(dotRange - rng.nextInt(3), dotRange);
+      for (var i = 0; i < dotEdge.length; i++) {
+        dotOrigin.add(papers.last.layers.last[dotEdge[i]]);
+      }
+      if (rng.nextInt(2) > 0) {
+        var dotMid = rand(2, dotRange);
+        var dot0 = papers.last.layers.last[dotMid[0]];
+        var dot1 = papers.last.layers.last[dotMid[1]];
+        dotOrigin.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
+      }
     }
     dots.add(dotOrigin);
 
@@ -250,7 +261,7 @@ class HolePunch {
     suggestion[order[0]] = dotAnswer;
     //오답 1
     var dotWrong1 = json.decode(json.encode(dotAnswer));
-    dotWrong1.removeAt(rng.nextInt(dotAnswer.length));
+    dotWrong1.removeAt(rng.nextInt(dotWrong1.length));
     suggestion[order[1]] = dotWrong1;
     //오답 2
     var dotWrong2 = json.decode(json.encode(dotAnswer));
@@ -258,6 +269,7 @@ class HolePunch {
     var dot0 = dotWrong2[dotMid[0]];
     var dot1 = dotWrong2[dotMid[1]];
     dotWrong2.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
+    dotWrong2.removeAt(rng.nextInt(dotWrong2.length - 1));
     suggestion[order[2]] = dotWrong2;
     //오답 3
     var dotWrong3 = json.decode(json.encode(dotAnswer));
