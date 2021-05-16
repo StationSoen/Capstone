@@ -253,6 +253,16 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                     ),
                   ),
                 );
+              } else if (typeList[i] == 2) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => PunchHole(
+                      exam: exam,
+                      index: i,
+                    ),
+                  ),
+                );
               }
             }));
       } else {

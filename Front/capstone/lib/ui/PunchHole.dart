@@ -48,18 +48,9 @@ class _PunchHoleState extends State<PunchHole> {
                 width: double.infinity,
                 child: Column(
                   children: [
-                    Container(
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        child: Text(
-                          "단계별 앞면",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        )),
-                    Container(
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        child: Text(
-                          "단계별 뒷면",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        )),
+                    SizedBox(
+                      height: 15,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -172,13 +163,6 @@ class _PunchHoleState extends State<PunchHole> {
                             ),
                           ],
                         ),
-                        Container(
-                          height: 45,
-                          child: Image(
-                            image: AssetImage('assets/fold/paperex.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        )
                       ],
                     ),
                   ),

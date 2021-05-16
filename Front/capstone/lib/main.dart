@@ -99,9 +99,6 @@ class MyApp extends StatelessWidget {
 
     await numimgload();
     await shapeimgload();
-    // await loaddirectory('test1');
-
-    // await makecubeproblem(10, 1);
 
     // do somthing here ..  ex) loading something
     // splash screen loading.

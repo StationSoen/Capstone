@@ -356,9 +356,9 @@ class _ProblemCardState extends State<ProblemCard> {
         ),
       );
     } else if (type == 2) {
-      // type 2
+      // PunchHole
       return Container(
-        height: 200,
+        height: 300,
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -367,43 +367,76 @@ class _ProblemCardState extends State<ProblemCard> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                  width: 75,
-                  child: Image.file(
-                    File(this.widget.exam.directory +
-                        "/problem" +
-                        (this.widget.index + 1).toString() +
-                        "_0.png"),
-                    fit: BoxFit.cover,
+                  child: Column(
+                    children: [
+                      Text("1"),
+                      Container(
+                        width: 125,
+                        child: Image.file(
+                          File(this.widget.exam.directory +
+                              "/problem" +
+                              (this.widget.index + 1).toString() +
+                              "_0.png"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
-                  width: 75,
-                  child: Image.file(
-                    File(this.widget.exam.directory +
-                        "/problem" +
-                        (this.widget.index + 1).toString() +
-                        "_1.png"),
-                    fit: BoxFit.cover,
+                  child: Column(
+                    children: [
+                      Text("2"),
+                      Container(
+                        width: 75,
+                        child: Image.file(
+                          File(this.widget.exam.directory +
+                              "/problem" +
+                              (this.widget.index + 1).toString() +
+                              "_1.png"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  child: Column(
+                    children: [
+                      Text("3"),
+                      Container(
+                        width: 75,
+                        child: Image.file(
+                          File(this.widget.exam.directory +
+                              "/problem" +
+                              (this.widget.index + 1).toString() +
+                              "_2.png"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
-                  width: 75,
-                  child: Image.file(
-                    File(this.widget.exam.directory +
-                        "/problem" +
-                        (this.widget.index + 1).toString() +
-                        "_2.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Container(
-                  width: 75,
-                  child: Image.file(
-                    File(this.widget.exam.directory +
-                        "/problem" +
-                        (this.widget.index + 1).toString() +
-                        "_3.png"),
-                    fit: BoxFit.cover,
+                  child: Column(
+                    children: [
+                      Text("4"),
+                      Container(
+                        width: 75,
+                        child: Image.file(
+                          File(this.widget.exam.directory +
+                              "/problem" +
+                              (this.widget.index + 1).toString() +
+                              "_3.png"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
