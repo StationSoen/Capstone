@@ -78,118 +78,120 @@ class _RandomProblemSettingPageState extends State<RandomProblemSettingPage> {
           ),
           automaticallyImplyLeading: false,
         ),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(top: 70, left: 14, right: 14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // 유형 ON-OFF 설정
-              Container(
-                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  decoration: basicBox,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        "최대 시간 제한",
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.w600),
-                      ),
-                      Divider(),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "제한 시간",
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            Text(
-                              "${(time / 60).toInt().toString().padLeft(2, "0")}" +
-                                  ":${(time % 60).toInt().toString().padLeft(2, "0")}",
-                              style:
-                                  TextStyle(fontSize: 17, color: Colors.grey),
-                            )
-                          ]),
-                      Container(
-                        padding: EdgeInsets.only(top: 3),
-                        child: CupertinoSlider(
-                            value: time,
-                            max: 900,
-                            min: 10,
-                            divisions: 89,
-                            onChanged: (value) {
-                              setState(() {
-                                time = value;
-                              });
-                            }),
-                      ),
-                    ],
-                  )),
-              Container(
-                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  decoration: basicBox,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        "포함할 유형 선택",
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.w600),
-                      ),
-                      Divider(),
-                      typeOnOff(
-                          title: "전개도 유형 - 쉬움",
-                          problemType: 0,
-                          difficulty: 0,
-                          list: randomProblemSetting),
-                      typeOnOff(
-                          title: "전개도 유형 - 보통",
-                          problemType: 0,
-                          difficulty: 1,
-                          list: randomProblemSetting),
-                      typeOnOff(
-                          title: "전개도 유형 - 어려움",
-                          problemType: 0,
-                          difficulty: 2,
-                          list: randomProblemSetting),
-                      typeOnOff(
-                          title: "종이접기 유형 - 쉬움",
-                          problemType: 1,
-                          difficulty: 0,
-                          list: randomProblemSetting),
-                      typeOnOff(
-                          title: "종이접기 유형 - 보통",
-                          problemType: 1,
-                          difficulty: 1,
-                          list: randomProblemSetting),
-                      typeOnOff(
-                          title: "종이접기 유형 - 어려움",
-                          problemType: 1,
-                          difficulty: 2,
-                          list: randomProblemSetting),
-                    ],
-                  )),
-              CircleButton(
-                text: "설정 저장",
-                marginVertical: 5,
-                width: 345,
-                color: Colors.blue,
-                textColor: Colors.white,
-                onPressed: () {
-                  print(randomProblemSetting);
-                  if (contains2DList(randomProblemSetting)) {
-                    settingHive.put(
-                        'randomProlemSettingList', randomProblemSetting);
-                    settingHive.put('randomProlemSettingTime', time);
-                    Navigator.pop(context);
-                  } else {
-                    print("no true in randomProblemSettingList");
-                  }
-                },
-              ),
-            ],
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(vertical: 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // 유형 ON-OFF 설정
+                Container(
+                    padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    decoration: basicBox,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          "최대 시간 제한",
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.w600),
+                        ),
+                        Divider(),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "제한 시간",
+                                style: TextStyle(fontSize: 17),
+                              ),
+                              Text(
+                                "${(time / 60).toInt().toString().padLeft(2, "0")}" +
+                                    ":${(time % 60).toInt().toString().padLeft(2, "0")}",
+                                style:
+                                    TextStyle(fontSize: 17, color: Colors.grey),
+                              )
+                            ]),
+                        Container(
+                          padding: EdgeInsets.only(top: 3),
+                          child: CupertinoSlider(
+                              value: time,
+                              max: 900,
+                              min: 10,
+                              divisions: 89,
+                              onChanged: (value) {
+                                setState(() {
+                                  time = value;
+                                });
+                              }),
+                        ),
+                      ],
+                    )),
+                Container(
+                    padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    decoration: basicBox,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          "포함할 유형 선택",
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.w600),
+                        ),
+                        Divider(),
+                        typeOnOff(
+                            title: "전개도 유형 - 쉬움",
+                            problemType: 0,
+                            difficulty: 0,
+                            list: randomProblemSetting),
+                        typeOnOff(
+                            title: "전개도 유형 - 보통",
+                            problemType: 0,
+                            difficulty: 1,
+                            list: randomProblemSetting),
+                        typeOnOff(
+                            title: "전개도 유형 - 어려움",
+                            problemType: 0,
+                            difficulty: 2,
+                            list: randomProblemSetting),
+                        typeOnOff(
+                            title: "종이접기 유형 - 쉬움",
+                            problemType: 1,
+                            difficulty: 0,
+                            list: randomProblemSetting),
+                        typeOnOff(
+                            title: "종이접기 유형 - 보통",
+                            problemType: 1,
+                            difficulty: 1,
+                            list: randomProblemSetting),
+                        typeOnOff(
+                            title: "종이접기 유형 - 어려움",
+                            problemType: 1,
+                            difficulty: 2,
+                            list: randomProblemSetting),
+                      ],
+                    )),
+                CircleButton(
+                  text: "설정 저장",
+                  marginVertical: 5,
+                  width: 345,
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    print(randomProblemSetting);
+                    if (contains2DList(randomProblemSetting)) {
+                      settingHive.put(
+                          'randomProlemSettingList', randomProblemSetting);
+                      settingHive.put('randomProlemSettingTime', time);
+                      Navigator.pop(context);
+                    } else {
+                      print("no true in randomProblemSettingList");
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -193,145 +193,148 @@ class _SelectPageState extends State<SelectPage> {
             style: TextStyle(fontSize: 18),
           ),
         ),
-        child: Container(
-          width: double.infinity,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(top: 70),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                    padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    decoration: basicBox,
+        child: SafeArea(
+          child: Container(
+            width: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      decoration: basicBox,
+                      width: 345,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "전체 설정",
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Divider(),
+                                Container(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "시간 제한",
+                                          style: TextStyle(fontSize: 17),
+                                        ),
+                                        Text(
+                                          "${(time / 60).toInt().toString().padLeft(2, "0")}" +
+                                              ":${(time % 60).toInt().toString().padLeft(2, "0")}",
+                                          style: TextStyle(
+                                              fontSize: 17, color: Colors.grey),
+                                        )
+                                      ]),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(top: 3),
+                                  child: CupertinoSlider(
+                                      value: time,
+                                      max: 900,
+                                      min: 10,
+                                      divisions: 89,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          time = value;
+                                        });
+                                      }),
+                                ),
+                              ],
+                            )
+                          ])),
+                  typeSelector("3D 전개도 유형", 0),
+                  typeSelector("종이접기 유형", 1),
+                  typeSelector("펀칭 유형", 2),
+                  CircleButton(
+                    text: "문제 생성",
+                    marginVertical: 5,
                     width: 345,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "전체 설정",
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Divider(),
-                              Container(
-                                padding: EdgeInsets.only(top: 10),
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "시간 제한",
-                                        style: TextStyle(fontSize: 17),
-                                      ),
-                                      Text(
-                                        "${(time / 60).toInt().toString().padLeft(2, "0")}" +
-                                            ":${(time % 60).toInt().toString().padLeft(2, "0")}",
-                                        style: TextStyle(
-                                            fontSize: 17, color: Colors.grey),
-                                      )
-                                    ]),
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(top: 3),
-                                child: CupertinoSlider(
-                                    value: time,
-                                    max: 900,
-                                    min: 10,
-                                    divisions: 89,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        time = value;
-                                      });
-                                    }),
-                              ),
-                            ],
-                          )
-                        ])),
-                typeSelector("3D 전개도 유형", 0),
-                typeSelector("종이접기 유형", 1),
-                typeSelector("펀칭 유형", 2),
-                CircleButton(
-                  text: "문제 생성",
-                  marginVertical: 5,
-                  width: 345,
-                  color: const Color(0xFF4386F9),
-                  textColor: Colors.white,
-                  onPressed: () async {
-                    if (typeEnable[0] == true ||
-                        typeEnable[1] == true ||
-                        typeEnable[2] == true) {
-                      // String tempDate = DateTime.now().toString();
-                      //
-                      DateFormat formatter = DateFormat('MM_dd_HH_mm_ss');
-                      String tempDate = formatter.format(DateTime.now());
+                    color: const Color(0xFF4386F9),
+                    textColor: Colors.white,
+                    onPressed: () async {
+                      if (typeEnable[0] == true ||
+                          typeEnable[1] == true ||
+                          typeEnable[2] == true) {
+                        // String tempDate = DateTime.now().toString();
+                        //
+                        DateFormat formatter = DateFormat('MM_dd_HH_mm_ss');
+                        String tempDate = formatter.format(DateTime.now());
 
-                      String directory = await loaddirectory(tempDate);
+                        String directory = await loaddirectory(tempDate);
 
-                      debugPrint("problemNumber : $directory");
-                      debugPrint("problemNumber : $tempDate");
+                        debugPrint("problemNumber : $directory");
+                        debugPrint("problemNumber : $tempDate");
 
-                      List<Problem> myProblemList = [];
+                        List<Problem> myProblemList = [];
 
-                      if (typeEnable[0] == true) {
-                        myProblemList.addAll(await makecubeproblem(
-                            typeProblemNumber[0].toInt(),
-                            typeDifficulty[0],
-                            directory));
-                      } else {
-                        typeProblemNumber[0] = 0;
+                        if (typeEnable[0] == true) {
+                          myProblemList.addAll(await makecubeproblem(
+                              typeProblemNumber[0].toInt(),
+                              typeDifficulty[0],
+                              directory));
+                        } else {
+                          typeProblemNumber[0] = 0;
+                        }
+
+                        if (typeEnable[1] == true) {
+                          myProblemList.addAll(await makepaperproblem(
+                              typeProblemNumber[1].toInt(),
+                              typeDifficulty[1],
+                              directory,
+                              typeProblemNumber[0].toInt()));
+                        } else {
+                          typeProblemNumber[1] = 0;
+                        }
+
+                        if (typeEnable[2] == true) {
+                          myProblemList.addAll(await makepunchproblem(
+                              typeProblemNumber[2].toInt(),
+                              typeDifficulty[2],
+                              directory,
+                              typeProblemNumber[0].toInt() +
+                                  typeProblemNumber[1].toInt()));
+                        }
+
+                        Exam newExam = Exam(
+                            dateCode: tempDate,
+                            directory: directory,
+                            settingTime: time.toInt(),
+                            problemList: myProblemList);
+
+                        // Navigator.pushNamed(context, '/problemPage');
+                        Navigator.pushNamed(context, '/problemPage',
+                            arguments: newExam);
                       }
-
-                      if (typeEnable[1] == true) {
-                        myProblemList.addAll(await makepaperproblem(
-                            typeProblemNumber[1].toInt(),
-                            typeDifficulty[1],
-                            directory,
-                            typeProblemNumber[0].toInt()));
-                      } else {
-                        typeProblemNumber[1] = 0;
-                      }
-
-                      if (typeEnable[2] == true) {
-                        myProblemList.addAll(await makepunchproblem(
-                            typeProblemNumber[2].toInt(),
-                            typeDifficulty[2],
-                            directory,
-                            typeProblemNumber[0].toInt() +
-                                typeProblemNumber[1].toInt()));
-                      }
-
-                      Exam newExam = Exam(
-                          dateCode: tempDate,
-                          directory: directory,
-                          settingTime: time.toInt(),
-                          problemList: myProblemList);
-
-                      // Navigator.pushNamed(context, '/problemPage');
-                      Navigator.pushNamed(context, '/problemPage',
-                          arguments: newExam);
-                    }
-                  },
-                ),
-                CircleButton(
-                  text: "생성 취소",
-                  marginVertical: 5,
-                  width: 345,
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    Navigator.popUntil(context, ModalRoute.withName('/'));
-                  },
-                ),
-              ],
+                    },
+                  ),
+                  CircleButton(
+                    text: "생성 취소",
+                    marginVertical: 5,
+                    width: 345,
+                    color: Colors.red,
+                    textColor: Colors.white,
+                    onPressed: () {
+                      Navigator.popUntil(context, ModalRoute.withName('/'));
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ));

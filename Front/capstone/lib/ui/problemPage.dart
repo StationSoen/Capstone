@@ -143,28 +143,29 @@ class _ProblemPageState extends State<ProblemPage> {
             ),
             automaticallyImplyLeading: false,
           ),
-          child: Container(
-              padding: EdgeInsets.only(top: 70),
-              width: double.infinity,
-              child: Swiper(
-                controller: swiperController,
-                itemCount: this.widget.exam.problemList.length,
-                loop: false,
-                itemBuilder: (BuildContext context, int index) {
-                  return ProblemCard(
-                    index: index,
-                    swiperController: swiperController,
-                    maxIndex: this.widget.exam.problemList.length - 1,
-                    exam: this.widget.exam,
-                    second: second,
-                  );
-                },
-                onIndexChanged: (int i) {
-                  setState(() {
-                    indexPlus = i + 1;
-                  });
-                },
-              ))),
+          child: SafeArea(
+            child: Container(
+                width: double.infinity,
+                child: Swiper(
+                  controller: swiperController,
+                  itemCount: this.widget.exam.problemList.length,
+                  loop: false,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ProblemCard(
+                      index: index,
+                      swiperController: swiperController,
+                      maxIndex: this.widget.exam.problemList.length - 1,
+                      exam: this.widget.exam,
+                      second: second,
+                    );
+                  },
+                  onIndexChanged: (int i) {
+                    setState(() {
+                      indexPlus = i + 1;
+                    });
+                  },
+                )),
+          )),
     );
   }
 
