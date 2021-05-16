@@ -358,7 +358,7 @@ class _ProblemCardState extends State<ProblemCard> {
     } else if (type == 2) {
       // PunchHole
       return Container(
-        height: 300,
+        height: 250,
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -371,7 +371,7 @@ class _ProblemCardState extends State<ProblemCard> {
                     children: [
                       Text("1"),
                       Container(
-                        width: 125,
+                        width: 100,
                         child: Image.file(
                           File(this.widget.exam.directory +
                               "/problem" +
@@ -388,7 +388,7 @@ class _ProblemCardState extends State<ProblemCard> {
                     children: [
                       Text("2"),
                       Container(
-                        width: 75,
+                        width: 100,
                         child: Image.file(
                           File(this.widget.exam.directory +
                               "/problem" +
@@ -410,7 +410,7 @@ class _ProblemCardState extends State<ProblemCard> {
                     children: [
                       Text("3"),
                       Container(
-                        width: 75,
+                        width: 100,
                         child: Image.file(
                           File(this.widget.exam.directory +
                               "/problem" +
@@ -427,7 +427,7 @@ class _ProblemCardState extends State<ProblemCard> {
                     children: [
                       Text("4"),
                       Container(
-                        width: 75,
+                        width: 100,
                         child: Image.file(
                           File(this.widget.exam.directory +
                               "/problem" +

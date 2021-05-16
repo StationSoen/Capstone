@@ -80,7 +80,7 @@ class _RandomProblemSettingPageState extends State<RandomProblemSettingPage> {
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(vertical: 14),
+            padding: EdgeInsets.symmetric(horizontal: 14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
