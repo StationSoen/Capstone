@@ -34,21 +34,52 @@ Future<List<Problem>> makepunchproblem(
       //debugPrint(temp.example[1][j].toString());
       if (j == 3) {
         //점을 그려야됨
-        drawpunchpng('problem' + (i + counter).toString() + '_' + j.toString(),
-            temp.example[0][j], temp.example[2], true, directory);
+        await drawpunchpng('problem' + (i + counter).toString() + '_' + j.toString(),
+            temp.example[0][j], temp.example[2][j], true, directory);
       } else {
         //선을 그려야됨
-        drawpunchpng('problem' + (i + counter).toString() + '_' + j.toString(),
+        await drawpunchpng('problem' + (i + counter).toString() + '_' + j.toString(),
             temp.example[0][j], temp.example[1][j], false, directory);
       }
     }
     for (int j = 0; j < 4; j++) {
-      drawpunchsuggestionpng(
+      await drawpunchsuggestionpng(
           'example' + (i + counter).toString() + '_' + j.toString(),
           temp.suggestion[j],
           directory);
     }
+
+    for (int j = 0; j < 4; j++) {
+      // debugPrint(temp.suggestion[j].toString());
+      // debugPrint(temp.suggestion[j].layerCount.toString());
+      if (j == 3) {
+        await drawpunchpng(
+            'back' + (i + counter).toString() + '_' + j.toString(),
+            temp.example[0][j],
+            temp.example[2][j],
+            true,
+            directory);
+      } else {
+        await drawpunchnotepng(
+            'back' + (i + counter).toString() + '_' + j.toString(),
+            temp.example[0][j],
+            temp.example[1][j],
+            temp.example[2][j],
+            directory);
+      }
+    }
+
+
+
+
+
+
+
+
   }
+
+
+
   // debugPrint("문제번호는$i");
   // debugPrint("${temp.toString()}");
 
