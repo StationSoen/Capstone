@@ -32,7 +32,7 @@ class StackBlocks {
     type ??= rng.nextInt(2);
     print('type : $type\n');
 
-    var bigOne = Blocks(x: 2, y: 3, z: 4);
+    var bigOne = Blocks(x: 2, y: 4, z: 3);
     var blocks = bigOne.separate(3, Random());
     example = [bigOne, blocks[0], blocks[1]];
 
