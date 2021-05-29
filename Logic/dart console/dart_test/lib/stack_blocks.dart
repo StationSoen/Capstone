@@ -42,8 +42,24 @@ class StackBlocks {
     answer = [0];
 
     // suggestion
-    suggestion = List.filled(4, []);
-    suggestion[answer[0]] = blocks[2];
+    suggestion = [];
+
+    do {
+      var wrong = blocks[2].clone();
+      wrong.shrink(3, rng);
+      wrong.expand(3, rng);
+      if (!wrong.isEqual(blocks[2])) {
+        var check = true;
+        for (var i = 0; i < suggestion.length; i++) {
+          if (wrong.isEqual(suggestion[i])) check = false;
+        }
+        if (check) suggestion.add(wrong);
+      }
+    } while (suggestion.length < 3);
+    suggestion.insert(answer[0], blocks[2]);
+    print('suggestion: $suggestion');
+
+    print('answer: $answer');
   }
 
   @override
@@ -56,6 +72,32 @@ class StackBlocks {
 class Blocks {
   var x, y, z;
   var body;
+
+  Blocks clone() {
+    var newBlock = Blocks(x: x, y: y, z: z);
+
+    for (var a = 0; a < x; a++) {
+      for (var b = 0; b < y; b++) {
+        for (var c = 0; c < z; c++) {
+          newBlock.body[a][b][c] = body[a][b][c];
+        }
+      }
+    }
+
+    return newBlock;
+  }
+
+  bool isEqual(Blocks blocks) {
+    for (var a = 0; a < x; a++) {
+      for (var b = 0; b < y; b++) {
+        for (var c = 0; c < z; c++) {
+          if (blocks.body[a][b][c] != body[a][b][c]) return false;
+        }
+      }
+    }
+
+    return true;
+  }
 
   int checkAdj(List point, int type) {
     var count = 0;
@@ -88,6 +130,25 @@ class Blocks {
     if (points.isNotEmpty) {
       var p = points[rng.nextInt(points.length)];
       body[p[0]][p[1]][p[2]] = type;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /// randomly remove one of the blocks.
+  bool shrink(int type, Random rng) {
+    var points = [];
+    for (var a = 0; a < x; a++) {
+      for (var b = 0; b < y; b++) {
+        for (var c = 0; c < z; c++) {
+          if (body[a][b][c] != 0) points.add([a, b, c]);
+        }
+      }
+    }
+    if (points.isNotEmpty) {
+      var p = points[rng.nextInt(points.length)];
+      body[p[0]][p[1]][p[2]] = 0;
       return true;
     } else {
       return false;
