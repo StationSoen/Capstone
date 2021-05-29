@@ -16,14 +16,14 @@ import '../exam.dart';
 // ignore: deprecated_member_use
 List<int> userChoice = List.empty();
 
-class ProblemPage extends StatefulWidget {
+class LevelTestPage extends StatefulWidget {
   late Exam exam;
 
   @override
-  _ProblemPageState createState() => _ProblemPageState();
+  _LevelTestPageState createState() => _LevelTestPageState();
 }
 
-class _ProblemPageState extends State<ProblemPage> {
+class _LevelTestPageState extends State<LevelTestPage> {
   SwiperController swiperController = new SwiperController();
   int indexPlus = 1;
 
@@ -237,17 +237,11 @@ class _ProblemCardState extends State<ProblemCard> {
       "다음과 같이 종이를 접었을 때, 마지막 종이의 앞면 또는 뒷면으로 알맞은 것을 고르시오.",
       "다음과 같이 종이를 접었을 때, 마지막 종이의 앞면 또는 뒷면으로 알맞지 않은 것을 고르시오.",
     ],
-    ["다음과 같이 종이를 접은 후, 구멍을 뚫고 펼친 뒤의 그림을 보기에서 고르시오."],
-    ["다음의 도형을 완성하기 위해, 추가로 필요한 블럭으로 알맞은 것을 고르시오."]
+    ["다음과 같이 종이를 접은 후, 구멍을 뚫고 펼친 뒤의 그림을 보기에서 고르시오."]
   ];
 
   @override
   Widget build(BuildContext context) {
-    // for (int i = 0; i < this.widget.exam.problemList.length; i++) {
-    //   print("${i}th answer : " +
-    //       (this.widget.exam.problemList[i].answer + 1).toString());
-    // }
-
     return Container(
       height: 500,
       padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
@@ -456,53 +450,6 @@ class _ProblemCardState extends State<ProblemCard> {
           ],
         ),
       );
-    } else if (type == 3) {
-      return Container(
-          height: 250,
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                // color: Colors.black,
-                width: 140,
-                child: Image.file(
-                  File(this.widget.exam.directory +
-                      "/problem" +
-                      (this.widget.index + 1).toString() +
-                      "_0.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    // color: Colors.black,
-                    width: 100,
-                    child: Image.file(
-                      File(this.widget.exam.directory +
-                          "/problem" +
-                          (this.widget.index + 1).toString() +
-                          "_1.png"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Container(
-                    width: 100,
-                    child: Image.file(
-                      File(this.widget.exam.directory +
-                          "/problem" +
-                          (this.widget.index + 1).toString() +
-                          "_2.png"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ));
     } else {
       return Container(
         child: Text("Something Wrong!"),

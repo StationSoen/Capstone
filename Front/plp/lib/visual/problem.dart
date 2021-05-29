@@ -21,8 +21,8 @@ Future<List<Problem>> makecubeproblem(
         problemType: 0,
         difficulty: temp.level,
         textType: temp.type));
-    // debugPrint("문제번호는$i");
-    // debugPrint("${temp.toString()}");
+    debugPrint("문제번호는$i");
+    debugPrint("${temp.toString()}");
     if (temp.level > 0) {
       switch (temp.type) {
         case 0:

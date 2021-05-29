@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 Widget SplashScreen() {
-  return GetMaterialApp(
+  return MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),

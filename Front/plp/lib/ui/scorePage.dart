@@ -1,3 +1,4 @@
+import 'package:hive/hive.dart';
 import 'package:plp/ui/PunchHole.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,6 +19,10 @@ class _ScorePageState extends State<ScorePage> {
   int remainProblems = 0;
   DateFormat formatter = DateFormat("MM/dd HH:mm:ss");
 
+  // level test variable
+  bool isLevelTest = false;
+  bool isLevelTestPass = false;
+
   @override
   Widget build(BuildContext context) {
     exam = ModalRoute.of(context)!.settings.arguments as Exam;
@@ -32,8 +37,9 @@ class _ScorePageState extends State<ScorePage> {
     List<int> typeList = [];
     List<int> difficultyList = [];
 
-    List<String> typeString = ['전개도', '종이접기', '펀칭'];
+    List<String> typeString = ['전개도', '종이접기', '펀칭', '블럭쌓기'];
     List<String> difficultyString = ['쉬움', '보통', '어려움'];
+    List<String> examTypeList = ['일반 문제지', '무작위 생성 문제', '레벨 테스트'];
 
     for (int i = 0; i < exam.problemList.length; i++) {
       typeList.add(exam.problemList[i].problemType);
@@ -43,6 +49,22 @@ class _ScorePageState extends State<ScorePage> {
         correct++;
       } else {
         correctList.add(false);
+      }
+    }
+
+    // if levelTest EXAM,
+    if (exam.examType == 2) {
+      isLevelTest = true;
+      if (!correctList.contains(false)) {
+        isLevelTestPass = true;
+        var hiveLevelTest = Hive.box('levelTest');
+        List<int> levelList = hiveLevelTest.get('level');
+        if (levelList[exam.problemList[0].problemType] <=
+            exam.problemList[0].difficulty + 1) {
+          levelList[exam.problemList[0].problemType] =
+              exam.problemList[0].difficulty + 1;
+          hiveLevelTest.put("level", levelList);
+        }
       }
     }
 
@@ -67,11 +89,22 @@ class _ScorePageState extends State<ScorePage> {
       //     " ";
     }
     if (typeList.contains(2)) {
-      type = type + typeString[typeList.firstWhere((element) => element == 2)];
+      type = type +
+          typeString[typeList.firstWhere((element) => element == 2)] +
+          ", ";
       // "-";
       // type = type +
       //     difficultyString[
       //         difficultyList[typeList.indexWhere((element) => element == 2)]] +
+      //     " ";
+    }
+
+    if (typeList.contains(3)) {
+      type = type + typeString[typeList.firstWhere((element) => element == 3)];
+      // "-";
+      // type = type +
+      //     difficultyString[
+      //         difficultyList[typeList.indexWhere((element) => element == 3)]] +
       //     " ";
     }
 
@@ -99,6 +132,7 @@ class _ScorePageState extends State<ScorePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      levelTest(isPass: isLevelTestPass, isTest: isLevelTest),
                       Container(
                           padding: EdgeInsets.symmetric(
                               vertical: 14, horizontal: 20),
@@ -143,6 +177,7 @@ class _ScorePageState extends State<ScorePage> {
                                     formatter.format(
                                         DateFormat('MM_dd_HH_mm_ss')
                                             .parse(exam.dateCode))),
+                                infoRow("문제지 유형", examTypeList[exam.examType]),
                                 infoRow("전체 풀이 시간",
                                     "${(exam.settingTime / 60).toInt().toString().padLeft(2, "0")}:${(exam.settingTime % 60).toInt().toString().padLeft(2, "0")}"),
                                 infoRow("전체 문제 수",
@@ -188,6 +223,54 @@ class _ScorePageState extends State<ScorePage> {
     );
   }
 
+  Widget levelTest({required isTest, required isPass}) {
+    if (isTest) {
+      if (isPass) {
+        // level test pass
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+          margin: EdgeInsets.symmetric(vertical: 5),
+          decoration: basicBox,
+          width: 345,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "레벨 테스트 합격",
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.blue),
+              ),
+            ),
+          ),
+        );
+      } else {
+        // level test non-pass
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+          margin: EdgeInsets.symmetric(vertical: 5),
+          decoration: basicBox,
+          width: 345,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "레벨 테스트 불합격",
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red),
+              ),
+            ),
+          ),
+        );
+      }
+    } else {
+      return Container();
+    }
+  }
+
   Widget infoRow(String title, String info) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12),
@@ -208,7 +291,7 @@ class _ScorePageState extends State<ScorePage> {
 
   Widget problemList(int number, List<bool> correctList, List<int> typeList) {
     List<Widget> result = [];
-    List<String> type = ["전개도 유형", "종이접기 유형", "펀칭 유형"];
+    List<String> type = ["전개도 유형", "종이접기 유형", "펀칭 유형", "블럭쌓기 유형"];
 
     for (int i = 0; i < number; i++) {
       if (correctList[i]) {

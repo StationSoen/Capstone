@@ -55,6 +55,7 @@ class _RandomProblemSettingPageState extends State<RandomProblemSettingPage> {
       [true, true, true],
       [true, true, true],
       [true, true, true],
+      [true, true, true],
     ]);
     this.time = settingHive.get('randomProlemSettingTime', defaultValue: 300.0);
     print(this.time);
@@ -183,6 +184,21 @@ class _RandomProblemSettingPageState extends State<RandomProblemSettingPage> {
                         typeOnOff(
                             title: "펀칭 유형 - 어려움",
                             problemType: 2,
+                            difficulty: 2,
+                            list: randomProblemSetting),
+                        typeOnOff(
+                            title: "블럭쌓기 유형 - 쉬움",
+                            problemType: 3,
+                            difficulty: 0,
+                            list: randomProblemSetting),
+                        typeOnOff(
+                            title: "블럭쌓기 유형 - 보통",
+                            problemType: 3,
+                            difficulty: 1,
+                            list: randomProblemSetting),
+                        typeOnOff(
+                            title: "블럭쌓기 유형 - 어려움",
+                            problemType: 3,
                             difficulty: 2,
                             list: randomProblemSetting),
                       ],

@@ -1,3 +1,4 @@
+import 'package:plp/visual/blockproblem.dart';
 import 'package:plp/visual/paper_problem.dart';
 import 'package:plp/visual/problem.dart';
 import 'package:plp/ui/problemPage.dart';
@@ -23,9 +24,9 @@ class _SelectPageState extends State<SelectPage> {
   // int difficulty = 0;
   // double problemNumber = 1;
 
-  List<int> typeDifficulty = [0, 0, 0];
-  List<double> typeProblemNumber = [1, 1, 1];
-  List<bool> typeEnable = [true, true, true];
+  List<int> typeDifficulty = [0, 0, 0, 0];
+  List<double> typeProblemNumber = [1, 1, 1, 1];
+  List<bool> typeEnable = [true, true, true, true];
 
   double time = 10;
 
@@ -261,6 +262,7 @@ class _SelectPageState extends State<SelectPage> {
                   typeSelector("3D 전개도 유형", 0),
                   typeSelector("종이접기 유형", 1),
                   typeSelector("펀칭 유형", 2),
+                  typeSelector("블럭쌓기 유형", 3),
                   CircleButton(
                     text: "문제 생성",
                     marginVertical: 5,
@@ -270,7 +272,8 @@ class _SelectPageState extends State<SelectPage> {
                     onPressed: () async {
                       if (typeEnable[0] == true ||
                           typeEnable[1] == true ||
-                          typeEnable[2] == true) {
+                          typeEnable[2] == true ||
+                          typeEnable[3] == true) {
                         // String tempDate = DateTime.now().toString();
                         //
                         DateFormat formatter = DateFormat('MM_dd_HH_mm_ss');
@@ -309,13 +312,26 @@ class _SelectPageState extends State<SelectPage> {
                               directory,
                               typeProblemNumber[0].toInt() +
                                   typeProblemNumber[1].toInt()));
+                        } else {
+                          typeProblemNumber[2] = 0;
+                        }
+
+                        if (typeEnable[3] == true) {
+                          myProblemList.addAll(await makeblockproblem(
+                              typeProblemNumber[3].toInt(),
+                              typeDifficulty[3],
+                              directory,
+                              typeProblemNumber[0].toInt() +
+                                  typeProblemNumber[1].toInt() +
+                                  typeProblemNumber[2].toInt()));
                         }
 
                         Exam newExam = Exam(
                             dateCode: tempDate,
                             directory: directory,
                             settingTime: time.toInt(),
-                            problemList: myProblemList);
+                            problemList: myProblemList,
+                            examType: 0);
 
                         // Navigator.pushNamed(context, '/problemPage');
                         Navigator.pushNamed(context, '/problemPage',
