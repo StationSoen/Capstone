@@ -7,7 +7,6 @@ import 'package:capstone/ui/previousExamPage.dart';
 import 'package:capstone/ui/problemDetailCompletePage.dart';
 import 'package:capstone/ui/problemDetalPage.dart';
 import 'package:capstone/ui/problemPage.dart';
-import 'package:capstone/ui/problemPaused.dart';
 import 'package:capstone/ui/recordPage.dart';
 import 'package:capstone/ui/selectPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,8 +17,6 @@ import 'dart:ui' as UI;
 
 import 'package:capstone/ui/settingPage.dart';
 
-import 'logic/dev_cube.dart';
-import 'logic/paper_fold.dart';
 import 'ui/SplashScreen.dart';
 import 'exam.dart';
 import 'visual/load.dart';

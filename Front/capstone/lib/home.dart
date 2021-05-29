@@ -6,6 +6,7 @@ import 'package:capstone/ui/selectPage.dart';
 import 'package:capstone/visual/load.dart';
 import 'package:capstone/visual/paper_problem.dart';
 import 'package:capstone/visual/problem.dart';
+import 'package:capstone/visual/punchproblem.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -210,12 +211,13 @@ class Home extends StatelessWidget {
         settingHive.get('randomProlemSettingList', defaultValue: [
       [true, true, true],
       [true, true, true],
+      [true, true, true],
     ]);
     double time =
-        settingHive.get('randomProlemSettingTime', defaultValue: 360.0);
+        settingHive.get('randomProlemSettingTime', defaultValue: 300.0);
 
     while (true) {
-      problemType = random.nextInt(2);
+      problemType = random.nextInt(3);
       difficulty = random.nextInt(3);
 
       if (randomProblemSetting[problemType][difficulty] == true) {
@@ -231,6 +233,8 @@ class Home extends StatelessWidget {
       problemList = await makecubeproblem(1, difficulty, directory);
     } else if (problemType == 1) {
       problemList = await makepaperproblem(1, difficulty, directory, 0);
+    } else if (problemType == 2) {
+      problemList = await makepunchproblem(1, difficulty, directory, 0);
     } else {
       problemList = await makecubeproblem(1, difficulty, directory);
     }
