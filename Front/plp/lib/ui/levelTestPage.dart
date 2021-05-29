@@ -16,14 +16,14 @@ import '../exam.dart';
 // ignore: deprecated_member_use
 List<int> userChoice = List.empty();
 
-class ProblemPage extends StatefulWidget {
+class LevelTestPage extends StatefulWidget {
   late Exam exam;
 
   @override
-  _ProblemPageState createState() => _ProblemPageState();
+  _LevelTestPageState createState() => _LevelTestPageState();
 }
 
-class _ProblemPageState extends State<ProblemPage> {
+class _LevelTestPageState extends State<LevelTestPage> {
   SwiperController swiperController = new SwiperController();
   int indexPlus = 1;
 
@@ -242,11 +242,6 @@ class _ProblemCardState extends State<ProblemCard> {
 
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < this.widget.exam.problemList.length; i++) {
-      print("${i}th answer : " +
-          (this.widget.exam.problemList[i].answer + 1).toString());
-    }
-
     return Container(
       height: 500,
       padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),

@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:plp/main.dart';
 import 'package:plp/ui/component.dart';
+import 'package:plp/visual/load.dart';
+import 'package:plp/visual/paper_problem.dart';
+import 'package:plp/visual/problem.dart';
+import 'package:plp/visual/punchproblem.dart';
 
 import '../exam.dart';
 
@@ -37,6 +43,8 @@ class _RecordPageState extends State<RecordPage> {
   List<int> totalTime = [0, 0, 0, 0];
   List<double> correctPercent = [0.0, 0.0, 0.0, 0.0];
 
+  var levelTestHive = Hive.box('levelTest');
+
   void calData(int segment) {
     var completeExamListHive = Hive.box('completeExamList');
     List<dynamic> list;
@@ -61,9 +69,9 @@ class _RecordPageState extends State<RecordPage> {
       }
     } else {
       debugPrint("completeExamListHive Box에 저장된 값이 없습니다.");
-      problemsN[segment] = -1;
-      correctsN[segment] = -1;
-      totalTime[segment] = -1;
+      problemsN[segment] = 0;
+      correctsN[segment] = 0;
+      totalTime[segment] = 0;
       return;
     }
 
@@ -83,6 +91,7 @@ class _RecordPageState extends State<RecordPage> {
   @override
   Widget build(BuildContext context) {
     calData(segment);
+    List<int> levelList = levelTestHive.get('level');
     return Container(
       // decoration: gradientBackground,
       child: Scaffold(
@@ -119,19 +128,23 @@ class _RecordPageState extends State<RecordPage> {
                     ),
                     LevelCard(
                       name: "전개도 유형",
-                      level: 0,
+                      level: levelList[0],
+                      problemType: 0,
                     ),
                     LevelCard(
                       name: "종이접기 유형",
-                      level: 1,
+                      level: levelList[1],
+                      problemType: 1,
                     ),
                     LevelCard(
                       name: "펀칭 유형",
-                      level: 2,
+                      level: levelList[2],
+                      problemType: 2,
                     ),
                     LevelCard(
                       name: "블록쌓기 유형",
-                      level: 2,
+                      level: levelList[3],
+                      problemType: 3,
                     ),
                     Divider(),
                     Container(
@@ -261,9 +274,11 @@ class RecordCard extends StatelessWidget {
 class LevelCard extends StatelessWidget {
   final String name;
   final int level;
+  final int problemType;
   List<Color> levelList = [Colors.grey, Colors.grey, Colors.grey];
 
-  LevelCard({required this.name, required this.level}) {
+  LevelCard(
+      {required this.name, required this.level, required this.problemType}) {
     for (int i = 0; i < level; i++) {
       levelList[i] = Colors.blue;
     }
@@ -301,7 +316,11 @@ class LevelCard extends StatelessWidget {
               CupertinoButton(
                 padding: EdgeInsets.all(0),
                 onPressed: () {
-                  print("tap");
+                  showCupertinoDialog(
+                      context: context,
+                      problemTypeText: name,
+                      difficulty: 0,
+                      probleType: problemType);
                 },
                 child: Icon(
                   CupertinoIcons.checkmark_alt_circle,
@@ -316,7 +335,11 @@ class LevelCard extends StatelessWidget {
               CupertinoButton(
                 padding: EdgeInsets.all(0),
                 onPressed: () {
-                  print("tap");
+                  showCupertinoDialog(
+                      context: context,
+                      problemTypeText: name,
+                      difficulty: 1,
+                      probleType: problemType);
                 },
                 child: Icon(
                   CupertinoIcons.checkmark_alt_circle,
@@ -332,7 +355,10 @@ class LevelCard extends StatelessWidget {
                 padding: EdgeInsets.all(0),
                 onPressed: () {
                   showCupertinoDialog(
-                      context: context, problemType: name, difficulty: 2);
+                      context: context,
+                      problemTypeText: name,
+                      difficulty: 2,
+                      probleType: problemType);
                 },
                 child: Icon(
                   CupertinoIcons.checkmark_alt_circle,
@@ -349,23 +375,53 @@ class LevelCard extends StatelessWidget {
 
   showCupertinoDialog(
       {required BuildContext context,
-      required String problemType,
+      required String problemTypeText,
+      required int probleType,
       required int difficulty}) {
     showDialog(
         context: context,
         builder: (_) => new CupertinoAlertDialog(
               title: new Text("레벨 테스트"),
-              content:
-                  new Text("$problemType, 난이도 $difficulty 테스트를\n진행하시겠습니까?"),
+              content: new Text(
+                  "$problemTypeText, 난이도 ${difficulty + 1} 테스트를\n진행하시겠습니까?"),
               actions: [
                 CupertinoButton(
                   child: Text("확인"),
-                  onPressed: () {
-                    print("OK");
+                  onPressed: () async {
+                    DateFormat formatter = DateFormat('MM_dd_HH_mm_ss');
+                    String tempDate = formatter.format(DateTime.now());
+                    String directory = await loaddirectory(tempDate);
+                    List<Problem> problemList = [];
+
+                    if (problemType == 0) {
+                      problemList =
+                          await makecubeproblem(3, difficulty, directory);
+                    } else if (problemType == 1) {
+                      problemList =
+                          await makepaperproblem(3, difficulty, directory, 0);
+                    } else if (problemType == 2) {
+                      problemList =
+                          await makepunchproblem(3, difficulty, directory, 0);
+                    } else {
+                      debugPrint("LEVEL TEST ERROR");
+                    }
+
+                    Exam levelTestExam = Exam(
+                        dateCode: tempDate,
+                        directory: directory,
+                        settingTime: 180,
+                        problemList: problemList,
+                        examType: 2);
+
+                    Navigator.pushNamed(context, '/problemPage',
+                        arguments: levelTestExam);
                   },
                 ),
                 CupertinoButton(
-                  child: Text("취소"),
+                  child: Text(
+                    "취소",
+                    style: TextStyle(color: Colors.red),
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                   },

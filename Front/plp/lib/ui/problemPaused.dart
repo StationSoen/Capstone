@@ -61,9 +61,7 @@ class _ProblemPausedPageState extends State<ProblemPausedPage> {
                       title: "제출하기",
                       onPressed: (BuildContext context) {
                         Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/problemDetailCompletePage',
-                            ModalRoute.withName('/'),
+                            context, '/scorePage', ModalRoute.withName('/'),
                             arguments: this.widget.exam);
 
                         this.widget.exam.complete = true;
@@ -90,28 +88,29 @@ class _ProblemPausedPageState extends State<ProblemPausedPage> {
                       title: "그만두기",
                       onPressed: (BuildContext context) {
                         Navigator.popUntil(context, ModalRoute.withName('/'));
+                        if (this.widget.exam.examType != 2) {
+                          if (pausedExamList.contains(this.widget.exam)) {
+                            // pausedExamList에 값이 있다면 - 과거에 그만뒀던 것 다시 푸는 경우.
+                            // pausedExamList에 remainTime 추가된 Exam 업데이트.
+                            pausedExamList[
+                                    pausedExamList.indexOf(this.widget.exam)] =
+                                this.widget.updateTimeExam;
+                          } else {
+                            // pausedExamList에 값이 없다면 - 처음 그만두는 경우
+                            // pausedExamList에 Add.
+                            pausedExamList.add(this.widget.updateTimeExam);
+                          }
 
-                        if (pausedExamList.contains(this.widget.exam)) {
-                          // pausedExamList에 값이 있다면 - 과거에 그만뒀던 것 다시 푸는 경우.
-                          // pausedExamList에 remainTime 추가된 Exam 업데이트.
-                          pausedExamList[
-                                  pausedExamList.indexOf(this.widget.exam)] =
-                              this.widget.updateTimeExam;
-                        } else {
-                          // pausedExamList에 값이 없다면 - 처음 그만두는 경우
-                          // pausedExamList에 Add.
-                          pausedExamList.add(this.widget.updateTimeExam);
+                          // Hive 업데이트
+                          pausedExamListHive.put(
+                              'pausedExamList', pausedExamList);
+
+                          // examList 업데이트하고, Hive에 업데이트 해야 함.
+                          debugPrint("This Exam is in pausedExamList index : " +
+                              pausedExamList
+                                  .indexOf(this.widget.exam)
+                                  .toString());
                         }
-
-                        // Hive 업데이트
-                        pausedExamListHive.put(
-                            'pausedExamList', pausedExamList);
-
-                        // examList 업데이트하고, Hive에 업데이트 해야 함.
-                        debugPrint("This Exam is in pausedExamList index : " +
-                            pausedExamList
-                                .indexOf(this.widget.exam)
-                                .toString());
                       },
                     )
                   ],

@@ -67,8 +67,7 @@ List<SettingsTile> previousExamList(String input) {
       title: formatter
           .format(DateFormat('MM_dd_HH_mm_ss').parse(list[i].dateCode)),
       onPressed: (BuildContext context) {
-        Navigator.pushNamed(context, '/problemDetailCompletePage',
-            arguments: list[i]);
+        Navigator.pushNamed(context, '/scorePage', arguments: list[i]);
       },
     );
     result.add(settingTile);

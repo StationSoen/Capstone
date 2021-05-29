@@ -237,7 +237,8 @@ class Home extends StatelessWidget {
         dateCode: tempDate,
         directory: directory,
         settingTime: time.toInt(),
-        problemList: problemList);
+        problemList: problemList,
+        examType: 1);
 
     Navigator.pushNamed(context, '/problemPage', arguments: randomProblem);
   }

@@ -63,6 +63,9 @@ void main() async {
   await Hive.openBox('pausedExamList');
   await Hive.openBox('completeExamList');
 
+  await Hive.openBox('levelTest');
+  var levelTestHive = Hive.box('levelTest');
+
   var pausedExamListHive = Hive.box('pausedExamList');
   var completeExamListHive = Hive.box('completeExamList');
 
@@ -71,6 +74,11 @@ void main() async {
   }
   if (completeExamListHive.get('completeExamList') != null) {
     completeExamList = completeExamListHive.get('completeExamList');
+  }
+
+  if (levelTestHive.get('level') == null) {
+    print("level hive Empty!, init");
+    levelTestHive.put('level', [0, 0, 0, 0]);
   }
 
   debugPrint("Paused Exam List : " + completeExamList.toString());
@@ -130,8 +138,7 @@ class MyApp extends StatelessWidget {
               '/problemDetailPage': (BuildContext context) =>
                   ProblemDetailPage(),
               '/previousComplete': (BuildContext context) => PreviousComplete(),
-              '/problemDetailCompletePage': (BuildContext context) =>
-                  ScorePage(),
+              '/scorePage': (BuildContext context) => ScorePage(),
               // '/problemPaused': (BuildContext context) =>
               //     new ProblemPausedPage(),
             },

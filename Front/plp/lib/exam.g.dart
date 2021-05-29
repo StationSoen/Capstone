@@ -21,6 +21,7 @@ class ExamAdapter extends TypeAdapter<Exam> {
       directory: fields[2] as String,
       dateCode: fields[5] as String,
       settingTime: fields[3] as int,
+      examType: fields[11] as int,
     )
       ..elapsedTime = fields[1] as int
       ..complete = fields[4] as bool
@@ -30,7 +31,7 @@ class ExamAdapter extends TypeAdapter<Exam> {
   @override
   void write(BinaryWriter writer, Exam obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.problemList)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class ExamAdapter extends TypeAdapter<Exam> {
       ..writeByte(5)
       ..write(obj.dateCode)
       ..writeByte(6)
-      ..write(obj.userAnswer);
+      ..write(obj.userAnswer)
+      ..writeByte(11)
+      ..write(obj.examType);
   }
 
   @override

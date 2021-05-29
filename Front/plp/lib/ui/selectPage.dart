@@ -315,7 +315,8 @@ class _SelectPageState extends State<SelectPage> {
                             dateCode: tempDate,
                             directory: directory,
                             settingTime: time.toInt(),
-                            problemList: myProblemList);
+                            problemList: myProblemList,
+                            examType: 0);
 
                         // Navigator.pushNamed(context, '/problemPage');
                         Navigator.pushNamed(context, '/problemPage',

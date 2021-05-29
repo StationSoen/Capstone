@@ -29,11 +29,15 @@ class Exam extends HiveObject {
   @HiveField(6)
   late List<int> userAnswer;
 
+  @HiveField(11)
+  late int examType;
+
   Exam(
       {required this.problemList,
       required this.directory,
       required this.dateCode,
-      required this.settingTime}) {
+      required this.settingTime,
+      required this.examType}) {
     this.userAnswer = List.filled(this.problemList.length, -1);
   }
 }
