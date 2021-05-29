@@ -122,8 +122,8 @@ class MyApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           debugPrint("Future loaded");
           // Load Thumbnail Articles
-          return GetMaterialApp(
-            // cupertinoApp Settings ..
+          return MaterialApp(
+            // MaterialApp Settings ..
             debugShowCheckedModeBanner: false,
 
             initialRoute: '/',
@@ -151,7 +151,7 @@ class MyApp extends StatelessWidget {
 
         // if future has error, show error page.
         if (snapshot.hasError) {
-          return GetMaterialApp(
+          return MaterialApp(
             title: "Error Page",
             home: Scaffold(
               body: Center(child: Text("ERROR!")),
