@@ -37,7 +37,7 @@ class _ScorePageState extends State<ScorePage> {
     List<int> typeList = [];
     List<int> difficultyList = [];
 
-    List<String> typeString = ['전개도', '종이접기', '펀칭'];
+    List<String> typeString = ['전개도', '종이접기', '펀칭', '블럭쌓기'];
     List<String> difficultyString = ['쉬움', '보통', '어려움'];
     List<String> examTypeList = ['일반 문제지', '무작위 생성 문제', '레벨 테스트'];
 
@@ -89,11 +89,22 @@ class _ScorePageState extends State<ScorePage> {
       //     " ";
     }
     if (typeList.contains(2)) {
-      type = type + typeString[typeList.firstWhere((element) => element == 2)];
+      type = type +
+          typeString[typeList.firstWhere((element) => element == 2)] +
+          ", ";
       // "-";
       // type = type +
       //     difficultyString[
       //         difficultyList[typeList.indexWhere((element) => element == 2)]] +
+      //     " ";
+    }
+
+    if (typeList.contains(3)) {
+      type = type + typeString[typeList.firstWhere((element) => element == 3)];
+      // "-";
+      // type = type +
+      //     difficultyString[
+      //         difficultyList[typeList.indexWhere((element) => element == 3)]] +
       //     " ";
     }
 
@@ -280,7 +291,7 @@ class _ScorePageState extends State<ScorePage> {
 
   Widget problemList(int number, List<bool> correctList, List<int> typeList) {
     List<Widget> result = [];
-    List<String> type = ["전개도 유형", "종이접기 유형", "펀칭 유형"];
+    List<String> type = ["전개도 유형", "종이접기 유형", "펀칭 유형", "블럭쌓기 유형"];
 
     for (int i = 0; i < number; i++) {
       if (correctList[i]) {

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:plp/main.dart';
 import 'package:plp/ui/problemPage.dart';
 import 'package:plp/ui/selectPage.dart';
+import 'package:plp/visual/blockproblem.dart';
 import 'package:plp/visual/load.dart';
 import 'package:plp/visual/paper_problem.dart';
 import 'package:plp/visual/problem.dart';
@@ -230,6 +231,8 @@ class Home extends StatelessWidget {
       problemList = await makepaperproblem(1, difficulty, directory, 0);
     } else if (problemType == 2) {
       problemList = await makepunchproblem(1, difficulty, directory, 0);
+    } else if (problemType == 3) {
+      problemList = await makeblockproblem(1, difficulty, directory, 0);
     } else {
       problemList = await makecubeproblem(1, difficulty, directory);
     }

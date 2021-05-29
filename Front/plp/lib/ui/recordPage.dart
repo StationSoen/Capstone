@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:plp/main.dart';
 import 'package:plp/ui/component.dart';
+import 'package:plp/visual/blockproblem.dart';
 import 'package:plp/visual/load.dart';
 import 'package:plp/visual/paper_problem.dart';
 import 'package:plp/visual/problem.dart';
@@ -402,6 +403,9 @@ class LevelCard extends StatelessWidget {
                     } else if (problemType == 2) {
                       problemList =
                           await makepunchproblem(3, difficulty, directory, 0);
+                    } else if (problemType == 3) {
+                      problemList =
+                          await makeblockproblem(3, difficulty, directory, 0);
                     } else {
                       debugPrint("LEVEL TEST ERROR");
                     }

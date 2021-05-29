@@ -29,7 +29,7 @@ class StackBlocks {
     rng = Random(seed);
     print('seed : $seed\n');
 
-    type ??= rng.nextInt(2);
+    type ??= rng.nextInt(1);
     print('type : $type\n');
 
     var bigOne = Blocks(x: 2, y: 4, z: 3);

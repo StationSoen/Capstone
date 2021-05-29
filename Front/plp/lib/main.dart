@@ -106,6 +106,8 @@ class MyApp extends StatelessWidget {
     await numimgload();
     await shapeimgload();
 
+    print(imglist.length.toString());
+
     // do somthing here ..  ex) loading something
     // splash screen loading.
   }
