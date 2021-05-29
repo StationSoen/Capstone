@@ -8,13 +8,12 @@ import 'PaperFold.dart';
 import 'component.dart';
 import 'cube3D.dart';
 
-class ProblemDetailCompletePage extends StatefulWidget {
+class ScorePage extends StatefulWidget {
   @override
-  _ProblemDetailCompletePageState createState() =>
-      _ProblemDetailCompletePageState();
+  _ScorePageState createState() => _ScorePageState();
 }
 
-class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
+class _ScorePageState extends State<ScorePage> {
   late Exam exam;
   int remainProblems = 0;
   DateFormat formatter = DateFormat("MM/dd HH:mm:ss");
@@ -231,7 +230,6 @@ class _ProblemDetailCompletePageState extends State<ProblemDetailCompletePage> {
                   )
                 ]),
             onPressed: () {
-              debugPrint("AAA" + typeList[i].toString());
               if (typeList[i] == 0) {
                 Navigator.push(
                   context,

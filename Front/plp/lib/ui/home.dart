@@ -12,8 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
-import 'exam.dart';
-import 'ui/component.dart';
+import '../exam.dart';
+import 'component.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -21,14 +21,7 @@ class Home extends StatelessWidget {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(top: 70, bottom: 70),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment(-0.1, -1),
-            end: Alignment(0.1, 1),
-            colors: [Color(0xFF0093E9), Color(0xFF80D0C7)],
-            stops: [0.0, 1.0],
-          ),
-        ),
+        decoration: gradientBackground,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

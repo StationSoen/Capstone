@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:get/get.dart';
 import 'package:plp/main.dart';
 import 'package:plp/ui/problemPaused.dart';
 import 'package:plp/ui/recordPage.dart';
@@ -251,7 +252,9 @@ class _ProblemCardState extends State<ProblemCard> {
           Container(
               width: double.infinity,
               child: Text(
-                  "#${this.widget.index + 1}\n${problemText[this.widget.type][this.widget.exam.problemList[this.widget.index].textType]}")),
+                "#${this.widget.index + 1}\n${problemText[this.widget.type][this.widget.exam.problemList[this.widget.index].textType]}",
+                style: TextStyle(fontSize: 16),
+              )),
           Divider(),
           problemQuestion(this.widget.type),
           Divider(

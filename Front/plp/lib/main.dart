@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:plp/ui/historyPage.dart';
-import 'package:plp/home.dart';
+import 'package:plp/ui/home.dart';
 import 'package:plp/ui/previousComplete.dart';
 import 'package:plp/ui/previousExamPage.dart';
-import 'package:plp/ui/problemDetailCompletePage.dart';
+import 'package:plp/ui/scorePage.dart';
 import 'package:plp/ui/problemDetalPage.dart';
 import 'package:plp/ui/problemDetalPage.dart';
 import 'package:plp/ui/problemPage.dart';
@@ -131,7 +131,7 @@ class MyApp extends StatelessWidget {
                   ProblemDetailPage(),
               '/previousComplete': (BuildContext context) => PreviousComplete(),
               '/problemDetailCompletePage': (BuildContext context) =>
-                  ProblemDetailCompletePage(),
+                  ScorePage(),
               // '/problemPaused': (BuildContext context) =>
               //     new ProblemPausedPage(),
             },

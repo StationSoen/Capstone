@@ -67,6 +67,15 @@ BoxDecoration basicBox = new BoxDecoration(
   ],
 );
 
+BoxDecoration gradientBackground = new BoxDecoration(
+  gradient: LinearGradient(
+    begin: Alignment(-0.1, -1),
+    end: Alignment(0.1, 1),
+    colors: [Color(0xFF0093E9), Color(0xFF80D0C7)],
+    stops: [0.0, 1.0],
+  ),
+);
+
 Color disableColors({required bool isDisable, required Color inputColor}) {
   if (!isDisable) {
     return Colors.grey;
