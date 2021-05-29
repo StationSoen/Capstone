@@ -29,26 +29,36 @@ class StackBlocks {
     rng = Random(seed);
     print('seed : $seed\n');
 
-    type ??= rng.nextInt(2);
+    type ??= rng.nextInt(1);
     print('type : $type\n');
 
-    var bigOne = Blocks(x: 2, y: 4, z: 3);
-    var blocks = bigOne.separate(3, Random());
-    example = [bigOne, blocks[0], blocks[1]];
+    // generate with leveling
+    var bigOne =
+        (level == 2) ? Blocks(x: 3, y: 4, z: 3) : Blocks(x: 2, y: 4, z: 3);
+    var blocks = (level == 0)
+        ? bigOne.separate(2, Random())
+        : bigOne.separate(3, Random());
+    var choose = rng.nextInt(blocks.length);
 
+    // example
+    example = [bigOne];
+    for (var i = 0; i < blocks.length; i++) {
+      if (i != choose) example.add(blocks[i]);
+    }
     print('example: $example');
 
-    //hardcoded
+    //answer
     answer = [0];
+    //answer = [rng.nextInt(4)];
+    print('answer: $answer');
 
     // suggestion
     suggestion = [];
-
     do {
-      var wrong = blocks[2].clone();
-      wrong.shrink(3, rng);
-      wrong.expand(3, rng);
-      if (!wrong.isEqual(blocks[2])) {
+      var wrong = blocks[choose].clone();
+      wrong.shrink(choose + 1, rng);
+      wrong.expand(choose + 1, rng);
+      if (!wrong.isEqual(blocks[choose])) {
         var check = true;
         for (var i = 0; i < suggestion.length; i++) {
           if (wrong.isEqual(suggestion[i])) check = false;
@@ -56,10 +66,8 @@ class StackBlocks {
         if (check) suggestion.add(wrong);
       }
     } while (suggestion.length < 3);
-    suggestion.insert(answer[0], blocks[2]);
+    suggestion.insert(answer[0], blocks[choose]);
     print('suggestion: $suggestion');
-
-    print('answer: $answer');
   }
 
   @override
@@ -85,6 +93,50 @@ class Blocks {
     }
 
     return newBlock;
+  }
+
+  void turn(int axis, bool direction) {
+    if (axis == 0) {
+      var temp = y;
+      y = z;
+      z = temp;
+    } else if (axis == 1) {
+      var temp = z;
+      z = x;
+      x = temp;
+    } else if (axis == 2) {
+      var temp = x;
+      x = y;
+      y = temp;
+    }
+
+    var newBody = List.generate(
+        x, (i) => List.generate(y, (i) => List.generate(z, (i) => 0)));
+
+    for (var a = 0; a < x; a++) {
+      for (var b = 0; b < y; b++) {
+        for (var c = 0; c < z; c++) {
+          if (axis == 0 && direction) {
+            newBody[a][b][c] = body[a][z - c - 1][b];
+          } else if (axis == 0 && !direction) {
+            newBody[a][b][c] = body[a][c][y - b - 1];
+          }
+          //
+          else if (axis == 1 && direction) {
+            newBody[a][b][c] = body[z - c - 1][b][a];
+          } else if (axis == 1 && !direction) {
+            newBody[a][b][c] = body[c][b][x - a - 1];
+          }
+          //
+          else if (axis == 2 && direction) {
+            newBody[a][b][c] = body[y - b - 1][a][c];
+          } else if (axis == 2 && !direction) {
+            newBody[a][b][c] = body[b][x - a - 1][c];
+          }
+        }
+      }
+    }
+    body = newBody;
   }
 
   bool isEqual(Blocks blocks) {
@@ -162,9 +214,9 @@ class Blocks {
 
     switch (number) {
       case 3:
-        body[0][0][0] = 1;
-        body[x - 1][0][0] = 2;
-        body[x - 1][y - 1][z - 1] = 3;
+        body[0][y - 1][0] = 1;
+        body[x - 1][y - 1][0] = 2;
+        body[0][y - 1][z - 1] = 3;
         break;
       default:
         body[0][0][0] = 1;
