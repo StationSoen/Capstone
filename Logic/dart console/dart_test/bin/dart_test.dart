@@ -10,6 +10,9 @@ void main(List<String> arguments) {
   var a = Blocks(x: 2, y: 4, z: 3);
   var b = a.separate(3, Random());
   print(a);
-  print(b[0]);
-  StackBlocks();
+  a.turn(0, true);
+  print(a);
+  //print(b[0]);
+
+  //StackBlocks(level: 1);
 }
