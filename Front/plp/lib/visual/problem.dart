@@ -75,11 +75,11 @@ Future<List<Problem>> makecubeproblem(
               temp.answer[1][2][3],
               180,
               temp.answer[1][2][0],
-              90,
+              0,
               temp.answer[1][2][4],
               0,
               temp.answer[1][2][5],
-              180,
+              270,
               directory);
 
           break;
@@ -138,11 +138,11 @@ Future<List<Problem>> makecubeproblem(
               temp.answer[1][2][3],
               180,
               temp.answer[1][2][0],
-              90,
+              0,
               temp.answer[1][2][4],
               0,
               temp.answer[1][2][5],
-              180,
+              270,
               directory);
 
           break;
