@@ -30,13 +30,14 @@ class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
   void _onSceneCreated(Scene scene) {
     debugPrint("큐브 시작");
     _scene = scene;
-    scene.camera.position.z = 60;
+    scene.camera.position.z = 1;
 
     debugPrint(this.widget.exam.directory);
 
     _cube = Object(
-        scale: Vector3(60.0, 60.0, 60.0),
-        position: Vector3(0, -15, 0),
+        backfaceCulling: false,
+        // scale: Vector3(60.0, 60.0, 60.0),
+        position: Vector3(0, -0.25, 0),
         fileName: this.widget.exam.directory + '/dice.obj',
         isAsset: false);
 
@@ -61,7 +62,7 @@ class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
         duration: Duration(milliseconds: 30000), vsync: this)
       ..addListener(() {
         if (_cube != null) {
-          _cube!.rotation.y = _controller.value * 360;
+          // _cube!.rotation.y = _controller.value * 360;
           _cube!.updateTransform();
           _scene.updateTexture();
         }
