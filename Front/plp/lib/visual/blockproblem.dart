@@ -14,11 +14,21 @@ Future<List<Problem>> makeblockproblem(
   List<Problem> blockList = [];
   for (int i = 1; i <= num; i++) {
     var temp = StackBlocks(level: level);
+    var temp_problemData = [];
+
+    for (int k = 0; k < temp.example.length; k++) {
+      temp_problemData.add(temp.example[k].body);
+    }
+
+    temp_problemData.add(temp.suggestion[temp.answer[0]].body);
     blockList.add(Problem(
         answer: temp.answer[0],
         problemType: 3,
         difficulty: temp.level,
-        textType: temp.type));
+        textType: temp.type,
+        problemData: temp_problemData));
+
+    print("KKKKKKK : " + temp_problemData.toString());
 
     for (int j = 0; j < temp.example.length; j++) {
       await drawblockpng(

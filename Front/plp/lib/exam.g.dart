@@ -76,13 +76,14 @@ class ProblemAdapter extends TypeAdapter<Problem> {
       problemType: fields[7] as int,
       difficulty: fields[9] as int,
       answer: fields[10] as int,
+      problemData: fields[12] as dynamic,
     );
   }
 
   @override
   void write(BinaryWriter writer, Problem obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(7)
       ..write(obj.problemType)
       ..writeByte(8)
@@ -90,7 +91,9 @@ class ProblemAdapter extends TypeAdapter<Problem> {
       ..writeByte(9)
       ..write(obj.difficulty)
       ..writeByte(10)
-      ..write(obj.answer);
+      ..write(obj.answer)
+      ..writeByte(12)
+      ..write(obj.problemData);
   }
 
   @override

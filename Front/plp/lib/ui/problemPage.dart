@@ -200,6 +200,8 @@ class ProblemCard extends StatefulWidget {
 
   late int type;
 
+  late int difficulty;
+
   ProblemCard(
       {required this.index,
       required this.exam,
@@ -207,6 +209,7 @@ class ProblemCard extends StatefulWidget {
       required this.maxIndex,
       required this.second}) {
     this.type = this.exam.problemList[index].problemType;
+    this.difficulty = this.exam.problemList[index].difficulty;
   }
 
   @override
@@ -262,7 +265,7 @@ class _ProblemCardState extends State<ProblemCard> {
                 style: TextStyle(fontSize: 16),
               )),
           Divider(),
-          problemQuestion(this.widget.type),
+          problemQuestion(this.widget.type, this.widget.difficulty),
           Divider(
             color: Colors.black,
           ),
@@ -290,7 +293,7 @@ class _ProblemCardState extends State<ProblemCard> {
     );
   }
 
-  Widget problemQuestion(int type) {
+  Widget problemQuestion(int type, int difficulty) {
     if (type == 0) {
       // Cube Problem
       return Container(
@@ -457,52 +460,86 @@ class _ProblemCardState extends State<ProblemCard> {
         ),
       );
     } else if (type == 3) {
-      return Container(
-          height: 250,
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                // color: Colors.black,
-                width: 140,
-                child: Image.file(
-                  File(this.widget.exam.directory +
-                      "/problem" +
-                      (this.widget.index + 1).toString() +
-                      "_0.png"),
-                  fit: BoxFit.cover,
+      if (difficulty == 0) {
+        // Block Stack - Easy
+        return Container(
+            height: 250,
+            width: double.infinity,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  // color: Colors.black,
+                  width: 125,
+                  child: Image.file(
+                    File(this.widget.exam.directory +
+                        "/problem" +
+                        (this.widget.index + 1).toString() +
+                        "_0.png"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    // color: Colors.black,
-                    width: 100,
-                    child: Image.file(
-                      File(this.widget.exam.directory +
-                          "/problem" +
-                          (this.widget.index + 1).toString() +
-                          "_1.png"),
-                      fit: BoxFit.cover,
-                    ),
+                Container(
+                  // color: Colors.black,
+                  width: 125,
+                  child: Image.file(
+                    File(this.widget.exam.directory +
+                        "/problem" +
+                        (this.widget.index + 1).toString() +
+                        "_1.png"),
+                    fit: BoxFit.cover,
                   ),
-                  Container(
-                    width: 100,
-                    child: Image.file(
-                      File(this.widget.exam.directory +
-                          "/problem" +
-                          (this.widget.index + 1).toString() +
-                          "_2.png"),
-                      fit: BoxFit.cover,
-                    ),
+                ),
+              ],
+            ));
+      } else {
+        return Container(
+            height: 250,
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  // color: Colors.black,
+                  width: 140,
+                  child: Image.file(
+                    File(this.widget.exam.directory +
+                        "/problem" +
+                        (this.widget.index + 1).toString() +
+                        "_0.png"),
+                    fit: BoxFit.cover,
                   ),
-                ],
-              )
-            ],
-          ));
+                ),
+                Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      // color: Colors.black,
+                      width: 100,
+                      child: Image.file(
+                        File(this.widget.exam.directory +
+                            "/problem" +
+                            (this.widget.index + 1).toString() +
+                            "_1.png"),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      child: Image.file(
+                        File(this.widget.exam.directory +
+                            "/problem" +
+                            (this.widget.index + 1).toString() +
+                            "_2.png"),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ));
+      }
     } else {
       return Container(
         child: Text("Something Wrong!"),

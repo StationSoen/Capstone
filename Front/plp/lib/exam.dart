@@ -60,11 +60,15 @@ class Problem {
   @HiveField(10)
   int answer = -1;
 
+  @HiveField(12)
+  var problemData;
+
   Problem(
       {required this.textType,
       required this.problemType,
       required this.difficulty,
-      required this.answer});
+      required this.answer,
+      this.problemData});
 
   // png 생성하여 디렉토리에 저장 함수
   // String 문제 예시 이미지 경로

@@ -3,6 +3,7 @@ import 'package:plp/ui/PunchHole.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:plp/ui/block3D.dart';
 
 import '../exam.dart';
 import 'PaperFold.dart';
@@ -387,6 +388,16 @@ class _ScorePageState extends State<ScorePage> {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => PunchHole(
+                      exam: exam,
+                      index: i,
+                    ),
+                  ),
+                );
+              } else if (typeList[i] == 3) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => Block3D(
                       exam: exam,
                       index: i,
                     ),
