@@ -79,6 +79,7 @@ flutter:
     - assets/numbers/
     - assets/shapes/
     - assets/fold/paperex.png
+    - assets/block/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

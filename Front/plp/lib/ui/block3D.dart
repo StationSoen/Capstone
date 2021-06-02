@@ -13,55 +13,58 @@ import 'SplashScreen.dart';
 import '../exam.dart';
 import '../logic/stack_blocks.dart';
 
-
-void create_block(Scene scene, double x, double y,double z, int colornum){
-
-  if(colornum==0)
-  {
+void create_block(Scene scene, double x, double y, double z, int colornum) {
+  if (colornum == 0) {
     return;
-  }
-  else if (colornum==1)
-  {
-    var cube = Object(scale: Vector3(2,2,2),position: Vector3(x,z,y),backfaceCulling: false, fileName: 'assets/cube/Rcube.obj', isAsset: true);
+  } else if (colornum == 1) {
+    var cube = Object(
+        scale: Vector3(2, 2, 2),
+        position: Vector3(x, z, y),
+        backfaceCulling: false,
+        fileName: 'assets/block/Rcube.obj',
+        isAsset: true);
     scene.world.add(cube);
-  }
-  else if (colornum==2)
-  {
-    var cube = Object(scale: Vector3(2,2,2),position: Vector3(x,z,y),backfaceCulling: false, fileName: 'assets/cube/Ycube.obj', isAsset: true);
+  } else if (colornum == 2) {
+    var cube = Object(
+        scale: Vector3(2, 2, 2),
+        position: Vector3(x, z, y),
+        backfaceCulling: false,
+        fileName: 'assets/block/Ycube.obj',
+        isAsset: true);
     scene.world.add(cube);
-  }
-  else if (colornum==3)
-  {
-    var cube = Object(scale: Vector3(2,2,2),position: Vector3(x,z,y),backfaceCulling: false, fileName: 'assets/cube/Bcube.obj', isAsset: true);
+  } else if (colornum == 3) {
+    var cube = Object(
+        scale: Vector3(2, 2, 2),
+        position: Vector3(x, z, y),
+        backfaceCulling: false,
+        fileName: 'assets/block/Bcube.obj',
+        isAsset: true);
     scene.world.add(cube);
   }
 }
 
-
-void create_blocks(Blocks block, Scene scene){
-  for (int i = 0; i < block.z; i++) {
-    for (int j = 0; j < block.y; j++) {
-      for (int k = 0; k < block.x; k++) {
-        create_block(scene, k.toDouble(), j.toDouble(), i.toDouble(),
-            block.body[k][j][i]);
+void create_blocks(var block, Scene scene) {
+  for (int i = 0; i < block[0][0].length; i++) {
+    for (int j = 0; j < block[0].length; j++) {
+      for (int k = 0; k < block.length; k++) {
+        create_block(
+            scene, k.toDouble(), j.toDouble(), i.toDouble(), block[k][j][i]);
       }
     }
   }
-
 }
 
-
-class Cube3D extends StatefulWidget {
+class Block3D extends StatefulWidget {
   late Exam exam;
   late int index;
   late double answerSize = 125;
-  Cube3D({required this.exam, required this.index});
+  Block3D({required this.exam, required this.index});
 
   @override
-  _Cube3DState createState() => _Cube3DState();
+  _Block3DState createState() => _Block3DState();
 }
 
-class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
+class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
   late Scene _scene;
   Object? _cube;
   late AnimationController _controller;
@@ -69,13 +72,14 @@ class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
   void _onSceneCreated(Scene scene) {
     debugPrint("큐브 시작");
     _scene = scene;
-    scene.camera.position.x=5.56;
-    scene.camera.position.z=7.73;
-    scene.camera.position.y=5.64;
+    scene.camera.position.x = 5.56;
+    scene.camera.position.z = 7.73;
+    scene.camera.position.y = 5.64;
 
     debugPrint(this.widget.exam.directory);
 
-    create_blocks(temp.example[0], scene);
+    create_blocks(
+        this.widget.exam.problemList[this.widget.index].problemData[1], scene);
 
     //_cube = Object(scale: Vector3(30.0, 30.0, 30.0), backfaceCulling: false, fileName: 'assets/cube/cube.obj', isAsset: true);
 
@@ -152,6 +156,89 @@ class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
     }
   }
 
+  Widget problemPage(int difficulty) {
+    if (difficulty == 0) {
+      // Block Stack - Easy
+      return Container(
+          height: 250,
+          width: double.infinity,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                // color: Colors.black,
+                width: 125,
+                child: Image.file(
+                  File(this.widget.exam.directory +
+                      "/problem" +
+                      (this.widget.index + 1).toString() +
+                      "_0.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Container(
+                // color: Colors.black,
+                width: 125,
+                child: Image.file(
+                  File(this.widget.exam.directory +
+                      "/problem" +
+                      (this.widget.index + 1).toString() +
+                      "_1.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
+          ));
+    } else {
+      return Container(
+          height: 250,
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                // color: Colors.black,
+                width: 140,
+                child: Image.file(
+                  File(this.widget.exam.directory +
+                      "/problem" +
+                      (this.widget.index + 1).toString() +
+                      "_0.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    // color: Colors.black,
+                    width: 100,
+                    child: Image.file(
+                      File(this.widget.exam.directory +
+                          "/problem" +
+                          (this.widget.index + 1).toString() +
+                          "_1.png"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Container(
+                    width: 100,
+                    child: Image.file(
+                      File(this.widget.exam.directory +
+                          "/problem" +
+                          (this.widget.index + 1).toString() +
+                          "_2.png"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     debugPrint("World!");
@@ -196,183 +283,8 @@ class _Cube3DState extends State<Cube3D> with SingleTickerProviderStateMixin {
                 ),
                 Divider(),
                 // problem Card
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                  child: Column(
-                    children: [
-                      // Problem Question Section
-                      Center(
-                          child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("스크롤 잠금",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16)),
-                          CupertinoSwitch(
-                              value: isScrollLock,
-                              onChanged: (value) {
-                                isScrollLock = value;
-                                setState(() {});
-                              })
-                        ],
-                      )),
-                      Divider(),
-                      Container(
-                          width: double.infinity,
-                          child: Text(
-                            "#${this.widget.index + 1}\n${problemText[this.widget.exam.problemList[this.widget.index].textType]}",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600),
-                          )),
-                      Divider(),
-                      Container(
-                        height: 200,
-                        width: 200,
-                        child: Image.file(
-                          File(this.widget.exam.directory +
-                              "/problem" +
-                              (this.widget.index + 1).toString() +
-                              ".png"),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      Divider(),
-
-                      // Problem Answers Section
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              CupertinoButton(
-                                padding: EdgeInsets.all(0),
-                                onPressed: () {},
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 2,
-                                      color: checkWrongSelect(
-                                          problemList:
-                                              this.widget.exam.problemList,
-                                          userAnswerList:
-                                              this.widget.exam.userAnswer,
-                                          index: this.widget.index,
-                                          select: 0),
-                                    ),
-                                  ),
-                                  height: this.widget.answerSize,
-                                  width: this.widget.answerSize,
-                                  child: Image.file(
-                                    File(this.widget.exam.directory +
-                                        "/example" +
-                                        (this.widget.index + 1).toString() +
-                                        "_" +
-                                        "0" +
-                                        ".png"),
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                              ),
-                              CupertinoButton(
-                                padding: EdgeInsets.all(0),
-                                onPressed: () {},
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 2,
-                                      color: checkWrongSelect(
-                                          problemList:
-                                              this.widget.exam.problemList,
-                                          userAnswerList:
-                                              this.widget.exam.userAnswer,
-                                          index: this.widget.index,
-                                          select: 1),
-                                    ),
-                                  ),
-                                  height: this.widget.answerSize,
-                                  width: this.widget.answerSize,
-                                  child: Image.file(
-                                    File(this.widget.exam.directory +
-                                        "/example" +
-                                        (this.widget.index + 1).toString() +
-                                        "_" +
-                                        "1" +
-                                        ".png"),
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 20),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                CupertinoButton(
-                                  padding: EdgeInsets.all(0),
-                                  onPressed: () {},
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 2,
-                                        color: checkWrongSelect(
-                                            problemList:
-                                                this.widget.exam.problemList,
-                                            userAnswerList:
-                                                this.widget.exam.userAnswer,
-                                            index: this.widget.index,
-                                            select: 2),
-                                      ),
-                                    ),
-                                    height: this.widget.answerSize,
-                                    width: this.widget.answerSize,
-                                    child: Image.file(
-                                      File(this.widget.exam.directory +
-                                          "/example" +
-                                          (this.widget.index + 1).toString() +
-                                          "_" +
-                                          "2" +
-                                          ".png"),
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                                CupertinoButton(
-                                  padding: EdgeInsets.all(0),
-                                  onPressed: () {},
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 2,
-                                        color: checkWrongSelect(
-                                            problemList:
-                                                this.widget.exam.problemList,
-                                            userAnswerList:
-                                                this.widget.exam.userAnswer,
-                                            index: this.widget.index,
-                                            select: 3),
-                                      ),
-                                    ),
-                                    height: this.widget.answerSize,
-                                    width: this.widget.answerSize,
-                                    child: Image.file(
-                                      File(this.widget.exam.directory +
-                                          "/example" +
-                                          (this.widget.index + 1).toString() +
-                                          "_" +
-                                          "3" +
-                                          ".png"),
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                )
-                              ])
-                        ],
-                      )
-                    ],
-                  ),
-                )
+                problemPage(
+                    this.widget.exam.problemList[this.widget.index].difficulty)
               ],
             ),
           ),
