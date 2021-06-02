@@ -38,12 +38,17 @@ class StackBlocks {
     var blocks = (level == 0)
         ? bigOne.separate(2, Random())
         : bigOne.separate(3, Random());
-    var choose = rng.nextInt(blocks.length);
+    //var choose = rng.nextInt(blocks.length);
+    var choose = 0;
 
     // example
     example = [bigOne];
     for (var i = 0; i < blocks.length; i++) {
       if (i != choose) example.add(blocks[i]);
+    }
+
+    for (var i = 1; i < example.length; i++) {
+      example[i].turn(rng.nextInt(3), rng.nextInt(2) > 0);
     }
     print('example: $example');
 
@@ -67,6 +72,11 @@ class StackBlocks {
       }
     } while (suggestion.length < 3);
     suggestion.insert(answer[0], blocks[choose]);
+
+    for (var i = 0; i < suggestion.length; i++) {
+      suggestion[i].turn(rng.nextInt(3), rng.nextInt(2) > 0);
+    }
+
     print('suggestion: $suggestion');
   }
 

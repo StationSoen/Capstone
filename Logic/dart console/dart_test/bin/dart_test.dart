@@ -7,12 +7,14 @@ import 'package:dart_test/paper_fold.dart';
 import 'package:dart_test/stack_blocks.dart';
 
 void main(List<String> arguments) {
-  var a = Blocks(x: 2, y: 4, z: 3);
-  var b = a.separate(3, Random());
-  print(a);
-  a.turn(0, true);
-  print(a);
-  //print(b[0]);
+  // var a = Blocks(x: 2, y: 4, z: 3);
+  // var b = a.separate(3, Random());
+  // print(a);
+  // a.turn(0, true);
+  // print(a);
+  // print(b[0]);
 
-  //StackBlocks(level: 1);
+  var sb = StackBlocks(level: 1);
+  print('-----');
+  print(sb);
 }
