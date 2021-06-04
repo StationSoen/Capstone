@@ -202,7 +202,7 @@ class DevCube {
         range = 8;
         break;
       case 2:
-        range = 12;
+        range = 19;
         break;
     }
     var init = rand(6, range);

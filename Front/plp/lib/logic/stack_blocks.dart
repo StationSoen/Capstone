@@ -224,7 +224,7 @@ class Blocks {
 
     switch (number) {
       case 3:
-        body[0][y - 1][0] = 1;
+        body[0][0][0] = 1;
         body[x - 1][y - 1][0] = 2;
         body[0][y - 1][z - 1] = 3;
         break;

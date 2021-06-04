@@ -555,6 +555,6 @@ class Paper {
       var exi = '     $i 번 레이어: ${layers[i]}\n';
       la += exi;
     }
-    return co + la;
+    return co + la + colors.toString();
   }
 }
