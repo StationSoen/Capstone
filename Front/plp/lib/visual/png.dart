@@ -548,3 +548,222 @@ Future<void> drawcolortemplatepng(
   }
 
 }
+
+
+Future<void> drawcolormtlpng2(String name,final color1, final color2,final color3,final color4,final color5,final color6,String directory) async{
+
+  var recorder = new UI.PictureRecorder();
+  final canvas = new Canvas(
+      recorder,
+      new Rect.fromPoints(
+          new Offset(3.0, 3.0), new Offset(396.0, 266.0)));
+
+  var paint = Paint();
+  paint.strokeWidth = 2;
+
+  var sWidth=5.0;
+
+
+
+  paint.color = color1;
+  paint.style=PaintingStyle.fill;
+  canvas.drawRect(Offset(3,3)&Size(130,130),paint);
+
+  paint.strokeWidth = sWidth;
+  paint.style=PaintingStyle.stroke;
+  paint.color =Colors.black;
+  canvas.drawRect(Offset(3,3)&Size(130,130),paint);
+
+
+
+  paint.color = color2;
+
+  paint.style=PaintingStyle.fill;
+  canvas.drawRect(Offset(133,3)&Size(130,130),paint);
+
+  paint.strokeWidth = sWidth;
+  paint.style=PaintingStyle.stroke;
+  paint.color =Colors.black;
+  canvas.drawRect(Offset(133,3)&Size(130,130),paint);
+
+
+  paint.color = color3;
+
+  paint.style=PaintingStyle.fill;
+  canvas.drawRect(Offset(263,3)&Size(130,130),paint);
+
+  paint.strokeWidth = sWidth;
+  paint.style=PaintingStyle.stroke;
+  paint.color =Colors.black;
+
+  canvas.drawRect(Offset(263,3)&Size(130,130),paint);
+
+
+  paint.color = color4;
+
+  paint.style=PaintingStyle.fill;
+  canvas.drawRect(Offset(3,133)&Size(130,130),paint);
+
+  paint.strokeWidth = sWidth;
+  paint.style=PaintingStyle.stroke;
+  paint.color =Colors.black;
+  canvas.drawRect(Offset(3,133)&Size(130,130),paint);
+
+  paint.color = color5;
+
+  paint.style=PaintingStyle.fill;
+  canvas.drawRect(Offset(133,133)&Size(130,130),paint);
+
+  paint.strokeWidth = sWidth;
+  paint.style=PaintingStyle.stroke;
+  paint.color =Colors.black;
+  canvas.drawRect(Offset(133,133)&Size(130,130),paint);
+
+  paint.color = color6;
+
+  paint.style=PaintingStyle.fill;
+  canvas.drawRect(Offset(263,133)&Size(130,130),paint);
+
+  paint.strokeWidth = sWidth;
+  paint.style=PaintingStyle.stroke;
+  paint.color =Colors.black;
+  canvas.drawRect(Offset(263,133)&Size(130,130),paint);
+
+
+
+  final picture = recorder.endRecording();
+  UI.Image img = await picture.toImage(396, 266);
+  final abc =await img.toByteData(format:UI.ImageByteFormat.png);
+  if(abc!=null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
+      {
+    await saveImage(name,abc,directory);
+  }
+}
+
+
+Future<void> drawmtlpng2(
+    String name,
+    int image1,
+    int rotate1,
+    int image2,
+    int rotate2,
+    int image3,
+    int rotate3,
+    int image4,
+    int rotate4,
+    int image5,
+    int rotate5,
+    int image6,
+    int rotate6,
+    String directory) async {
+  var recorder = new UI.PictureRecorder();
+  final canvas = new Canvas(recorder,
+      new Rect.fromPoints(new Offset(0.0, 0.0), new Offset(390.0, 260.0)));
+
+  var paint = Paint();
+  paint.strokeWidth = 2;
+
+  var sWidth=5.0;
+
+
+
+  canvas.save();
+  rotate(canvas, 66.5, 66.5, rotate1 * pi / 180);
+  canvas.drawRect(Offset(3, 3) & Size(130, 130), paint);
+  canvas.drawImage(imglist[image1], new Offset(3, 3), paint);
+  canvas.restore();
+
+
+  paint.strokeWidth = sWidth;
+  paint.style=PaintingStyle.stroke;
+  paint.color =Colors.black;
+  canvas.drawRect(Offset(3,3)&Size(130,130),paint);
+
+
+
+
+
+
+  canvas.save();
+  rotate(canvas, 196.5, 66.5, rotate2 * pi / 180);
+  canvas.drawRect(Offset(133, 3) & Size(130, 130), paint);
+  canvas.drawImage(imglist[image2], new Offset(133, 3), paint);
+  canvas.restore();
+
+
+
+  paint.strokeWidth = sWidth;
+  paint.style=PaintingStyle.stroke;
+  paint.color =Colors.black;
+  canvas.drawRect(Offset(133,3)&Size(130,130),paint);
+
+
+
+
+  canvas.save();
+  rotate(canvas, 326.5, 66.5, rotate3 * pi / 180);
+  canvas.drawRect(Offset(263, 3) & Size(130, 130), paint);
+  canvas.drawImage(imglist[image3], new Offset(263, 3), paint);
+  canvas.restore();
+
+
+  paint.strokeWidth = sWidth;
+  paint.style=PaintingStyle.stroke;
+  paint.color =Colors.black;
+
+  canvas.drawRect(Offset(263,3)&Size(130,130),paint);
+
+
+  canvas.save();
+  rotate(canvas, 66.5, 196.5, rotate4 * pi / 180);
+  canvas.drawRect(Offset(3, 133) & Size(130, 130), paint);
+  canvas.drawImage(imglist[image4], new Offset(3, 133), paint);
+  canvas.restore();
+
+
+
+  paint.strokeWidth = sWidth;
+  paint.style=PaintingStyle.stroke;
+  paint.color =Colors.black;
+  canvas.drawRect(Offset(3,133)&Size(130,130),paint);
+
+
+
+
+  canvas.save();
+  rotate(canvas, 196.5, 196.5, rotate5 * pi / 180);
+  canvas.drawRect(Offset(133, 133) & Size(130, 130), paint);
+  canvas.drawImage(imglist[image5], new Offset(133, 133), paint);
+  canvas.restore();
+
+  paint.strokeWidth = sWidth;
+  paint.style=PaintingStyle.stroke;
+  paint.color =Colors.black;
+  canvas.drawRect(Offset(133,133)&Size(130,130),paint);
+
+
+
+  canvas.save();
+  rotate(canvas, 326.5, 196.5, rotate6 * pi / 180);
+  canvas.drawRect(Offset(263, 133) & Size(130, 130), paint);
+  canvas.drawImage(imglist[image6], new Offset(263, 133), paint);
+  canvas.restore();
+
+
+  paint.strokeWidth = sWidth;
+  paint.style=PaintingStyle.stroke;
+  paint.color =Colors.black;
+  canvas.drawRect(Offset(263,133)&Size(130,130),paint);
+
+
+
+
+
+  final picture = recorder.endRecording();
+  UI.Image img = await picture.toImage(396, 266);
+  final abc = await img.toByteData(format: UI.ImageByteFormat.png);
+  if (abc != null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
+      {
+    await saveImage(name, abc, directory);
+  }
+}

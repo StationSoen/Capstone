@@ -66,7 +66,7 @@ Future<List<Problem>> makecubeproblem(
                 (temp.suggestion[j][1][2] + 2) * -90,
                 directory);
           }
-          await drawmtlpng(
+          await drawmtlpng2(
               'mtl' + i.toString(),
               temp.answer[1][2][1],
               90,
@@ -129,7 +129,7 @@ Future<List<Problem>> makecubeproblem(
                 directory);
           }
 
-          await drawmtlpng(
+          await drawmtlpng2(
               'mtl' + i.toString(),
               temp.answer[1][2][1],
               90,
@@ -181,7 +181,7 @@ Future<List<Problem>> makecubeproblem(
                 colorlist[temp.suggestion[j][0][2]],
                 directory);
           }
-          await drawcolormtlpng(
+          await drawcolormtlpng2(
               'mtl' + i.toString(),
               colorlist[temp.answer[1][2][1]],
               colorlist[temp.answer[1][2][2]],
@@ -228,7 +228,7 @@ Future<List<Problem>> makecubeproblem(
                 directory);
           }
 
-          await drawcolormtlpng(
+          await drawcolormtlpng2(
               'mtl' + i.toString(),
               colorlist[temp.answer[1][2][1]],
               colorlist[temp.answer[1][2][2]],
