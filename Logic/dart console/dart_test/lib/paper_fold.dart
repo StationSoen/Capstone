@@ -402,13 +402,13 @@ class Paper {
           foldcolors.insert(0, 1 - color);
         } else {
           stay.add(result[0]);
-          staycolors.add(colors);
+          staycolors.add(color);
         }
       }
       if (result[1].length > 0) {
         if (select) {
           stay.add(result[1]);
-          staycolors.add(colors);
+          staycolors.add(color);
         } else {
           fold.insert(0, result[1]);
           foldcolors.insert(0, 1 - color);

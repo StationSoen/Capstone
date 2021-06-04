@@ -14,7 +14,7 @@ void main(List<String> arguments) {
   // print(a);
   // print(b[0]);
 
-  var sb = StackBlocks(level: 1);
+  var sb = PaperFold(0);
   print('-----');
   print(sb);
 }
