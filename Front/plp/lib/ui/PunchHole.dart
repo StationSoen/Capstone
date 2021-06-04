@@ -34,7 +34,7 @@ class _PunchHoleState extends State<PunchHole> {
     }
   }
 
-  bool isVisible = false;
+  bool isVisible = true;
 
   Widget notes(bool isVisible) {
     if (isVisible) {

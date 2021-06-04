@@ -65,29 +65,6 @@ class Block3D extends StatefulWidget {
 }
 
 class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
-  late Scene _scene;
-  Object? _cube;
-  late AnimationController _controller;
-
-  void _onSceneCreated(Scene scene) {
-    debugPrint("큐브 시작");
-    _scene = scene;
-    scene.camera.position.x = 5.56;
-    scene.camera.position.z = 7.73;
-    scene.camera.position.y = 5.64;
-
-    debugPrint(this.widget.exam.directory);
-
-    create_blocks(
-        this.widget.exam.problemList[this.widget.index].problemData[1], scene);
-
-    //_cube = Object(scale: Vector3(30.0, 30.0, 30.0), backfaceCulling: false, fileName: 'assets/cube/cube.obj', isAsset: true);
-
-    debugPrint("큐브 끝");
-    scene.world.add(_cube!);
-    debugPrint("큐브 추가");
-  }
-
   bool isLoadComplete = false;
   @override
   void initState() {
@@ -97,22 +74,10 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
         isLoadComplete = true;
       });
     });
-
-    _controller = AnimationController(
-        duration: Duration(milliseconds: 30000), vsync: this)
-      ..addListener(() {
-        if (_cube != null) {
-          // _cube!.rotation.y = _controller.value * 360;
-          _cube!.updateTransform();
-          _scene.updateTexture();
-        }
-      })
-      ..repeat();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -239,6 +204,8 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
     }
   }
 
+  bool isVisible = true;
+
   @override
   Widget build(BuildContext context) {
     debugPrint("World!");
@@ -247,49 +214,104 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
     } else {
       return Scaffold(
         appBar: CupertinoNavigationBar(
+          trailing: CupertinoButton(
+            padding: EdgeInsets.all(0),
+            onPressed: () {
+              setState(() {
+                isVisible = !isVisible;
+              });
+            },
+            child: Icon(
+              CupertinoIcons.sparkles,
+              size: 26,
+              color: Colors.red,
+            ),
+          ),
           middle: Text(
               "오답노트 : ${(this.widget.index + 1).toString().padLeft(2, '0')}번 문제"),
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
-            physics: scrollLock(),
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      if (isScrollLock) {
-                        isScrollLock = false;
-                        locked = "잠금 해제됨";
-                      } else {
-                        isScrollLock = true;
-                        locked = "잠금 설정됨";
-                      }
-                    });
+          child: Column(
+            children: [
+              NoteBlock3D(
+                  index: this.widget.index,
+                  exam: this.widget.exam,
+                  isVisible: isVisible),
+              Divider(),
+              // problem Card
+              problemPage(
+                  this.widget.exam.problemList[this.widget.index].difficulty)
+            ],
+          ),
+        ),
+      );
+    }
+  }
+}
 
-                    debugPrint(isScrollLock.toString());
-                  },
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    color: Colors.grey,
-                    child: Container(
-                      width: double.infinity,
-                      height: 300,
-                      child: Cube(
-                        onSceneCreated: _onSceneCreated,
-                      ),
-                    ),
-                  ),
-                ),
-                Divider(),
-                // problem Card
-                problemPage(
-                    this.widget.exam.problemList[this.widget.index].difficulty)
-              ],
+class NoteBlock3D extends StatefulWidget {
+  bool isVisible;
+  Exam exam;
+  int index;
+
+  NoteBlock3D(
+      {required this.index, required this.exam, required this.isVisible});
+
+  @override
+  _NoteBlock3DState createState() => _NoteBlock3DState();
+}
+
+class _NoteBlock3DState extends State<NoteBlock3D>
+    with SingleTickerProviderStateMixin {
+  late Scene _scene;
+  Object? _cube;
+
+  void _onSceneCreated(Scene scene) {
+    debugPrint("큐브 시작");
+    _scene = scene;
+    scene.camera.position.x = 5.56;
+    scene.camera.position.z = 7.73;
+    scene.camera.position.y = 5.64;
+
+    debugPrint(this.widget.exam.directory);
+
+    create_blocks(
+        this.widget.exam.problemList[this.widget.index].problemData[1], scene);
+
+    //_cube = Object(scale: Vector3(30.0, 30.0, 30.0), backfaceCulling: false, fileName: 'assets/cube/cube.obj', isAsset: true);
+
+    debugPrint("큐브 끝");
+  }
+
+  late int a;
+  @override
+  void initState() {
+    a = 0;
+    print("+++++++++++++" + a.toString());
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (this.widget.isVisible) {
+      return Expanded(
+        flex: 2,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10),
+          color: Colors.grey,
+          child: Container(
+            width: double.infinity,
+            child: Cube(
+              onSceneCreated: _onSceneCreated,
             ),
           ),
         ),
       );
+    } else {
+      a = a - 1;
+      print("=============" + a.toString());
+      return Container();
     }
   }
 }

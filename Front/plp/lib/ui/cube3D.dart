@@ -108,7 +108,7 @@ class _Cube3DState extends State<Cube3D> {
           body: SafeArea(
             child: Column(
               children: [
-                Note(
+                NoteCube3D(
                   exam: this.widget.exam,
                   index: this.widget.index,
                   isViisible: isVisible,
@@ -293,18 +293,20 @@ class _Cube3DState extends State<Cube3D> {
   }
 }
 
-class Note extends StatefulWidget {
+class NoteCube3D extends StatefulWidget {
   bool isViisible;
   Exam exam;
   int index;
 
-  Note({required this.index, required this.exam, required this.isViisible});
+  NoteCube3D(
+      {required this.index, required this.exam, required this.isViisible});
 
   @override
-  _NoteState createState() => _NoteState();
+  _NoteCube3DState createState() => _NoteCube3DState();
 }
 
-class _NoteState extends State<Note> with SingleTickerProviderStateMixin {
+class _NoteCube3DState extends State<NoteCube3D>
+    with SingleTickerProviderStateMixin {
   late Scene _scene;
   Object? _cube;
   late AnimationController _controller;
