@@ -300,6 +300,7 @@ class PaperFold {
 /// 하나의 이미지로 보여지는 접힌 종이
 class Paper {
   var layers = []; // 0이 맨 위 레이어
+  var colors = [];
   var layerCount = 0;
 
   bool inRange() {
@@ -389,29 +390,38 @@ class Paper {
   void foldPaper(List line, bool select, bool direction) {
     var fold = [];
     var stay = [];
+    var foldcolors = [];
+    var staycolors = [];
 
     for (var i = 0; i < layerCount; i++) {
       var result = foldLayer(layers[i], line, select);
+      var color = colors[i];
       if (result[0].length > 0) {
         if (select) {
           fold.insert(0, result[0]);
+          foldcolors.insert(0, 1 - color);
         } else {
           stay.add(result[0]);
+          staycolors.add(colors);
         }
       }
       if (result[1].length > 0) {
         if (select) {
           stay.add(result[1]);
+          staycolors.add(colors);
         } else {
           fold.insert(0, result[1]);
+          foldcolors.insert(0, 1 - color);
         }
       }
     }
 
     if (direction) {
       layers = stay + fold;
+      colors = staycolors + foldcolors;
     } else {
       layers = fold + stay;
+      colors = foldcolors + staycolors;
     }
 
     layerCount = layers.length;
@@ -522,6 +532,7 @@ class Paper {
     var p = Paper();
     p.layerCount = layerCount;
     p.layers = json.decode(json.encode(layers));
+    p.colors = json.decode(json.encode(colors));
     return p;
   }
 
@@ -533,6 +544,7 @@ class Paper {
       [100.0, 100.0],
       [0.0, 100.0]
     ]);
+    colors.add(0);
   }
 
   @override

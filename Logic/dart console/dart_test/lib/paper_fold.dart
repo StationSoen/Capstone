@@ -300,6 +300,7 @@ class PaperFold {
 /// 하나의 이미지로 보여지는 접힌 종이
 class Paper {
   var layers = []; // 0이 맨 위 레이어
+  var colors = [];
   var layerCount = 0;
 
   bool inRange() {
@@ -317,7 +318,7 @@ class Paper {
   /// point가 접힌 종이 안에 있는지 체크
   bool isIn(List point) {
     var n = layerCount;
-    var right;
+    var left, right;
 
     var px = point[0];
     var py = point[1];
@@ -325,6 +326,7 @@ class Paper {
     for (var i = 0; i < n; i++) {
       var layer = layers[i];
       int p = layer.length;
+      left = 0;
       right = 0;
       for (var j = 0; j < p; j++) {
         var u = layer[(j - 1) % p][0];
@@ -336,18 +338,24 @@ class Paper {
         if (px == u && py == v) return true;
         if (px == x && py == y) return true;
 
-        if ((py < v) != (py < y)) {
-          var scale = (u - x) / (v - y);
-          var newX = scale * (py - y) + x;
-
+        if ((v <= y && py <= y && py >= v) || (v >= y && py >= y && py <= v)) {
+          var newX;
+          if (v == y) {
+            newX = (x + u / 2);
+          } else {
+            var scale = (u - x) / (v - y);
+            newX = scale * (py - y) + x;
+          }
           if (newX > px) {
             right++;
-          } else if (newX == px) {
+          } else if (newX < px) {
+            left++;
+          } else {
             return true;
           }
         }
       }
-      if (right % 2 > 0) return true;
+      if ((left % 2 > 0) || (right % 2 > 0)) return true;
     }
     return false;
   }
@@ -382,29 +390,38 @@ class Paper {
   void foldPaper(List line, bool select, bool direction) {
     var fold = [];
     var stay = [];
+    var foldcolors = [];
+    var staycolors = [];
 
     for (var i = 0; i < layerCount; i++) {
       var result = foldLayer(layers[i], line, select);
+      var color = colors[i];
       if (result[0].length > 0) {
         if (select) {
           fold.insert(0, result[0]);
+          foldcolors.insert(0, 1 - color);
         } else {
           stay.add(result[0]);
+          staycolors.add(colors);
         }
       }
       if (result[1].length > 0) {
         if (select) {
           stay.add(result[1]);
+          staycolors.add(colors);
         } else {
           fold.insert(0, result[1]);
+          foldcolors.insert(0, 1 - color);
         }
       }
     }
 
     if (direction) {
       layers = stay + fold;
+      colors = staycolors + foldcolors;
     } else {
       layers = fold + stay;
+      colors = foldcolors + staycolors;
     }
 
     layerCount = layers.length;
@@ -515,6 +532,7 @@ class Paper {
     var p = Paper();
     p.layerCount = layerCount;
     p.layers = json.decode(json.encode(layers));
+    p.colors = json.decode(json.encode(colors));
     return p;
   }
 
@@ -526,6 +544,7 @@ class Paper {
       [100.0, 100.0],
       [0.0, 100.0]
     ]);
+    colors.add(0);
   }
 
   @override
