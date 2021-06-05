@@ -90,18 +90,16 @@ class _Cube3DState extends State<Cube3D> {
       return Scaffold(
           appBar: CupertinoNavigationBar(
             trailing: CupertinoButton(
-              padding: EdgeInsets.all(0),
-              onPressed: () {
-                setState(() {
-                  isVisible = !isVisible;
-                });
-              },
-              child: Icon(
-                CupertinoIcons.sparkles,
-                size: 26,
-                color: Colors.red,
-              ),
-            ),
+                padding: EdgeInsets.all(0),
+                onPressed: () {
+                  setState(() {
+                    isVisible = !isVisible;
+                  });
+                },
+                child: Text(
+                  "오답노트",
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                )),
             middle: Text(
                 "오답노트 : ${(this.widget.index + 1).toString().padLeft(2, '0')}번 문제"),
           ),
@@ -309,7 +307,6 @@ class _NoteCube3DState extends State<NoteCube3D>
     with SingleTickerProviderStateMixin {
   late Scene _scene;
   Object? _cube;
-  late AnimationController _controller;
 
   void _onSceneCreated(Scene scene) {
     debugPrint("큐브 시작");
@@ -333,22 +330,6 @@ class _NoteCube3DState extends State<NoteCube3D>
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    _controller = AnimationController(
-        duration: Duration(milliseconds: 30000), vsync: this)
-      ..addListener(() {
-        if (_cube != null) {
-          // _cube!.rotation.y = _controller.value * 360;
-          _cube!.updateTransform();
-          _scene.updateTexture();
-        }
-      })
-      ..repeat();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     if (this.widget.isViisible) {
       return Expanded(
@@ -365,7 +346,6 @@ class _NoteCube3DState extends State<NoteCube3D>
         ),
       );
     } else {
-      _controller.dispose();
       return Container();
     }
   }
