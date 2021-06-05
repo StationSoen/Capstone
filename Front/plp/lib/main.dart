@@ -82,7 +82,7 @@ void main() async {
 
   if (settingHive.get('color') == null) {
     print("color is empty!, init");
-    settingHive.put('color', '#FFFBE9E7');
+    settingHive.put('color', 4294699495);
   }
 
   debugPrint("Paused Exam List : " + completeExamList.toString());

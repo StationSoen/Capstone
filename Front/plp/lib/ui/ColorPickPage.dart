@@ -39,15 +39,15 @@ class _ColorPickPageState extends State<ColorPickPage> {
                 enableLabel: true,
               ),
               CircleButton(
-                color: currentColor,
+                color: Color(currentColor.value),
                 textColor: useWhiteForeground(currentColor)
                     ? Colors.white
                     : Colors.black,
                 text: "확인",
                 onPressed: () {
-                  print('#${currentColor.value.toRadixString(16)}');
-                  setting.put(
-                      'color', '#${currentColor.value.toRadixString(16)}');
+                  print('${currentColor.value}');
+                  print(Colors.deepOrange[50]!.value.toString());
+                  setting.put('color', currentColor.value);
                 },
               ),
               SizedBox(
