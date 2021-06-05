@@ -80,6 +80,11 @@ void main() async {
     levelTestHive.put('level', [0, 0, 0, 0]);
   }
 
+  if (settingHive.get('color') == null) {
+    print("color is empty!, init");
+    settingHive.put('color', 4294699495);
+  }
+
   debugPrint("Paused Exam List : " + completeExamList.toString());
 
   // initialize Hive Value ...

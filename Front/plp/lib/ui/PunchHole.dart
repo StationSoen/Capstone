@@ -41,7 +41,20 @@ class _PunchHoleState extends State<PunchHole> {
       return Expanded(
         flex: 1,
         child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(26),
+                  bottomRight: Radius.circular(26)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.17),
+                  offset: Offset(0.0, 3.0), //(x,y)
+                  blurRadius: 6.0,
+                ),
+              ],
+            ),
             width: double.infinity,
             child: Column(
               children: [

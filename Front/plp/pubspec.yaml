@@ -31,6 +31,7 @@ dependencies:
   hive_flutter: ^1.0.0
   url_launcher: ^6.0.3
   cupertino_progress_bar: ^0.2.0
+  flutter_colorpicker: ^0.4.0
   flutter_swiper_null_safety: 
     git:
       url: https://github.com/lianyagang/flutter_swiper_null_safety.git
@@ -80,6 +81,7 @@ flutter:
     - assets/shapes/
     - assets/fold/paperex.png
     - assets/block/
+    - assets/logo/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

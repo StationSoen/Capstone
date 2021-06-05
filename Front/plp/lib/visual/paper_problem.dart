@@ -20,7 +20,7 @@ Future<List<Problem>> makepaperproblem(
         problemType: 1,
         difficulty: temp.level,
         textType: temp.type));
-    // debugPrint(temp.example[0][1].toString());
+     //debugPrint(temp.example[0][0].colors[0].toString());
     // debugPrint(temp.example[0][1].layerCount.toString());
     // debugPrint(temp.example[0][1].layers.toString());
 
@@ -66,18 +66,44 @@ Future<List<Problem>> makepaperproblem(
             'back' + (i + counter).toString() + '_' + j.toString(),
             temp.example[0][j],
             temp.example[1][j],
+            temp.example[0][j].colors,
             true,
             false,
             directory);
+        await drawpaperpngfront(
+            'front' + (i + counter).toString() + '_' + j.toString(),
+            temp.example[0][j],
+            temp.example[1][j],
+            temp.example[0][j].colors,
+            true,
+            false,
+            directory);
+
+
       } else {
         await drawpaperpngback(
             'back' + (i + counter).toString() + '_' + j.toString(),
             temp.example[0][j],
             temp.example[1][j],
+            temp.example[0][j].colors,
+            false,
+            false,
+            directory);
+        await drawpaperpngfront(
+            'front' + (i + counter).toString() + '_' + j.toString(),
+            temp.example[0][j],
+            temp.example[1][j],
+            temp.example[0][j].colors,
             false,
             false,
             directory);
       }
+
+
+
+
+
+
     }
   }
   // debugPrint("문제번호는$i");
