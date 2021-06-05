@@ -48,6 +48,7 @@ class _ColorPickPageState extends State<ColorPickPage> {
                   print('${currentColor.value}');
                   print(Colors.deepOrange[50]!.value.toString());
                   setting.put('color', currentColor.value);
+                  Navigator.pop(context);
                 },
               ),
               SizedBox(
