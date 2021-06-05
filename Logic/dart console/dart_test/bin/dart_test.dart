@@ -14,7 +14,9 @@ void main(List<String> arguments) {
   // print(a);
   // print(b[0]);
 
-  var sb = PaperFold(level: 0, seed: 688009765);
-  print('-----');
-  print(sb);
+  var list = [1, 2, 4, 5];
+  print(list.removeAt(0));
+  // var sb = PaperFold(level: 0, seed: 688009765);
+  // print('-----');
+  // print(sb);
 }

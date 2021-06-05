@@ -89,6 +89,11 @@ class PaperFold {
       } while (except.contains(linetype) ||
           (except.isNotEmpty && except.last % range == linetype % range));
 
+      if (except.isEmpty) {
+        linetype %= range;
+        linetype += range;
+      }
+
       var standard = (linetype / range).toInt();
       var modtype = linetype % range;
 
@@ -167,7 +172,7 @@ class PaperFold {
   /// * example[1] : [[선, 방향]...]
   /// * suggsetion : [종이 ...]
   /// * answer     : [정답번호]
-  PaperFold(this.level, [this.type, this.seed]) {
+  PaperFold({required this.level, this.type, this.seed}) {
     seed ??= seedRng.nextInt(2147483647);
     rng = Random(seed);
 
@@ -239,8 +244,8 @@ class PaperFold {
 
       //오답 2
       Paper s2 = p.clone();
-      s2.layers.insert(0, s2.layers.removeLast());
-      s2.layers.insert(0, s2.layers.removeLast());
+      s2.layers.add(s2.layers.removeAt(0));
+      s2.layers.add(s2.layers.removeAt(0));
       suggestion[order[2]] = s2;
 
       //오답 3
