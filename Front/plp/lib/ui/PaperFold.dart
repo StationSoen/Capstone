@@ -162,18 +162,16 @@ class _PaperFoldState extends State<PaperFold> {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         trailing: CupertinoButton(
-          padding: EdgeInsets.all(0),
-          onPressed: () {
-            setState(() {
-              isVisible = !isVisible;
-            });
-          },
-          child: Icon(
-            CupertinoIcons.sparkles,
-            size: 26,
-            color: Colors.red,
-          ),
-        ),
+            padding: EdgeInsets.all(0),
+            onPressed: () {
+              setState(() {
+                isVisible = !isVisible;
+              });
+            },
+            child: Text(
+              "오답노트",
+              style: TextStyle(fontWeight: FontWeight.w600),
+            )),
         middle: Text(
             "오답노트 : ${(this.widget.index + 1).toString().padLeft(2, '0')}번 문제"),
       ),

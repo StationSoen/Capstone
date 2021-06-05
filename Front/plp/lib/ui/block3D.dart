@@ -91,10 +91,7 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
   }
 
   List<String> problemText = [
-    "주어진 전개도를 보고, 일치하는 입체도형을 고르시오.",
-    "주어진 전개도를 보고, 일치하지 않는 입체도형을 고르시오.",
-    "주어진 도형을 보고, 알맞은 전개도를 고르시오.",
-    "주어진 도형을 보고, 알맞지 않은 전개도를 고르시오."
+    "다음의 도형을 완성하기 위해, 추가로 필요한 블럭으로 알맞은 것을 고르시오.",
   ];
 
   Color checkWrongSelect(
@@ -215,18 +212,16 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
       return Scaffold(
         appBar: CupertinoNavigationBar(
           trailing: CupertinoButton(
-            padding: EdgeInsets.all(0),
-            onPressed: () {
-              setState(() {
-                isVisible = !isVisible;
-              });
-            },
-            child: Icon(
-              CupertinoIcons.sparkles,
-              size: 26,
-              color: Colors.red,
-            ),
-          ),
+              padding: EdgeInsets.all(0),
+              onPressed: () {
+                setState(() {
+                  isVisible = !isVisible;
+                });
+              },
+              child: Text(
+                "오답노트",
+                style: TextStyle(fontWeight: FontWeight.w600),
+              )),
           middle: Text(
               "오답노트 : ${(this.widget.index + 1).toString().padLeft(2, '0')}번 문제"),
         ),
@@ -237,10 +232,157 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
                   index: this.widget.index,
                   exam: this.widget.exam,
                   isVisible: isVisible),
-              Divider(),
-              // problem Card
-              problemPage(
-                  this.widget.exam.problemList[this.widget.index].difficulty)
+              Expanded(
+                flex: 3,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            width: double.infinity,
+                            child: Text(
+                              "#${this.widget.index + 1}\n${problemText[this.widget.exam.problemList[this.widget.index].textType]}",
+                              style: TextStyle(fontSize: 16),
+                            )),
+                        // problem Card
+                        problemPage(this
+                            .widget
+                            .exam
+                            .problemList[this.widget.index]
+                            .difficulty),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CupertinoButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () {},
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 2,
+                                    color: checkWrongSelect(
+                                        problemList:
+                                            this.widget.exam.problemList,
+                                        userAnswerList:
+                                            this.widget.exam.userAnswer,
+                                        index: this.widget.index,
+                                        select: 0),
+                                  ),
+                                ),
+                                height: this.widget.answerSize,
+                                width: this.widget.answerSize,
+                                child: Image.file(
+                                  File(this.widget.exam.directory +
+                                      "/example" +
+                                      (this.widget.index + 1).toString() +
+                                      "_" +
+                                      "0" +
+                                      ".png"),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                            CupertinoButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () {},
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 2,
+                                    color: checkWrongSelect(
+                                        problemList:
+                                            this.widget.exam.problemList,
+                                        userAnswerList:
+                                            this.widget.exam.userAnswer,
+                                        index: this.widget.index,
+                                        select: 1),
+                                  ),
+                                ),
+                                height: this.widget.answerSize,
+                                width: this.widget.answerSize,
+                                child: Image.file(
+                                  File(this.widget.exam.directory +
+                                      "/example" +
+                                      (this.widget.index + 1).toString() +
+                                      "_" +
+                                      "1" +
+                                      ".png"),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CupertinoButton(
+                                padding: EdgeInsets.all(0),
+                                onPressed: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 2,
+                                      color: checkWrongSelect(
+                                          problemList:
+                                              this.widget.exam.problemList,
+                                          userAnswerList:
+                                              this.widget.exam.userAnswer,
+                                          index: this.widget.index,
+                                          select: 2),
+                                    ),
+                                  ),
+                                  height: this.widget.answerSize,
+                                  width: this.widget.answerSize,
+                                  child: Image.file(
+                                    File(this.widget.exam.directory +
+                                        "/example" +
+                                        (this.widget.index + 1).toString() +
+                                        "_" +
+                                        "2" +
+                                        ".png"),
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                              CupertinoButton(
+                                padding: EdgeInsets.all(0),
+                                onPressed: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 2,
+                                      color: checkWrongSelect(
+                                          problemList:
+                                              this.widget.exam.problemList,
+                                          userAnswerList:
+                                              this.widget.exam.userAnswer,
+                                          index: this.widget.index,
+                                          select: 3),
+                                    ),
+                                  ),
+                                  height: this.widget.answerSize,
+                                  width: this.widget.answerSize,
+                                  child: Image.file(
+                                    File(this.widget.exam.directory +
+                                        "/example" +
+                                        (this.widget.index + 1).toString() +
+                                        "_" +
+                                        "3" +
+                                        ".png"),
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              )
+                            ])
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -266,12 +408,33 @@ class _NoteBlock3DState extends State<NoteBlock3D>
   late Scene _scene;
   Object? _cube;
 
-  void _onSceneCreated(Scene scene) {
+  double camera_x = 5.56;
+  double camera_y = 7.73;
+  double camera_z = 5.64;
+
+  void _onSceneCreated0(Scene scene) {
     debugPrint("큐브 시작");
     _scene = scene;
-    scene.camera.position.x = 5.56;
-    scene.camera.position.z = 7.73;
-    scene.camera.position.y = 5.64;
+    scene.camera.position.x = camera_x;
+    scene.camera.position.z = camera_y;
+    scene.camera.position.y = camera_z;
+
+    debugPrint(this.widget.exam.directory);
+
+    create_blocks(
+        this.widget.exam.problemList[this.widget.index].problemData[0], scene);
+
+    //_cube = Object(scale: Vector3(30.0, 30.0, 30.0), backfaceCulling: false, fileName: 'assets/cube/cube.obj', isAsset: true);
+
+    debugPrint("큐브 끝");
+  }
+
+  void _onSceneCreated1(Scene scene) {
+    debugPrint("큐브 시작");
+    _scene = scene;
+    scene.camera.position.x = camera_x;
+    scene.camera.position.z = camera_y;
+    scene.camera.position.y = camera_z;
 
     debugPrint(this.widget.exam.directory);
 
@@ -283,14 +446,73 @@ class _NoteBlock3DState extends State<NoteBlock3D>
     debugPrint("큐브 끝");
   }
 
-  late int a;
-  @override
-  void initState() {
-    a = 0;
-    print("+++++++++++++" + a.toString());
+  void _onSceneCreated2(Scene scene) {
+    debugPrint("큐브 시작");
+    _scene = scene;
+    scene.camera.position.x = camera_x;
+    scene.camera.position.z = camera_y;
+    scene.camera.position.y = camera_z;
 
-    super.initState();
+    debugPrint(this.widget.exam.directory);
+
+    create_blocks(
+        this.widget.exam.problemList[this.widget.index].problemData[2], scene);
+
+    //_cube = Object(scale: Vector3(30.0, 30.0, 30.0), backfaceCulling: false, fileName: 'assets/cube/cube.obj', isAsset: true);
+
+    debugPrint("큐브 끝");
   }
+
+  void _onSceneCreated3(Scene scene) {
+    debugPrint("큐브 시작");
+    _scene = scene;
+    scene.camera.position.x = camera_x;
+    scene.camera.position.z = camera_y;
+    scene.camera.position.y = camera_z;
+
+    debugPrint(this.widget.exam.directory);
+
+    create_blocks(
+        this.widget.exam.problemList[this.widget.index].problemData[3], scene);
+
+    //_cube = Object(scale: Vector3(30.0, 30.0, 30.0), backfaceCulling: false, fileName: 'assets/cube/cube.obj', isAsset: true);
+
+    debugPrint("큐브 끝");
+  }
+
+  SceneCreatedCallback returnBlock(int i) {
+    if (i == 0) {
+      return _onSceneCreated0;
+    } else if (i == 1) {
+      return _onSceneCreated1;
+    } else if (i == 2) {
+      return _onSceneCreated2;
+    } else if (i == 3) {
+      return _onSceneCreated3;
+    } else {
+      return _onSceneCreated0;
+    }
+  }
+
+  List<Widget> noteButton(int number) {
+    List<Widget> result = [];
+    for (int i = 0; i < number; i++) {
+      result.add(Expanded(
+        child: CupertinoButton(
+          padding: EdgeInsets.all(0),
+          child: Container(child: Text((i + 1).toString())),
+          onPressed: () {
+            blockIndex = i;
+            setState(() {});
+          },
+        ),
+      ));
+    }
+
+    return result;
+  }
+
+  int blockIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -298,19 +520,34 @@ class _NoteBlock3DState extends State<NoteBlock3D>
       return Expanded(
         flex: 2,
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          color: Colors.grey,
-          child: Container(
-            width: double.infinity,
-            child: Cube(
-              onSceneCreated: _onSceneCreated,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 10,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  color: Colors.grey,
+                  child: Container(
+                    child: Cube(
+                      onSceneCreated: returnBlock(blockIndex),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: noteButton(4)),
+                ),
+              )
+            ],
           ),
         ),
       );
     } else {
-      a = a - 1;
-      print("=============" + a.toString());
       return Container();
     }
   }
