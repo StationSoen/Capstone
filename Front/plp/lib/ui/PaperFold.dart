@@ -41,9 +41,22 @@ class _PaperFoldState extends State<PaperFold> {
   Widget notes(bool isVisible) {
     if (isVisible) {
       return Expanded(
-        flex: 2,
+        flex: 3,
         child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(26),
+                  bottomRight: Radius.circular(26)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.17),
+                  offset: Offset(0.0, 3.0), //(x,y)
+                  blurRadius: 6.0,
+                ),
+              ],
+            ),
             width: double.infinity,
             child: Column(
               children: [
@@ -181,7 +194,7 @@ class _PaperFoldState extends State<PaperFold> {
             notes(isVisible),
             // problem Card
             Expanded(
-              flex: 3,
+              flex: 4,
               child: SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),

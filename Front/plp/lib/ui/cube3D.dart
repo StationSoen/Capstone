@@ -335,12 +335,27 @@ class _NoteCube3DState extends State<NoteCube3D>
       return Expanded(
         flex: 2,
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          color: Colors.grey,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(26),
+                bottomRight: Radius.circular(26)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.17),
+                offset: Offset(0.0, 3.0), //(x,y)
+                blurRadius: 6.0,
+              ),
+            ],
+          ),
           child: Container(
-            width: double.infinity,
-            child: Cube(
-              onSceneCreated: _onSceneCreated,
+            margin: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+            color: Colors.grey,
+            child: Container(
+              width: double.infinity,
+              child: Cube(
+                onSceneCreated: _onSceneCreated,
+              ),
             ),
           ),
         ),

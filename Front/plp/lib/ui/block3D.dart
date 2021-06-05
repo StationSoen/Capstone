@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:plp/ui/component.dart';
 import 'package:plp/visual/load.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -69,6 +70,13 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
+    if (this.widget.exam.problemList[this.widget.index].difficulty == 0) {
+      blockNum = 3;
+    } else {
+      blockNum = 4;
+    }
+
     loadMinCode().then((value) {
       setState(() {
         isLoadComplete = true;
@@ -203,6 +211,160 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
 
   bool isVisible = true;
 
+  late int blockNum;
+
+  int blockIndex = 0;
+
+  List<String> blockButton = ["전체 블럭", '노란 블럭', "파란 블럭", "빨간 블럭"];
+
+  List<Widget> noteButton(int number) {
+    List<Widget> result = [];
+    for (int i = 0; i < number; i++) {
+      result.add(Expanded(
+        child: CupertinoButton(
+          padding: EdgeInsets.all(0),
+          child: Container(child: Text(blockButton[i])),
+          onPressed: () {
+            setState(() {
+              blockIndex = 0;
+              print("change blockIndex 0! $blockIndex");
+            });
+            setState(() {
+              blockIndex = i;
+              print("change blockIndex $blockIndex");
+            });
+          },
+        ),
+      ));
+    }
+
+    return result;
+  }
+
+  Widget blockSelect(int value, int index, Exam exam, bool isVisible) {
+    if (isVisible) {
+      if (value == 0) {
+        return Expanded(
+            flex: 2,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(26),
+                    bottomRight: Radius.circular(26)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.17),
+                    offset: Offset(0.0, 3.0), //(x,y)
+                    blurRadius: 6.0,
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  NoteBlock01(index: index, exam: exam),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: noteButton(blockNum),
+                  )
+                ],
+              ),
+            ));
+      } else if (value == 1) {
+        return Expanded(
+            flex: 2,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(26),
+                    bottomRight: Radius.circular(26)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.17),
+                    offset: Offset(0.0, 3.0), //(x,y)
+                    blurRadius: 6.0,
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  NoteBlock02(index: index, exam: exam),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: noteButton(blockNum),
+                  )
+                ],
+              ),
+            ));
+      } else if (value == 2) {
+        return Expanded(
+            flex: 2,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(26),
+                    bottomRight: Radius.circular(26)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.17),
+                    offset: Offset(0.0, 3.0), //(x,y)
+                    blurRadius: 6.0,
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  NoteBlock03(index: index, exam: exam),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: noteButton(blockNum),
+                  )
+                ],
+              ),
+            ));
+      } else {
+        return Expanded(
+            flex: 2,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(26),
+                    bottomRight: Radius.circular(26)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.17),
+                    offset: Offset(0.0, 3.0), //(x,y)
+                    blurRadius: 6.0,
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  NoteBlock04(index: index, exam: exam),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: noteButton(blockNum),
+                  )
+                ],
+              ),
+            ));
+      }
+    } else {
+      return Container();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     debugPrint("World!");
@@ -228,15 +390,13 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
         body: SafeArea(
           child: Column(
             children: [
-              NoteBlock3D(
-                  index: this.widget.index,
-                  exam: this.widget.exam,
-                  isVisible: isVisible),
+              blockSelect(
+                  blockIndex, this.widget.index, this.widget.exam, isVisible),
               Expanded(
                 flex: 3,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                  child: SingleChildScrollView(
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -244,7 +404,8 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
                             width: double.infinity,
                             child: Text(
                               "#${this.widget.index + 1}\n${problemText[this.widget.exam.problemList[this.widget.index].textType]}",
-                              style: TextStyle(fontSize: 16),
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w600),
                             )),
                         // problem Card
                         problemPage(this
@@ -391,28 +552,28 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
   }
 }
 
-class NoteBlock3D extends StatefulWidget {
-  bool isVisible;
+class NoteBlock01 extends StatefulWidget {
   Exam exam;
   int index;
 
-  NoteBlock3D(
-      {required this.index, required this.exam, required this.isVisible});
+  NoteBlock01({
+    required this.index,
+    required this.exam,
+  });
 
   @override
-  _NoteBlock3DState createState() => _NoteBlock3DState();
+  _NoteBlock01State createState() => _NoteBlock01State();
 }
 
-class _NoteBlock3DState extends State<NoteBlock3D>
-    with SingleTickerProviderStateMixin {
-  late Scene _scene;
-  Object? _cube;
-
+class _NoteBlock01State extends State<NoteBlock01> {
   double camera_x = 5.56;
   double camera_y = 7.73;
   double camera_z = 5.64;
 
-  void _onSceneCreated0(Scene scene) {
+  late Scene _scene;
+  Object? _cube;
+
+  void _onSceneCreated(Scene scene) {
     debugPrint("큐브 시작");
     _scene = scene;
     scene.camera.position.x = camera_x;
@@ -429,7 +590,50 @@ class _NoteBlock3DState extends State<NoteBlock3D>
     debugPrint("큐브 끝");
   }
 
-  void _onSceneCreated1(Scene scene) {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 10,
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                color: Colors.grey,
+                child: Container(
+                  child: Cube(onSceneCreated: _onSceneCreated),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class NoteBlock02 extends StatefulWidget {
+  Exam exam;
+  int index;
+
+  NoteBlock02({required this.index, required this.exam});
+
+  @override
+  _NoteBlock02State createState() => _NoteBlock02State();
+}
+
+class _NoteBlock02State extends State<NoteBlock02> {
+  double camera_x = 5.56;
+  double camera_y = 7.73;
+  double camera_z = 5.64;
+
+  late Scene _scene;
+  Object? _cube;
+
+  void _onSceneCreated(Scene scene) {
     debugPrint("큐브 시작");
     _scene = scene;
     scene.camera.position.x = camera_x;
@@ -446,7 +650,50 @@ class _NoteBlock3DState extends State<NoteBlock3D>
     debugPrint("큐브 끝");
   }
 
-  void _onSceneCreated2(Scene scene) {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 10,
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                color: Colors.grey,
+                child: Container(
+                  child: Cube(onSceneCreated: _onSceneCreated),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class NoteBlock03 extends StatefulWidget {
+  Exam exam;
+  int index;
+
+  NoteBlock03({required this.index, required this.exam});
+
+  @override
+  _NoteBlock03State createState() => _NoteBlock03State();
+}
+
+class _NoteBlock03State extends State<NoteBlock03> {
+  double camera_x = 5.56;
+  double camera_y = 7.73;
+  double camera_z = 5.64;
+
+  late Scene _scene;
+  Object? _cube;
+
+  void _onSceneCreated(Scene scene) {
     debugPrint("큐브 시작");
     _scene = scene;
     scene.camera.position.x = camera_x;
@@ -463,7 +710,50 @@ class _NoteBlock3DState extends State<NoteBlock3D>
     debugPrint("큐브 끝");
   }
 
-  void _onSceneCreated3(Scene scene) {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 10,
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                color: Colors.grey,
+                child: Container(
+                  child: Cube(onSceneCreated: _onSceneCreated),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class NoteBlock04 extends StatefulWidget {
+  Exam exam;
+  int index;
+
+  NoteBlock04({required this.index, required this.exam});
+
+  @override
+  _NoteBlock04State createState() => _NoteBlock04State();
+}
+
+class _NoteBlock04State extends State<NoteBlock04> {
+  double camera_x = 5.56;
+  double camera_y = 7.73;
+  double camera_z = 5.64;
+
+  late Scene _scene;
+  Object? _cube;
+
+  void _onSceneCreated(Scene scene) {
     debugPrint("큐브 시작");
     _scene = scene;
     scene.camera.position.x = camera_x;
@@ -480,75 +770,27 @@ class _NoteBlock3DState extends State<NoteBlock3D>
     debugPrint("큐브 끝");
   }
 
-  SceneCreatedCallback returnBlock(int i) {
-    if (i == 0) {
-      return _onSceneCreated0;
-    } else if (i == 1) {
-      return _onSceneCreated1;
-    } else if (i == 2) {
-      return _onSceneCreated2;
-    } else if (i == 3) {
-      return _onSceneCreated3;
-    } else {
-      return _onSceneCreated0;
-    }
-  }
-
-  List<Widget> noteButton(int number) {
-    List<Widget> result = [];
-    for (int i = 0; i < number; i++) {
-      result.add(Expanded(
-        child: CupertinoButton(
-          padding: EdgeInsets.all(0),
-          child: Container(child: Text((i + 1).toString())),
-          onPressed: () {
-            blockIndex = i;
-            setState(() {});
-          },
-        ),
-      ));
-    }
-
-    return result;
-  }
-
-  int blockIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-    if (this.widget.isVisible) {
-      return Expanded(
-        flex: 2,
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 10,
+    return Expanded(
+      flex: 2,
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 10,
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                color: Colors.grey,
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  color: Colors.grey,
-                  child: Container(
-                    child: Cube(
-                      onSceneCreated: returnBlock(blockIndex),
-                    ),
-                  ),
+                  child: Cube(onSceneCreated: _onSceneCreated),
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: noteButton(4)),
-                ),
-              )
-            ],
-          ),
+            ),
+          ],
         ),
-      );
-    } else {
-      return Container();
-    }
+      ),
+    );
   }
 }
