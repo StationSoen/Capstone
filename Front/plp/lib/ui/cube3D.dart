@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:plp/ui/LoadingPage.dart';
 import 'package:plp/visual/load.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,7 +86,7 @@ class _Cube3DState extends State<Cube3D> {
   Widget build(BuildContext context) {
     debugPrint("World!");
     if (isLoadComplete == false) {
-      return SplashScreen();
+      return LoadingScreen();
     } else {
       return Scaffold(
           appBar: CupertinoNavigationBar(

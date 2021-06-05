@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:plp/ui/LoadingPage.dart';
 import 'package:plp/ui/component.dart';
 import 'package:plp/visual/load.dart';
 import 'package:flutter/material.dart';
@@ -369,7 +370,7 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     debugPrint("World!");
     if (isLoadComplete == false) {
-      return SplashScreen();
+      return LoadingScreen();
     } else {
       return Scaffold(
         appBar: CupertinoNavigationBar(

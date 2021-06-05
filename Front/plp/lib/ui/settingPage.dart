@@ -1,3 +1,4 @@
+import 'package:plp/ui/ColorPickPage.dart';
 import 'package:plp/ui/randomProblemSettingPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -186,11 +187,15 @@ class _SettingPageState extends State<SettingPage> {
                       },
                     ),
                     SettingsTile(
-                      title: '남은 시간 알람',
+                      title: '종이접기, 펀칭 유형 색 선택',
                       subtitle: startSubtitle[int.parse(setting.get('start'))],
                       leading: Icon(CupertinoIcons.alarm),
                       onPressed: (BuildContext context) {
-                        // startActionsheet(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    ColorPickPage()));
                       },
                     ),
                   ],
@@ -208,7 +213,7 @@ class _SettingPageState extends State<SettingPage> {
                               MaterialPageRoute(
                                   builder: (BuildContext context) => AboutPage(
                                         appName: "점선면",
-                                        appVersion: "0.0.1",
+                                        appVersion: "0.1.0",
                                         developers:
                                             "손  민(miney272@github)\n유성현(stationsoen@github)\n이길상(oat641@github)",
                                         githubLink:
