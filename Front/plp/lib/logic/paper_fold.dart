@@ -81,8 +81,8 @@ class PaperFold {
 
     do {
       do {
-        linetype = rng.nextInt(3 * range);
-        if (linetype >= 2 * range) linetype -= range;
+        linetype = rng.nextInt(4 * range);
+        if (linetype >= 2 * range) linetype = linetype % range + range;
         if (except.isNotEmpty && except.last < range && linetype < range) {
           linetype += range;
         }
@@ -249,11 +249,11 @@ class PaperFold {
       suggestion[order[2]] = s2;
 
       //오답 3
-      Paper s3 = papers[0].clone();
-      s3.foldPaper(lines[0][2], lines[0][3], !lines[0][1]);
-      s3.foldPaper(lines[1][2], lines[1][3], !lines[1][1]);
-      s3.foldPaper(lines[2][2], lines[2][3], !lines[2][1]);
-      s3.foldPaper(lines[3][2], lines[3][3], !lines[3][1]);
+      Paper s3 = p.clone();
+      s3.layers.insert(0, s3.layers.removeLast());
+      s3.layers.insert(0, s3.layers.removeLast());
+      s3.layers.insert(0, s3.layers.removeLast());
+      s3.layers.insert(0, s3.layers.removeLast());
       suggestion[order[3]] = s3;
     } else if (type == 1) {
       // 오답
