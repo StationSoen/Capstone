@@ -188,7 +188,8 @@ class _SettingPageState extends State<SettingPage> {
                     ),
                     SettingsTile(
                       title: '종이접기, 펀칭 유형 색 선택',
-                      subtitle: startSubtitle[int.parse(setting.get('start'))],
+                      subtitle:
+                          "${setting.get('color').toRadixString(16).toUpperCase()}",
                       leading: Icon(CupertinoIcons.alarm),
                       onPressed: (BuildContext context) {
                         Navigator.push(
