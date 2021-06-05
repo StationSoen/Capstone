@@ -73,27 +73,34 @@ class PaperFold {
   }
 
   /// 무작위 linetype과 line을 반환
-  List setFoldLine(Paper paper, [int except = -1]) {
-    var line;
-    var linetype;
+  List setFoldLine(Paper paper, List except) {
+    var range = (level == 2) ? 5 : 4;
+    var line, linetype;
 
     do {
-      var standard = rng.nextInt(3);
       do {
-        linetype = rng.nextInt((level == 2) ? 5 : 4);
-      } while (linetype == except);
+        linetype = rng.nextInt(3 * range);
+        if (linetype >= 2 * range) linetype -= range;
+        if (except.isNotEmpty && except.last < range && linetype < range) {
+          linetype += range;
+        }
+      } while (except.contains(linetype) ||
+          (except.isNotEmpty && except.last % range == linetype % range));
+
+      var standard = (linetype / range).toInt();
+      var modtype = linetype % range;
 
       if (standard == 0) {
-        if (linetype == 0) {
+        if (modtype == 0) {
           //세로
           line = [1, 0, 50];
-        } else if (linetype == 1) {
+        } else if (modtype == 1) {
           //가로
           line = [0, 1, 50];
-        } else if (linetype == 2) {
+        } else if (modtype == 2) {
           // 대각선 /
           line = [1, 1, 100];
-        } else if (linetype == 3) {
+        } else if (modtype == 3) {
           // 대각선 \
           line = [1, -1, 0];
         } else {
@@ -107,20 +114,21 @@ class PaperFold {
           line = [a, b, c];
         }
       } else {
+        var center = paper.center();
+        var range = 50 - 10 * except.length;
         var x = rng.nextInt(61) + 20;
-        var y = rng.nextInt(61) + 20;
-        if (linetype == 0) {
+        if (modtype == 0) {
           //세로
           line = [1, 0, x];
-        } else if (linetype == 1) {
+        } else if (modtype == 1) {
           //가로
-          line = [0, 1, y];
-        } else if (linetype == 2) {
+          line = [0, 1, x];
+        } else if (modtype == 2) {
           // 대각선 /
-          line = [1, 1, x + y];
-        } else if (linetype == 3) {
+          line = [1, 1, (rng.nextInt(2) > 0) ? 100 - x : 100 + x];
+        } else if (modtype == 3) {
           // 대각선 \
-          line = [1, -1, x - y];
+          line = [1, -1, (rng.nextInt(2) > 0) ? x : -x];
         } else {
           var p1 = rng.nextInt(4);
           var p2 = rng.nextInt(2);
@@ -130,22 +138,34 @@ class PaperFold {
           if (p1 == 2) point1 = [100, 100];
           if (p1 == 3) point1 = [100, 0];
 
-          if (p2 == 0) point2 = [100 - point1[0], y];
+          if (p2 == 0) point2 = [100 - point1[0], x];
           if (p2 == 1) point2 = [x, 100 - point1[1]];
 
           line = Paper.pointToLine(point1: point1, point2: point2);
         }
       }
-    } while (!paper.isCrossed(line));
+    } while (!paper.isCrossed(line) ||
+        nearCenter(paper, line, 50 - 10 * except.length));
 
     return [linetype, line];
+  }
+
+  bool nearCenter(Paper p, List line, int value) {
+    var center = p.center();
+    var x = center[0], y = center[1];
+    var a = line[0], b = line[1], c = line[2];
+    var std = a * x + b * y - c;
+    if (std > value || std < -value)
+      return false;
+    else
+      return true;
   }
 
   /// * example[0] : [접힌 종이...]
   /// * example[1] : [[선, 방향]...]
   /// * suggsetion : [종이 ...]
   /// * answer     : [정답번호]
-  PaperFold(this.level, [this.type = -1, this.seed]) {
+  PaperFold({required this.level, this.type = -1, this.seed}) {
     seed ??= seedRng.nextInt(2147483647);
     rng = Random(seed);
 
@@ -162,16 +182,19 @@ class PaperFold {
     papers.add(Paper());
 
     // 선 초기화
-    var data = setFoldLine(papers[0]);
-    var linetype = data[0];
-    var line = data[1];
+    var except = [], data, linetype, line;
+    var select;
 
-    var select = rng.nextInt(2) > 0;
-    var direction = rng.nextInt(2) > 0;
+    data = setFoldLine(papers[0], except);
+    linetype = data[0];
+    line = data[1];
+    except.add(linetype);
+
+    select = rng.nextInt(2) > 0;
+    var direction = (level == 0) ? true : rng.nextInt(2) > 0;
     if ((line[0] * 50 + line[1] * 50 - line[2]) * (select ? 1 : -1) < 0) {
       select = !select;
     }
-
     lines.add([rangeEdge(line), direction, line, select]);
 
     for (var i = 0; i < 3; i++) {
@@ -181,30 +204,24 @@ class PaperFold {
       papers.add(nextPaper);
 
       // 선 정하기
-      data = setFoldLine(nextPaper, linetype);
+      data = setFoldLine(nextPaper, except);
       linetype = data[0];
       line = data[1];
+      except.add(linetype);
 
       select = rng.nextInt(2) > 0;
-      direction = rng.nextInt(2) > 0;
+      direction = (level == 0) ? true : rng.nextInt(2) > 0;
       if ((line[0] * 50 + line[1] * 50 - line[2]) * (select ? 1 : -1) < 0) {
         select = !select;
       }
-
       lines.add([rangeEdge(line), direction, line, select]);
     }
     // 예시 데이터
     example = [papers, lines];
 
-    // 난이도 조절(0)
-    if (level == 0) {
-      for (var i = 0; i < 4; i++) {
-        lines[i][1] = true;
-      }
-    }
-
     // 정답과 보기
-    var order = rand(4, 4);
+    // var order = rand(4, 4);
+    var order = [0, 1, 2, 3];
     answer = [order[0]];
     suggestion = List<Paper>.filled(4, Paper());
     if (type == 0) {
@@ -220,16 +237,9 @@ class PaperFold {
       suggestion[order[1]] = s1;
 
       //오답 2
-      Paper s2 = papers[3].clone();
-      var choose = rand(4, s2.layerCount);
-      var shuffle = rand(4, 4);
-      var temp = [];
-      for (var i = 0; i < 4; i++) {
-        temp.add(s2.layers[choose[i]]);
-      }
-      for (var i = 0; i < 4; i++) {
-        s2.layers[choose[i]] = temp[shuffle[i]];
-      }
+      Paper s2 = p.clone();
+      s2.layers.insert(0, s2.layers.removeLast());
+      s2.layers.insert(0, s2.layers.removeLast());
       suggestion[order[2]] = s2;
 
       //오답 3
@@ -247,8 +257,9 @@ class PaperFold {
       Paper p2 = papers[3].clone();
       p2.foldPaper(line, select, direction);
 
+      except.removeLast();
       while (!p1.inRange() || !p2.inRange()) {
-        data = setFoldLine(papers[3], linetype);
+        data = setFoldLine(papers[3], except);
         line = data[1];
 
         p1 = papers[3].clone();
@@ -302,6 +313,19 @@ class Paper {
   var layers = []; // 0이 맨 위 레이어
   var colors = [];
   var layerCount = 0;
+
+  List center() {
+    double x = 0, y = 0;
+    double count = 0;
+    for (var i = 0; i < layerCount; i++) {
+      for (var j = 0; j < layers[i].length; j++) {
+        x += layers[i][j][0];
+        y += layers[i][j][1];
+      }
+      count += layers[i].length;
+    }
+    return [x / count, y / count];
+  }
 
   bool inRange() {
     for (var i = 0; i < layerCount; i++) {

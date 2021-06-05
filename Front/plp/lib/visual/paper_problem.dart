@@ -14,7 +14,7 @@ Future<List<Problem>> makepaperproblem(
   debugPrint("페이퍼 문제 : 로딩시작");
   for (int i = 1; i <= num; i++) {
     debugPrint("페이퍼 문제$i");
-    var temp = PaperFold(level);
+    var temp = PaperFold(level: level);
     foldList.add(Problem(
         answer: temp.answer[0],
         problemType: 1,
