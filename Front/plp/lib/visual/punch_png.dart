@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:ui'as UI;
 import 'dart:math';
 import 'package:path_drawing/path_drawing.dart';
+import 'package:hive/hive.dart';
 
 Future<void> saveImage(
     String fileName, ByteData image, String directory) async {
@@ -95,8 +96,9 @@ Future<void> drawpunchpng(String name, var pointList, var dotlineList, bool is_L
 
   var radius=6.5; //점의 반지름
 
+  var settinghive=Hive.box('setting');
 
-  final mycolor=Colors.deepOrange[50];
+  Color mycolor=  Color(settinghive.get('color'));
   var layers=pointList.layers;
 
   debugPrint('레이어 수는 ${pointList.layerCount}');
@@ -173,7 +175,9 @@ Future<void> drawpunchsuggestionpng(String name, var dotList,String directory) a
 
 
 
-  final mycolor=Colors.deepOrange[50];
+  var settinghive=Hive.box('setting');
+
+  Color mycolor=  Color(settinghive.get('color'));
 
   paint.color=Colors.grey; //먼저 회색 외곽선을 그린 뒤
   paint.strokeWidth=1;
@@ -231,7 +235,9 @@ Future<void> drawpunchnotepng(String name, var pointList, var lineList, var dotL
   var radius=6.5; //점의 반지름
 
 
-  final mycolor=Colors.deepOrange[50];
+  var settinghive=Hive.box('setting');
+
+  Color mycolor=  Color(settinghive.get('color'));
   var layers=pointList.layers;
 
   debugPrint('레이어 수는 ${pointList.layerCount}');

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:ui'as UI;
 import 'dart:math';
 import 'package:path_drawing/path_drawing.dart';
+import 'package:hive/hive.dart';
 
 Future<void> saveImage(
     String fileName, ByteData image, String directory) async {
@@ -105,10 +106,10 @@ Future<void> drawpaperpng(String name, var pointList, var lineList,bool is_Last,
   List<List<double>> square=[[0,0],[0,200],[200,200],[200,0]];
 
 
+  var settinghive=Hive.box('setting');
 
+  Color mycolor=  Color(settinghive.get('color'));
 
-
-  final mycolor=Colors.deepOrange[50];
   var layers=pointList.layers;
   var lines=lineList[0];
   debugPrint('레이어 수는 ${pointList.layerCount}');
@@ -169,7 +170,7 @@ Future<void> drawpaperpng(String name, var pointList, var lineList,bool is_Last,
 
 }
 
-Future<void> drawpaperpngback(String name, var pointList, var lineList,bool is_Last,bool is_suggestion ,String directory) async{
+Future<void> drawpaperpngback(String name, var pointList, var lineList,var colorList,bool is_Last,bool is_suggestion ,String directory) async{
 
   var recorder = new UI.PictureRecorder();
   final canvas = new Canvas(
@@ -184,9 +185,10 @@ Future<void> drawpaperpngback(String name, var pointList, var lineList,bool is_L
 
 
 
+  var settinghive=Hive.box('setting');
 
-
-  final mycolor=Colors.deepOrange[50];
+  Color mycolor1=  Color(settinghive.get('color'));
+  final mycolor2=Colors.white;
   var layers=pointList.layers;
   var lines=lineList[0];
   debugPrint('레이어 수는 ${pointList.layerCount}');
@@ -199,10 +201,17 @@ Future<void> drawpaperpngback(String name, var pointList, var lineList,bool is_L
     paint.strokeWidth=1;
     mypath(canvas, square, paint);
 
-    if(mycolor!=null) // 색 부분을 그리고
-        {
-      paint.color=mycolor;
+    if(colorList[i]==0)
+    {
+
+      paint.color = mycolor2;
+    }else {
+
+      paint.color=mycolor1;
     }
+
+
+
     paint.strokeWidth=1;
     paint.style=PaintingStyle.fill;
     mypathback(canvas,layers[i], paint);
@@ -225,6 +234,91 @@ Future<void> drawpaperpngback(String name, var pointList, var lineList,bool is_L
         dashed_line_out(
             canvas, 200.0- lines[0][0]*2.toDouble(), lines[0][1]*2.toDouble(),
             200.0- lines[1][0]*2.toDouble(), lines[1][1]*2.toDouble(), paint);
+      }
+    }
+  }
+  // dashed_line_in(canvas, pointList[k][0][0], pointList[k][0][1],pointList[k][1][0],pointList[k][1][1], paint);
+
+
+
+
+
+
+
+  final picture = recorder.endRecording();
+  UI.Image img = await picture.toImage(200, 200);
+  final abc =await img.toByteData(format:UI.ImageByteFormat.png);
+  if(abc!=null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
+      {
+    await saveImage(name,abc, directory);
+    debugPrint("저장됨");
+  }
+
+}
+
+Future<void> drawpaperpngfront(String name, var pointList, var lineList,var colorList,bool is_Last,bool is_suggestion ,String directory) async{
+
+  var recorder = new UI.PictureRecorder();
+  final canvas = new Canvas(
+      recorder,
+      new Rect.fromPoints(
+          new Offset(0, 0), new Offset(200.0, 200.0)));
+
+  var paint = Paint();
+
+
+  List<List<double>> square=[[0,0],[0,200],[200,200],[200,0]];
+
+
+
+
+  var settinghive=Hive.box('setting');
+
+  Color mycolor1=  Color(settinghive.get('color'));
+  final mycolor2=Colors.white;
+  var layers=pointList.layers;
+  var lines=lineList[0];
+  debugPrint('레이어 수는 ${pointList.layerCount}');
+
+
+  for(int i=0;i<pointList.layerCount;i++)
+  {
+
+    paint.color=Colors.grey; //먼저 회색 외곽선을 그린 뒤
+    paint.strokeWidth=1;
+    mypath(canvas, square, paint);
+
+    if(colorList[i]==0)
+    {
+      paint.color=mycolor1;
+    }else {
+      paint.color = mycolor2;
+    }
+
+
+
+    paint.strokeWidth=1;
+    paint.style=PaintingStyle.fill;
+    mypath(canvas,layers[i], paint);
+    //debugPrint('${pointList[1]}이라');
+
+    paint.color=Colors.black; //검은선으로 감싼다
+    paint.strokeWidth=1;
+    paint.style=PaintingStyle.stroke;
+    mypath(canvas,layers[i], paint);
+  }
+  if(!is_suggestion) {
+    if (is_Last) {
+      dashed_line_both(canvas, lines[0][0]*2.toDouble(), lines[0][1]*2.toDouble(),
+          lines[1][0]*2.toDouble(), lines[1][1]*2.toDouble(), paint);
+    } else {
+      if (lineList[1]) {
+        dashed_line_in(canvas, lines[0][0]*2.toDouble(), lines[0][1]*2.toDouble(),
+            lines[1][0]*2.toDouble(), lines[1][1]*2.toDouble(), paint);
+      } else {
+        dashed_line_out(
+            canvas, lines[0][0]*2.toDouble(), lines[0][1]*2.toDouble(),
+            lines[1][0]*2.toDouble(), lines[1][1]*2.toDouble(), paint);
       }
     }
   }
