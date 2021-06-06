@@ -344,6 +344,16 @@ class _ScorePageState extends State<ScorePage> {
                     ),
                   ),
                 );
+              } else if (typeList[i] == 3) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => Block3D(
+                      exam: exam,
+                      index: i,
+                    ),
+                  ),
+                );
               }
             }));
       } else {
