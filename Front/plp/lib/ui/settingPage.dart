@@ -178,19 +178,19 @@ class _SettingPageState extends State<SettingPage> {
                         // actionsheet(context);
                       },
                     ),
-                    SettingsTile(
-                      title: '랜덤 시드 선택',
-                      subtitle: setting.get('id').toString(),
-                      leading: Icon(CupertinoIcons.scribble),
-                      onPressed: (BuildContext context) {
-                        // do something here.
-                      },
-                    ),
+                    // SettingsTile(
+                    //   title: '랜덤 시드 선택',
+                    //   subtitle: setting.get('id').toString(),
+                    //   leading: Icon(CupertinoIcons.scribble),
+                    //   onPressed: (BuildContext context) {
+                    //     // do something here.
+                    //   },
+                    // ),
                     SettingsTile(
                       title: '종이접기, 펀칭 유형 색 선택',
                       subtitle:
                           "${setting.get('color').toRadixString(16).toUpperCase()}",
-                      leading: Icon(CupertinoIcons.alarm),
+                      leading: Icon(CupertinoIcons.color_filter),
                       onPressed: (BuildContext context) {
                         Navigator.push(
                             context,

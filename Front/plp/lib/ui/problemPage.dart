@@ -501,7 +501,7 @@ class _ProblemCardState extends State<ProblemCard> {
               children: [
                 Container(
                   // color: Colors.black,
-                  width: 140,
+                  width: 120,
                   child: Image.file(
                     File(this.widget.exam.directory +
                         "/problem" +

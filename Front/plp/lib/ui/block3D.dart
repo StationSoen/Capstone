@@ -50,7 +50,11 @@ void create_blocks(var block, Scene scene) {
     for (int j = 0; j < block[0].length; j++) {
       for (int k = 0; k < block.length; k++) {
         create_block(
-            scene, k.toDouble(), j.toDouble(), i.toDouble(), block[k][j][i]);
+            scene,
+            k.toDouble() - block.length / 2 + 0.5,
+            j.toDouble() - block[0].length / 2 + 0.5,
+            i.toDouble() - block[0][0].length / 2 + 0.5,
+            block[k][j][i]);
       }
     }
   }
@@ -169,7 +173,7 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
             children: [
               Container(
                 // color: Colors.black,
-                width: 140,
+                width: 120,
                 child: Image.file(
                   File(this.widget.exam.directory +
                       "/problem" +
@@ -246,7 +250,7 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
     if (isVisible) {
       if (value == 0) {
         return Expanded(
-            flex: 2,
+            flex: 3,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
@@ -275,7 +279,7 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
             ));
       } else if (value == 1) {
         return Expanded(
-            flex: 2,
+            flex: 3,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
@@ -304,7 +308,7 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
             ));
       } else if (value == 2) {
         return Expanded(
-            flex: 2,
+            flex: 3,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
@@ -333,7 +337,7 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
             ));
       } else {
         return Expanded(
-            flex: 2,
+            flex: 3,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
@@ -567,9 +571,9 @@ class NoteBlock01 extends StatefulWidget {
 }
 
 class _NoteBlock01State extends State<NoteBlock01> {
-  double camera_x = 5.56;
-  double camera_y = 7.73;
-  double camera_z = 5.64;
+  double camera_x = 4.06;
+  double camera_y = 4.03;
+  double camera_z = 4.44;
 
   late Scene _scene;
   Object? _cube;
@@ -627,9 +631,9 @@ class NoteBlock02 extends StatefulWidget {
 }
 
 class _NoteBlock02State extends State<NoteBlock02> {
-  double camera_x = 5.56;
-  double camera_y = 7.73;
-  double camera_z = 5.64;
+  double camera_x = 4.06;
+  double camera_y = 4.03;
+  double camera_z = 4.44;
 
   late Scene _scene;
   Object? _cube;
@@ -687,9 +691,9 @@ class NoteBlock03 extends StatefulWidget {
 }
 
 class _NoteBlock03State extends State<NoteBlock03> {
-  double camera_x = 5.56;
-  double camera_y = 7.73;
-  double camera_z = 5.64;
+  double camera_x = 4.06;
+  double camera_y = 4.03;
+  double camera_z = 4.44;
 
   late Scene _scene;
   Object? _cube;
@@ -747,9 +751,9 @@ class NoteBlock04 extends StatefulWidget {
 }
 
 class _NoteBlock04State extends State<NoteBlock04> {
-  double camera_x = 5.56;
-  double camera_y = 7.73;
-  double camera_z = 5.64;
+  double camera_x = 4.06;
+  double camera_y = 4.03;
+  double camera_z = 4.44;
 
   late Scene _scene;
   Object? _cube;

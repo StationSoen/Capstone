@@ -334,7 +334,7 @@ class _NoteCube3DState extends State<NoteCube3D>
   Widget build(BuildContext context) {
     if (this.widget.isViisible) {
       return Expanded(
-        flex: 2,
+        flex: 3,
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
