@@ -19,14 +19,14 @@ class PaperFold {
   ///
   /// - 0 종이를 접고 앞면 또는 뒷면이 맞는것 고르기
   /// - 1 종이를 접고 앞면 또는 뒷면이 아닌것 고르기
-  int type = -1;
+  var type;
 
   /// 난이도
   ///
   /// - 0 앞으로만 접기
   /// - 1 앞뒤로 접기
   /// - 2 정해진 각도 이외로도 접기
-  int level = -1;
+  int level;
 
   var example;
   var suggestion;
@@ -79,13 +79,18 @@ class PaperFold {
 
     do {
       do {
-        linetype = rng.nextInt(3 * range);
-        if (linetype >= 2 * range) linetype -= range;
+        linetype = rng.nextInt(4 * range);
+        if (linetype >= 2 * range) linetype = linetype % range + range;
         if (except.isNotEmpty && except.last < range && linetype < range) {
           linetype += range;
         }
       } while (except.contains(linetype) ||
           (except.isNotEmpty && except.last % range == linetype % range));
+
+      if (except.isEmpty) {
+        linetype %= range;
+        linetype += range;
+      }
 
       var standard = (linetype / range).toInt();
       var modtype = linetype % range;
@@ -145,7 +150,7 @@ class PaperFold {
         }
       }
     } while (!paper.isCrossed(line) ||
-        nearCenter(paper, line, 50 - 10 * except.length));
+        !nearCenter(paper, line, 50 - 10 * except.length));
 
     return [linetype, line];
   }
@@ -165,15 +170,14 @@ class PaperFold {
   /// * example[1] : [[선, 방향]...]
   /// * suggsetion : [종이 ...]
   /// * answer     : [정답번호]
-  PaperFold({required this.level, this.type = -1, this.seed}) {
+  PaperFold({required this.level, this.type, this.seed}) {
     seed ??= seedRng.nextInt(2147483647);
     rng = Random(seed);
 
     print('seed : $seed\n');
 
-    if (type == -1) {
-      type = rng.nextInt(2);
-    }
+    type ??= rng.nextInt(2);
+    if (level == 0) type = 0;
 
     var papers = [];
     var lines = [];
@@ -238,16 +242,20 @@ class PaperFold {
 
       //오답 2
       Paper s2 = p.clone();
+      // s2.layers.add(s2.layers.removeAt(0));
+      // s2.layers.add(s2.layers.removeAt(0));
       s2.layers.insert(0, s2.layers.removeLast());
       s2.layers.insert(0, s2.layers.removeLast());
+      s2.layers.add(s2.layers.removeAt(2));
+      s2.layers.add(s2.layers.removeAt(2));
       suggestion[order[2]] = s2;
 
       //오답 3
-      Paper s3 = papers[0].clone();
-      s3.foldPaper(lines[0][2], lines[0][3], !lines[0][1]);
-      s3.foldPaper(lines[1][2], lines[1][3], !lines[1][1]);
-      s3.foldPaper(lines[2][2], lines[2][3], !lines[2][1]);
-      s3.foldPaper(lines[3][2], lines[3][3], !lines[3][1]);
+      Paper s3 = p.clone();
+      s3.layers.insert(0, s3.layers.removeLast());
+      s3.layers.insert(0, s3.layers.removeLast());
+      s3.layers.insert(0, s3.layers.removeLast());
+      s3.layers.insert(0, s3.layers.removeLast());
       suggestion[order[3]] = s3;
     } else if (type == 1) {
       // 오답
@@ -257,6 +265,7 @@ class PaperFold {
       Paper p2 = papers[3].clone();
       p2.foldPaper(line, select, direction);
 
+      except.removeLast();
       except.removeLast();
       while (!p1.inRange() || !p2.inRange()) {
         data = setFoldLine(papers[3], except);
@@ -279,14 +288,21 @@ class PaperFold {
       suggestion[order[2]] = p2;
       suggestion[order[3]] = p3;
 
-      var wrong = rand(4, 2, true);
-      var mp = wrong.map((e) => e > 0).toList();
+      // var wrong = rand(4, 2, true);
+      // var mp = wrong.map((e) => e > 0).toList();
 
       // 정답(틀린 것)
-      Paper s = papers[0].clone();
-      for (var i = 0; i < 4; i++) {
-        s.foldPaper(lines[i][2], lines[i][3], mp[i] ^ !lines[i][1]);
-      }
+      // Paper s = papers[0].clone();
+      // for (var i = 0; i < 4; i++) {
+      //   s.foldPaper(lines[i][2], lines[i][3], mp[i] ^ !lines[i][1]);
+      // }
+      // suggestion[order[0]] = s;
+
+      Paper s = p1.clone();
+      s.layers.insert(0, s.layers.removeLast());
+      s.layers.insert(0, s.layers.removeLast());
+      s.layers.insert(0, s.layers.removeLast());
+      s.layers.insert(0, s.layers.removeLast());
       suggestion[order[0]] = s;
     }
   }

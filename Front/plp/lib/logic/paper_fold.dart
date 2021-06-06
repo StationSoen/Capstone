@@ -244,8 +244,12 @@ class PaperFold {
 
       //오답 2
       Paper s2 = p.clone();
-      s2.layers.add(s2.layers.removeAt(0));
-      s2.layers.add(s2.layers.removeAt(0));
+      // s2.layers.add(s2.layers.removeAt(0));
+      // s2.layers.add(s2.layers.removeAt(0));
+      s2.layers.insert(0, s2.layers.removeLast());
+      s2.layers.insert(0, s2.layers.removeLast());
+      s2.layers.add(s2.layers.removeAt(2));
+      s2.layers.add(s2.layers.removeAt(2));
       suggestion[order[2]] = s2;
 
       //오답 3
@@ -263,6 +267,7 @@ class PaperFold {
       Paper p2 = papers[3].clone();
       p2.foldPaper(line, select, direction);
 
+      except.removeLast();
       except.removeLast();
       while (!p1.inRange() || !p2.inRange()) {
         data = setFoldLine(papers[3], except);
@@ -285,14 +290,21 @@ class PaperFold {
       suggestion[order[2]] = p2;
       suggestion[order[3]] = p3;
 
-      var wrong = rand(4, 2, true);
-      var mp = wrong.map((e) => e > 0).toList();
+      // var wrong = rand(4, 2, true);
+      // var mp = wrong.map((e) => e > 0).toList();
 
       // 정답(틀린 것)
-      Paper s = papers[0].clone();
-      for (var i = 0; i < 4; i++) {
-        s.foldPaper(lines[i][2], lines[i][3], mp[i] ^ !lines[i][1]);
-      }
+      // Paper s = papers[0].clone();
+      // for (var i = 0; i < 4; i++) {
+      //   s.foldPaper(lines[i][2], lines[i][3], mp[i] ^ !lines[i][1]);
+      // }
+      // suggestion[order[0]] = s;
+
+      Paper s = p1.clone();
+      s.layers.insert(0, s.layers.removeLast());
+      s.layers.insert(0, s.layers.removeLast());
+      s.layers.insert(0, s.layers.removeLast());
+      s.layers.insert(0, s.layers.removeLast());
       suggestion[order[0]] = s;
     }
   }
