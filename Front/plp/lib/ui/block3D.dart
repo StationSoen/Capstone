@@ -220,15 +220,24 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
 
   int blockIndex = 0;
 
-  List<String> blockButton = ["전체 블럭", '노란 블럭', "파란 블럭", "빨간 블럭"];
+  List<List<String>> blockButton = [
+    ["전체 블럭", '노란 블럭', "파란 블럭", "빨간 블럭"],
+    ["전체 블럭", '노란 블럭', "빨간 블럭"]
+  ];
 
-  List<Widget> noteButton(int number) {
+  List<Widget> noteButton(int number, int difficulty) {
+    late int type;
+    if (difficulty == 0) {
+      type = 1;
+    } else {
+      type = 0;
+    }
     List<Widget> result = [];
     for (int i = 0; i < number; i++) {
       result.add(Expanded(
         child: CupertinoButton(
           padding: EdgeInsets.all(0),
-          child: Container(child: Text(blockButton[i])),
+          child: Container(child: Text(blockButton[type][i])),
           onPressed: () {
             setState(() {
               blockIndex = 0;
@@ -272,7 +281,13 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
                   NoteBlock01(index: index, exam: exam),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: noteButton(blockNum),
+                    children: noteButton(
+                        blockNum,
+                        this
+                            .widget
+                            .exam
+                            .problemList[this.widget.index]
+                            .difficulty),
                   )
                 ],
               ),
@@ -301,7 +316,13 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
                   NoteBlock02(index: index, exam: exam),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: noteButton(blockNum),
+                    children: noteButton(
+                        blockNum,
+                        this
+                            .widget
+                            .exam
+                            .problemList[this.widget.index]
+                            .difficulty),
                   )
                 ],
               ),
@@ -330,7 +351,13 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
                   NoteBlock03(index: index, exam: exam),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: noteButton(blockNum),
+                    children: noteButton(
+                        blockNum,
+                        this
+                            .widget
+                            .exam
+                            .problemList[this.widget.index]
+                            .difficulty),
                   )
                 ],
               ),
@@ -359,7 +386,13 @@ class _Block3DState extends State<Block3D> with SingleTickerProviderStateMixin {
                   NoteBlock04(index: index, exam: exam),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: noteButton(blockNum),
+                    children: noteButton(
+                        blockNum,
+                        this
+                            .widget
+                            .exam
+                            .problemList[this.widget.index]
+                            .difficulty),
                   )
                 ],
               ),
