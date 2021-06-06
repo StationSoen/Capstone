@@ -18,7 +18,7 @@ class PaperFold extends StatefulWidget {
 
 class _PaperFoldState extends State<PaperFold> {
   List<String> problemText = [
-    "다음과 같이 종이를 접었을 때, 마지막 종이의 앞면 또는 뒷면으로 알맞은 것을 고르시오.",
+    "다음과 같이 종이를 접었을 때, 마지막 종이의 앞면으로 알맞은 것을 고르시오.",
     "다음과 같이 종이를 접었을 때, 마지막 종이의 앞면 또는 뒷면으로 알맞지 않은 것을 고르시오.",
   ];
 
