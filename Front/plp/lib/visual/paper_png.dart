@@ -165,7 +165,7 @@ Future<void> drawpaperpng(String name, var pointList, var lineList,bool is_Last,
   if(abc!=null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
       {
     await saveImage(name,abc, directory);
-    debugPrint("저장됨");
+  //  debugPrint("저장됨");
   }
 
 }
@@ -251,7 +251,7 @@ Future<void> drawpaperpngback(String name, var pointList, var lineList,var color
   if(abc!=null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
       {
     await saveImage(name,abc, directory);
-    debugPrint("저장됨");
+   // debugPrint("저장됨");
   }
 
 }
@@ -278,7 +278,7 @@ Future<void> drawpaperpngfront(String name, var pointList, var lineList,var colo
   final mycolor2=Colors.white;
   var layers=pointList.layers;
   var lines=lineList[0];
-  debugPrint('레이어 수는 ${pointList.layerCount}');
+ // debugPrint('레이어 수는 ${pointList.layerCount}');
 
 
   for(int i=0;i<pointList.layerCount;i++)
@@ -336,7 +336,8 @@ Future<void> drawpaperpngfront(String name, var pointList, var lineList,var colo
   if(abc!=null) // ?는 Nullable 이기 때문에 nonNullable로 바꿔줘야됨
       {
     await saveImage(name,abc, directory);
-    debugPrint("저장됨");
+   // debugPrint("저장됨");
   }
 
 }
+
