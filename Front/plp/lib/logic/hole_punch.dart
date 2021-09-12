@@ -219,17 +219,18 @@ class HolePunch {
       var ln = papers.last.layers.length;
       // 맨 앞 레이어에서 고르기
       var dotRange = papers.last.layers[ln - 1].length;
-      var dotEdge = rand(2 + rng.nextInt(2), dotRange);
+      var dotEdge = rand(2, dotRange);
       for (var i = 0; i < dotEdge.length; i++) {
         dotOrigin.add(papers.last.layers.last[dotEdge[i]]);
       }
-      if (rng.nextInt(3) > 0) {
+      var dot2nd = rng.nextInt(2);
+      if (dot2nd > 0) {
         var dotMid = rand(2, dotRange);
         var dot0 = papers.last.layers.last[dotMid[0]];
         var dot1 = papers.last.layers.last[dotMid[1]];
         dotOrigin.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
       }
-      if (rng.nextInt(3) == 0) {
+      if (dot2nd == 0) {
         var shape = papers.last.layers.last;
         num x = 0, y = 0;
         var n = shape.length;
@@ -240,12 +241,12 @@ class HolePunch {
         dotOrigin.add([x / n, y / n]);
       }
       // 두번째 레이어에서 고르기
-      dotRange = papers.last.layers[ln - 2].length;
+      dotRange = papers.last.layers[ln - 3].length;
       dotEdge = rand(2 + rng.nextInt(2), dotRange);
-      if (rng.nextInt(3) > 0) {
+      if (rng.nextInt(3) == 0) {
         var dotMid = rand(2, dotRange);
-        var dot0 = papers.last.layers[ln - 2][dotMid[0]];
-        var dot1 = papers.last.layers[ln - 2][dotMid[1]];
+        var dot0 = papers.last.layers[ln - 3][dotMid[0]];
+        var dot1 = papers.last.layers[ln - 3][dotMid[1]];
         dotOrigin.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
       }
     }
@@ -277,61 +278,109 @@ class HolePunch {
 
     /// 정답과 보기
     var order = rand(eMax, eMax);
+    order = [0, 1, 2, 3];
     answer = [order[0]];
     suggestion = List.filled(eMax, []);
     suggestion[order[0]] = dotAnswer;
 
     var dotWrong = rand(2, dotAnswer.length);
-
     var dot0, dot1;
-    //오답 1
-    var dotWrong1 = json.decode(json.encode(dotAnswer));
-    dot0 = dotWrong1[0];
-    dot1 = dotWrong1[1];
-    dotWrong1.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
-    dotWrong1.removeAt(rng.nextInt(dotWrong1.length - 1));
-    suggestion[order[1]] = dotWrong1;
-    print('example : suggestion 0 complete.');
-    //오답 2
-    var dotWrong2 = json.decode(json.encode(dotAnswer));
-    var dotMid = rand(2, dotWrong2.length);
-    dot0 = dotWrong2[dotMid[0]];
-    dot1 = dotWrong2[dotMid[1]];
-    dotWrong2.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
-    dotWrong2.removeAt(rng.nextInt(dotWrong2.length - 1));
-    suggestion[order[2]] = dotWrong2;
-    print('example : suggestion 1 complete.');
-    //오답 3
-    var dotWrong3 = json.decode(json.encode(dotAnswer));
-    dot0 = dotWrong3[1];
-    dot1 = dotWrong3[2];
-    dotWrong3.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
-    dotWrong3.removeAt(rng.nextInt(dotWrong3.length - 1));
-    suggestion[order[3]] = dotWrong3;
-    print('example : suggestion 2 complete.');
-
-    // 오답 생성
-    var wrongTemp, dotWrong4 = json.decode(json.encode(dotOrigin));
-    dot0 = dotWrong4[0];
-    dot1 = dotWrong4[1];
-    dotWrong4.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
-    dotWrong4.removeAt(rng.nextInt(dotWrong4.length - 1));
-    for (var i = eMax - 2; i >= 0; i--) {
-      wrongTemp = [];
-      var dotLine = mathline[i];
-      for (var j = 0; j < dotLine.length; j++) {
-        var n = dotWrong4.length;
-        for (var k = 0; k < n; k++) {
-          var newDot = Paper.linearSymmerty(dotWrong4[k], dotLine[j]);
-          if (!isIn(dotWrong4, newDot)) dotWrong4.add(newDot);
+    if (level < 1) {
+      //오답 ( 결과에서 점을 옮겨 찍기 )
+      var dotWrong1 = json.decode(json.encode(dotAnswer));
+      dot0 = dotWrong1[0];
+      dot1 = dotWrong1[1];
+      dotWrong1.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
+      dotWrong1.removeAt(rng.nextInt(dotWrong1.length - 1));
+      suggestion[order[1]] = dotWrong1;
+      print('example : suggestion 0 complete.');
+      //오답 2
+      var dotWrong2 = json.decode(json.encode(dotAnswer));
+      var dotMid = rand(2, dotWrong2.length);
+      dot0 = dotWrong2[dotMid[0]];
+      dot1 = dotWrong2[dotMid[1]];
+      dotWrong2.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
+      dotWrong2.removeAt(rng.nextInt(dotWrong2.length - 1));
+      suggestion[order[2]] = dotWrong2;
+      print('example : suggestion 1 complete.');
+      //오답 3
+      var dotWrong3 = json.decode(json.encode(dotAnswer));
+      dot0 = dotWrong3[1];
+      dot1 = dotWrong3[2];
+      dotWrong3.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
+      dotWrong3.removeAt(rng.nextInt(dotWrong3.length - 1));
+      suggestion[order[3]] = dotWrong3;
+      print('example : suggestion 2 complete.');
+    } else {
+      // 오답 ( 일부분이 다른 초기 펀치홀로 생성하기 )
+      var wrongTemp1, dotWrong1 = json.decode(json.encode(dotOrigin));
+      dot0 = dotWrong1[0];
+      dot1 = dotWrong1[1];
+      dotWrong1.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
+      dotWrong1.removeAt(rng.nextInt(dotWrong1.length - 1));
+      for (var i = eMax - 2; i >= 0; i--) {
+        wrongTemp1 = [];
+        var dotLine = mathline[i];
+        for (var j = 0; j < dotLine.length; j++) {
+          var n = dotWrong1.length;
+          for (var k = 0; k < n; k++) {
+            var newDot = Paper.linearSymmerty(dotWrong1[k], dotLine[j]);
+            if (!isIn(dotWrong1, newDot)) dotWrong1.add(newDot);
+          }
         }
+        for (var j = 0; j < dotWrong1.length; j++) {
+          if (papers[i].isIn(dotWrong1[j])) wrongTemp1.add(dotWrong1[j]);
+        }
+        dotWrong1 = wrongTemp1;
       }
-      for (var j = 0; j < dotWrong4.length; j++) {
-        if (papers[i].isIn(dotWrong4[j])) wrongTemp.add(dotWrong4[j]);
+      suggestion[order[1]] = dotWrong1;
+
+      // 오답 2
+      var wrongTemp2, dotWrong2 = json.decode(json.encode(dotOrigin));
+      dot0 = dotWrong2[1];
+      dot1 = dotWrong2[2];
+      dotWrong2.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
+      dotWrong2.removeAt(rng.nextInt(dotWrong2.length - 1));
+      for (var i = eMax - 2; i >= 0; i--) {
+        wrongTemp2 = [];
+        var dotLine = mathline[i];
+        for (var j = 0; j < dotLine.length; j++) {
+          var n = dotWrong2.length;
+          for (var k = 0; k < n; k++) {
+            var newDot = Paper.linearSymmerty(dotWrong2[k], dotLine[j]);
+            if (!isIn(dotWrong2, newDot)) dotWrong2.add(newDot);
+          }
+        }
+        for (var j = 0; j < dotWrong2.length; j++) {
+          if (papers[i].isIn(dotWrong2[j])) wrongTemp2.add(dotWrong2[j]);
+        }
+        dotWrong2 = wrongTemp2;
       }
-      dotWrong4 = wrongTemp;
+      suggestion[order[2]] = dotWrong2;
+
+      // 오답 3
+      var wrongTemp3, dotWrong3 = json.decode(json.encode(dotOrigin));
+      dot0 = dotWrong3[0];
+      dot1 = dotWrong3[2];
+      dotWrong3.add([(dot0[0] + dot1[0]) / 2, (dot0[1] + dot1[1]) / 2]);
+      dotWrong3.removeAt(rng.nextInt(dotWrong3.length - 1));
+      for (var i = eMax - 2; i >= 0; i--) {
+        wrongTemp3 = [];
+        var dotLine = mathline[i];
+        for (var j = 0; j < dotLine.length; j++) {
+          var n = dotWrong3.length;
+          for (var k = 0; k < n; k++) {
+            var newDot = Paper.linearSymmerty(dotWrong3[k], dotLine[j]);
+            if (!isIn(dotWrong3, newDot)) dotWrong3.add(newDot);
+          }
+        }
+        for (var j = 0; j < dotWrong3.length; j++) {
+          if (papers[i].isIn(dotWrong3[j])) wrongTemp3.add(dotWrong3[j]);
+        }
+        dotWrong3 = wrongTemp3;
+      }
+      suggestion[order[3]] = dotWrong3;
     }
-    suggestion[order[3]] = dotWrong4;
   }
 
   @override
