@@ -205,7 +205,6 @@ class HolePunch {
 
     // 점 선택
     var dotOrigin = [];
-
     if (level == 0) {
       var shape = papers.last.layers.last;
       num x = 0, y = 0;
