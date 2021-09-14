@@ -153,6 +153,18 @@ class HolePunch {
     return true;
   }
 
+  double plane(List layer) {
+    var x = layer[0];
+    var area = 0.0;
+    for (var i = 1; i < layer.length - 1; i++) {
+      var y = layer[i], z = layer[i + 1];
+      var calc = (x[0] * y[1] + y[0] * z[1] + z[0] * x[1]) -
+          (x[1] * y[0] + y[1] * z[0] + z[1] * x[0]);
+      area += calc.abs() / 2;
+    }
+    return area;
+  }
+
   /// * example[0] : [접힌 종이...]
   /// * example[1] : [[선, 방향]...]
   /// * suggsetion : [종이 ...]
@@ -165,40 +177,47 @@ class HolePunch {
     /// 예시 데이터 생성
     var eMax = 4;
 
-    var papers = [];
-    var lines = [];
-    var dots = [];
+    var papers, lines, dots;
 
-    // 종이 초기화
-    papers.add(Paper());
+    var mathline;
 
-    // 선 초기화
-    var except = [], data, linetype, line;
-    var select, linedata;
-    var mathline = [];
+    while (true) {
+      papers = [];
+      lines = [];
+      dots = [];
 
-    for (var i = 0; i < eMax - 1; i++) {
-      data = setFoldLine(papers[i], except);
-      linetype = data[0];
-      line = data[1];
-      except.add(linetype);
-      mathline.add(line);
+      // 종이 초기화
+      papers.add(Paper());
 
-      select = [];
-      linedata = [];
-      // 선 정하기
-      for (var i = 0; i < line.length; i++) {
-        select.add(line[i][0] * 50 + line[i][1] * 50 - line[i][2] > 0);
-        linedata.add(rangeEdge(line[i]));
+      // 선 초기화
+      var except = [], data, linetype, line;
+      var select, linedata;
+      mathline = [];
+
+      for (var i = 0; i < eMax - 1; i++) {
+        data = setFoldLine(papers[i], except);
+        linetype = data[0];
+        line = data[1];
+        except.add(linetype);
+        mathline.add(line);
+
+        select = [];
+        linedata = [];
+        // 선 정하기
+        for (var i = 0; i < line.length; i++) {
+          select.add(line[i][0] * 50 + line[i][1] * 50 - line[i][2] > 0);
+          linedata.add(rangeEdge(line[i]));
+        }
+        lines.add(linedata);
+
+        // 접기
+        Paper nextPaper = papers[i].clone();
+        for (var i = 0; i < line.length; i++) {
+          nextPaper.foldPaper(line[i], select[i], true);
+        }
+        papers.add(nextPaper);
       }
-      lines.add(linedata);
-
-      // 접기
-      Paper nextPaper = papers[i].clone();
-      for (var i = 0; i < line.length; i++) {
-        nextPaper.foldPaper(line[i], select[i], true);
-      }
-      papers.add(nextPaper);
+      if (plane(papers.last.layers.last) > 600) break;
     }
 
     print('example : paper fold complete.');
