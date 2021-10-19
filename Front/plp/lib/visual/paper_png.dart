@@ -25,7 +25,6 @@ void mypath(Canvas canvas,List a,paint){
   }
   path.close();
   canvas.drawPath(path,paint);
-
 }
 
 void mypathback(Canvas canvas,List a,paint){
@@ -37,7 +36,6 @@ void mypathback(Canvas canvas,List a,paint){
   }
   path.close();
   canvas.drawPath(path,paint);
-
 }
 
 
@@ -46,9 +44,7 @@ void dashed_line_in(Canvas canvas,double startx, double starty,double endx,doubl
   path.moveTo(startx,starty);
   path.lineTo(endx, endy);
   canvas.drawPath(
-    dashPath(
-      path,
-      dashArray: CircularIntervalList<double>(<double>[7.0, 7.0]),
+    dashPath(path, dashArray: CircularIntervalList<double>(<double>[7.0, 7.0]),
     ),
     paint,
   );
@@ -59,33 +55,26 @@ void dashed_line_out(Canvas canvas,double startx, double starty,double endx,doub
   path.moveTo(startx,starty);
   path.lineTo(endx, endy);
   canvas.drawPath(
-    dashPath(
-      path,
-      dashArray: CircularIntervalList<double>(<double>[20.0, 7.0]),
+    dashPath(path, dashArray: CircularIntervalList<double>(<double>[20.0, 7.0]),
     ),
     paint,
   );
 }
 
 void dashed_line_both(Canvas canvas,double startx, double starty,double endx,double endy, paint){
-
   var path=Path();
   path.moveTo(startx,starty);
   path.lineTo(endx, endy);
 
   canvas.drawPath(
-    dashPath(
-      path,
-      dashArray: CircularIntervalList<double>(<double>[4.0, 4.0]),
+    dashPath(path, dashArray: CircularIntervalList<double>(<double>[4.0, 4.0]),
     ),
     paint,
   );
 
 
   canvas.drawPath(
-    dashPath(
-      path,
-      dashArray: CircularIntervalList<double>(<double>[20.0, 12.0]),
+    dashPath(path, dashArray: CircularIntervalList<double>(<double>[20.0, 12.0]),
     ),
     paint,
   );
@@ -102,7 +91,6 @@ Future<void> drawpaperpng(String name, var pointList, var lineList,bool is_Last,
 
   var paint = Paint();
 
-
   List<List<double>> square=[[0,0],[0,200],[200,200],[200,0]];
 
 
@@ -117,7 +105,6 @@ Future<void> drawpaperpng(String name, var pointList, var lineList,bool is_Last,
 
   for(int i=0;i<pointList.layerCount;i++)
   {
-
     paint.color=Colors.grey; //먼저 회색 외곽선을 그린 뒤
     paint.strokeWidth=1;
     mypath(canvas, square, paint);
@@ -183,8 +170,6 @@ Future<void> drawpaperpngback(String name, var pointList, var lineList,var color
 
   List<List<double>> square=[[0,0],[0,200],[200,200],[200,0]];
 
-
-
   var settinghive=Hive.box('setting');
 
   Color mycolor1=  Color(settinghive.get('color'));
@@ -196,17 +181,14 @@ Future<void> drawpaperpngback(String name, var pointList, var lineList,var color
 
   for(int i=pointList.layerCount-1;i>=0;i--)
   {
-
     paint.color=Colors.grey; //먼저 회색 외곽선을 그린 뒤
     paint.strokeWidth=1;
     mypath(canvas, square, paint);
 
     if(colorList[i]==0)
     {
-
       paint.color = mycolor2;
     }else {
-
       paint.color=mycolor1;
     }
 
@@ -269,9 +251,6 @@ Future<void> drawpaperpngfront(String name, var pointList, var lineList,var colo
 
   List<List<double>> square=[[0,0],[0,200],[200,200],[200,0]];
 
-
-
-
   var settinghive=Hive.box('setting');
 
   Color mycolor1=  Color(settinghive.get('color'));
@@ -288,13 +267,12 @@ Future<void> drawpaperpngfront(String name, var pointList, var lineList,var colo
     paint.strokeWidth=1;
     mypath(canvas, square, paint);
 
-    if(colorList[i]==0)
+    if(colorList[i]==0) //앞면 뒷면 구분
     {
       paint.color=mycolor1;
     }else {
       paint.color = mycolor2;
     }
-
 
 
     paint.strokeWidth=1;
@@ -323,12 +301,6 @@ Future<void> drawpaperpngfront(String name, var pointList, var lineList,var colo
     }
   }
   // dashed_line_in(canvas, pointList[k][0][0], pointList[k][0][1],pointList[k][1][0],pointList[k][1][1], paint);
-
-
-
-
-
-
 
   final picture = recorder.endRecording();
   UI.Image img = await picture.toImage(200, 200);

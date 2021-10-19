@@ -23,7 +23,7 @@ class Home extends StatelessWidget {
       body: SafeArea(
         top: false,
         child: Container(
-          padding: EdgeInsets.only(top: 10),
+          padding: EdgeInsets.only(top:10),
           decoration: gradientBackground,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

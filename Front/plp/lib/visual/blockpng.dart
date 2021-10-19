@@ -16,55 +16,34 @@ Future<void> saveImage(
 }
 
 List<double> topdown = [
-  0.906,
-  0.423,
-  0,
-  0,
-  -0.922,
-  0.429,
-  0,
-  0,
-  0,
-  0,
-  1,
-  0,
-  0,
-  0,
-  0,
-  1
+  0.906, 0.423, 0, 0,
+  -0.922, 0.429, 0, 0,
+  0, 0, 1, 0,
+  0, 0, 0, 1
 ];
 
 List<double> right = [
-  0.90628064,
-  -0.4221449,
-  0,
-  0,
-  0,
-  1,
-  0,
-  0,
-  0,
-  0,
-  1,
-  0,
-  0,
-  0,
-  0,
-  1
+  0.90628064, -0.4221449, 0, 0,
+  0, 1, 0, 0,
+  0, 0, 1, 0,
+  0, 0, 0, 1
 ];
 
-List<double> left = [0.906, 0.422196, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+List<double> left = [
+  0.906, 0.422196, 0, 0,
+  0, 1, 0, 0,
+  0, 0, 1, 0,
+  0, 0, 0, 1
+];
 
 
 void dimetric_cube(Canvas canvas,Paint paint, double x, double y,double z, int colornum){
 
   List<Color> mycolorlist = [
     Colors.red[700]!,
-
     Colors.red[300]!, //1
     Colors.red,
     Colors.red[700]!,
-
     Colors.yellow[300]!,
     Colors.yellow,
     Colors.yellow[700]!,
@@ -72,6 +51,7 @@ void dimetric_cube(Canvas canvas,Paint paint, double x, double y,double z, int c
     Colors.blue,
     Colors.blue[700]!
   ];
+
   var topdown_matrix4 = Float64List.fromList(topdown);
   var right_matrix4 = Float64List.fromList(right);
   var left_matrix4 = Float64List.fromList(left);
@@ -145,8 +125,8 @@ Future<void> drawblockpng(String name, Blocks block, String directory) async {
   int recordy=10;
 
   paint.style=PaintingStyle.stroke;
-  if(x==2&&y==4&&z==3) {
 
+  if(x==2&&y==4&&z==3) {
     for(int i=0;i<z;i++){for(int j=0;j<y;j++){for(int k=0;k<x;k++) {dimetric_cube(canvas,paint, k.toDouble(), j.toDouble()-y+1,i.toDouble()-z-0.5, block.body[k][j][i]);}}}
     recordx=300;
     recordy=300;
