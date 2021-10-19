@@ -270,6 +270,7 @@ class _SelectPageState extends State<SelectPage> {
                     color: const Color(0xFF4386F9),
                     textColor: Colors.white,
                     onPressed: () async {
+                      
                       if (typeEnable[0] == true ||
                           typeEnable[1] == true ||
                           typeEnable[2] == true ||
