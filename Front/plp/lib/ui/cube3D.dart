@@ -89,18 +89,15 @@ class _Cube3DState extends State<Cube3D> {
     if (isLoadComplete == false) {
       return LoadingScreen();
     } else {
-      if(!Platform.isIOS) {
-        isVisible = false;
-      }
       return Scaffold(
           appBar: CupertinoNavigationBar(
             trailing: CupertinoButton(
                 padding: EdgeInsets.all(0),
                 onPressed: () {
-                  if(Platform.isIOS) {setState(() {
+                setState((){
                     isVisible = !isVisible;
-                  });}
-                },
+                });
+              },
                 child: Text(
                   "오답노트",
                   style: TextStyle(fontWeight: FontWeight.w600),

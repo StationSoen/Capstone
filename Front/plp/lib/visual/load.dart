@@ -80,10 +80,11 @@ Future<void> loadmtlfile(String fileName, int num, String directory) async {
   String data = await rootBundle.loadString("assets/cube/dice.mtl");
   debugPrint("${data.length}");
   String newdata =
-      data.substring(0, 362) + num.toString() + data.substring(363);
+      data.substring(0, 377) + num.toString() + data.substring(378);
+  debugPrint(newdata);
   File('${directory}/' + fileName).writeAsStringSync(newdata);
 
-  debugPrint("파일 저장됨");
+  debugPrint("mtl 파일 저장됨, 숫자는 $num");
 }
 
 ///png를 assets에서 불러와 저장하는 함수, 디버그용
