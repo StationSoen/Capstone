@@ -226,10 +226,12 @@ packages:
   flutter_cube:
     dependency: "direct main"
     description:
-      name: flutter_cube
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
+      path: "."
+      ref: master
+      resolved-ref: "10d4a5791850231b0fcfa48dd6199e4acabdbcd9"
+      url: "https://github.com/miney727/flutter_cube.git"
+    source: git
+    version: "0.1.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
